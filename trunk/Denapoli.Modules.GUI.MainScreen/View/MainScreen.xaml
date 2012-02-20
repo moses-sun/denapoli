@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Denapoli.Modules.GUI.MainScreen.View.MainScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:MainScreen="clr-namespace:Denapoli.Modules.GUI.MainScreen" mc:Ignorable="d" 
+             
+            >
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type MainScreen:WellcomeScreenViewModel}">
+
+            <DockPanel>
+                <Button Content="ok" Command="{Binding OrderCommand}"/>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <telerik:RadTransitionControl  Content="{Binding SelectedScreen}">
+        <telerik:RadTransitionControl.Transition>
+            <telerik:MotionBlurredZoomTransition />
+        </telerik:RadTransitionControl.Transition>
+    </telerik:RadTransitionControl>
+</UserControl>

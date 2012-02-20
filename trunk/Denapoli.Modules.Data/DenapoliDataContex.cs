@@ -109,12 +109,6 @@ namespace Denapoli.Modules.Data
            get { return GetTable<Borne>(); }
        }
 	}
-
-
-   
-	
-	
-	
 }
 
 
