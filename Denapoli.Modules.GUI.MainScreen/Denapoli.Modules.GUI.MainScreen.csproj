@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{48F4ECCE-5017-4F8E-8D41-F0DA89997955}</ProjectGuid>
+    <ProjectGuid>{6EF42FB8-C89D-4076-995D-F79BA8A67791}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Denapoli.Module.Data.Test</RootNamespace>
-    <AssemblyName>Denapoli.Module.Data.Test</AssemblyName>
+    <RootNamespace>Denapoli.Modules.GUI.MainScreen</RootNamespace>
+    <AssemblyName>Denapoli.Modules.GUI.MainScreen</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,35 +31,51 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DbLinq">
-      <HintPath>..\dll\DbLinq\DbLinq.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\dll\Prism\Lib\Desktop\EntLib\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.4.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\nunit\nunit.framework.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dll\nunit\nunit.mocks.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DenapoliDTOTest.cs" />
+    <Compile Include="MainScreenModule.cs" />
+    <Compile Include="ViewModel\MainScreenViewModel.cs" />
+    <Compile Include="WellcomeScreenViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\MainScreen.xaml.cs">
+      <DependentUpon>MainScreen.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Denapoli.Modules.Data\Denapoli.Modules.Data.csproj">
-      <Project>{4AFAF324-0120-45CC-985C-47F175A8BCEA}</Project>
-      <Name>Denapoli.Modules.Data</Name>
+    <Page Include="View\MainScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Denapoli.Modules.Infrastructure\Denapoli.Modules.Infrastructure.csproj">
+      <Project>{B0719092-7564-4A45-B235-54DDBD628578}</Project>
+      <Name>Denapoli.Modules.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

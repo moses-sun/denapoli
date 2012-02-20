@@ -43,6 +43,15 @@
     <Reference Include="DbLinq.MySql">
       <HintPath>..\dll\DbLinq\DbLinq.MySql.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\dll\Prism\Lib\Desktop\EntLib\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism">
+      <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions">
+      <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.4.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\DbLinq\MySql.Data.dll</HintPath>
@@ -55,7 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\DbLinq\MySql.Web.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
@@ -65,14 +76,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModule.cs" />
+    <Compile Include="DenapoliDataContex.cs" />
     <Compile Include="Entities\Adresse.cs" />
     <Compile Include="Entities\Borne.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\Commande.cs" />
-    <Compile Include="DenapoliDataContex.cs" />
     <Compile Include="Entities\Famille.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\Produit.cs" />
+    <Compile Include="IDataProvider.cs" />
+    <Compile Include="DataProvider\MysqlDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

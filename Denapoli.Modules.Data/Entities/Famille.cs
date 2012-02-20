@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
@@ -101,6 +102,9 @@ namespace Denapoli.Modules.Data.Entities
                 _produits = value;
             }
         }
+
+        public IEnumerable<Produit> Produitss{get{return new List<Produit>(Produits);}}
+
         #endregion
 		
         public event PropertyChangingEventHandler PropertyChanging;

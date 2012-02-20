@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
+using System.Windows.Input;
 using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
@@ -358,7 +359,7 @@ namespace Denapoli.Modules.Data.Entities
                 if ((_quaNtItE == value)) return;
                 SendPropertyChanging();
                 _quaNtItE = value;
-                SendPropertyChanged("QuaNtItE");
+                SendPropertyChanged("Quantite");
             }
         }
 
@@ -422,6 +423,8 @@ namespace Denapoli.Modules.Data.Entities
                 }
             }
         }
+
+
         #endregion
 
         public event PropertyChangingEventHandler PropertyChanging;

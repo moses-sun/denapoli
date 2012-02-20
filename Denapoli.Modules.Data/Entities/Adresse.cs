@@ -1,7 +1,7 @@
 using System.ComponentModel;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
-using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
 {

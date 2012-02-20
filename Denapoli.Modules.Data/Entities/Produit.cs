@@ -29,6 +29,8 @@ namespace Denapoli.Modules.Data.Entities
             _proDuiTcOmposition = new EntitySet<ProduitComposition>(ProDuiTCompositionAttach, ProDuiTCompositionDetach);
             _prodUiTsMenu = new EntitySet<ProduitsMenu>(ProdUItsMenuAttach, ProdUItsMenuDetach);
         }
+
+        public bool IsMenu { get { return ProduitComposition.Count > 0; } }
 		
         [Column(Storage="_description", Name="DESCRIPTION", DbType="varchar(200)", AutoSync=AutoSync.Never)]
         [DebuggerNonUserCode]
@@ -419,6 +421,7 @@ namespace Denapoli.Modules.Data.Entities
         }
         #endregion
 
+       
         public event PropertyChangingEventHandler PropertyChanging;
 
         public event PropertyChangedEventHandler PropertyChanged;
