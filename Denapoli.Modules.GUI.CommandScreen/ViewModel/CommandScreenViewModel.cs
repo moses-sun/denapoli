@@ -161,7 +161,19 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         public ICommand ShowCustomerCommand { get; private set; }
 
-        public Action<object, RoutedEventArgs> ToLeft { get; private set; }
+        private ProductViewModel _selectedOrder;
+        public ProductViewModel SelectedOrder
+        {
+            get { return _selectedOrder; }
+            set
+            {
+                _selectedOrder = value;
+                if (_selectedOrder != null && _selectedOrder is MenuViewModel)
+                {
+                    ((MenuViewModel)_selectedOrder).EditCommand.Execute(null);
+                }
+            }
+        }
 
 
         private void AddProductToCommand(Produit produit)

@@ -4,7 +4,6 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ViewModel="clr-namespace:Denapoli.Modules.GUI.CommandScreen.ViewModel"
                     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                    xmlns:Entities="clr-namespace:Denapoli.Modules.Data.Entities;assembly=Denapoli.Modules.Data"
                     xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure">
 
     
@@ -13,12 +12,13 @@
             <DockPanel x:Name="left_panel" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
                 <DockPanel.Resources>
                     <DataTemplate x:Key="ProductTemplate"  DataType="{x:Type ViewModel:ProductViewModel}">
-                            <TextBlock Text="{Binding Produit.Nom}"  Margin="5 4 5 6" />
+                        <TextBlock  Text="{Binding Produit.Nom}"  Margin="5 4 5 6" HorizontalAlignment="Center"  FontSize="15"
+                                     />
                     </DataTemplate>
 
                     <DataTemplate x:Key="MenusTemplate" DataType="{x:Type ViewModel:MenuViewModel}"     >
                         <StackPanel >
-                            <TextBlock Text="{Binding Produit.Nom}"  Margin="5 4 5 6" />
+                            <TextBlock Text="{Binding Produit.Nom}"  Margin="5 4 5 6"  FontSize="15" />
                             <ListBox ItemsSource="{Binding MenuProducts}" ItemTemplate="{StaticResource ProductTemplate}"/>
                         </StackPanel>
                     </DataTemplate>
@@ -27,11 +27,10 @@
                     <TextBox  Text="Denapoli Pizza"/>
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Bottom">
-                    <TextBlock   Text="{Binding Total}"/>
-                    <telerik:RadButton Content="Reglement" Command="{Binding ShowCustomerCommand}"/>
+                    <telerik:RadButton Height="50" Content="Reglement" Command="{Binding ShowCustomerCommand}"/>
                 </StackPanel>
-                <DockPanel  Width="370" Background="#BADD27">
-                    <telerik:RadGridView  Background="#BADD27"
+                <DockPanel  Background="#BADD27">
+                    <telerik:RadGridView  Width="370" Background="#BADD27"
                         ItemsSource="{Binding OrderedProdects}"  
                         IsFilteringAllowed="False"
                         CanUserSortColumns="False"
@@ -43,6 +42,8 @@
                         CanUserFreezeColumns="False" 
                         RowIndicatorVisibility="Collapsed" 
                         ShowColumnFooters="True"
+                        IsReadOnly="True"
+                        SelectedItem="{Binding SelectedOrder}"
                      >
                         <telerik:RadGridView.Columns>
                             <telerik:GridViewDataColumn Width="70" DataMemberBinding="{Binding }" Header="#" TextAlignment="Center" >
@@ -56,26 +57,29 @@
                                         </DataTemplate>
                                     </telerik:GridViewColumn.CellTemplate>
                             </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Width="200" 
+                            <telerik:GridViewDataColumn Width="180" 
                                 DataMemberBinding="{Binding}" Header="Produit" 
                                 CellTemplate="{StaticResource MenusTemplate}"
                                 TextAlignment="Left"
-                                Footer="Total : ">
+                               >
+                                <telerik:GridViewDataColumn.Footer>
+                                    <TextBlock Text="Total :" TextAlignment="Right"/>
+                                </telerik:GridViewDataColumn.Footer>
                             </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" Header="Prix"  Footer="{Binding ElementName=left_panel, Path=DataContext.Total}" DataFormatString="{}{0:c}"/>
-                            <telerik:GridViewDataColumn  TextAlignment="Center">
+                            <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" Header="Prix"  DataFormatString="{}{0:c}">
+                                <telerik:GridViewDataColumn.Footer>
+                                    <TextBlock Text="{Binding ElementName=left_panel, Path=DataContext.Total}" />
+                                </telerik:GridViewDataColumn.Footer>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn  TextAlignment="Center" >
                                 <telerik:GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <telerik:RadButton Width="30" Content="X" Command="{Binding DeleteCommand}"/>
+                                        <telerik:RadButton Width="40" Content="X" Command="{Binding DeleteCommand}"/>
                                     </DataTemplate>
                                 </telerik:GridViewColumn.CellTemplate>
                             </telerik:GridViewDataColumn>
                         </telerik:RadGridView.Columns>
                     </telerik:RadGridView>
-                    <!--  <telerik:RadTreeView    
-                    ItemsSource="{Binding OrderedProdects}"
-                    ItemTemplate="{StaticResource MenusTemplate}"
-                    /> -->
                 </DockPanel>
             </DockPanel>
             <DockPanel x:Name="right_panel" >
@@ -105,11 +109,11 @@
                                             <Border BorderBrush="Black" BorderThickness="4"
                                                     CornerRadius="5" Margin="6"
                                                       >
-                                                <TextBlock Text="{Binding Nom}"
-                                                        Width="120" Height="120"
-                                                       />
+                                                <StackPanel  MinWidth="120" Height="120">
+                                                    <TextBlock Text="{Binding ImageURL}"/>
+                                                    <TextBlock Text="{Binding Nom}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"  />
+                                                </StackPanel>
                                             </Border>
-
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </Controls:ListViewEx>
@@ -138,9 +142,10 @@
                                             <Border BorderBrush="Black" BorderThickness="4"
                                                     CornerRadius="5" Margin="6"
                                                       >
-                                                <TextBlock Text="{Binding Nom}"
-                                                        Width="120" Height="120"
-                                                       />
+                                                <StackPanel  MinWidth="120" Height="120">
+                                                    <Image Source="{Binding ImageURL}"/>
+                                                    <TextBlock Text="{Binding Nom}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"  />
+                                                </StackPanel>
                                             </Border>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
