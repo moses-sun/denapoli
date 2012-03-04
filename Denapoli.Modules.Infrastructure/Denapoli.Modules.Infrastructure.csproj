@@ -50,10 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behavior\AutoPopulateExportedViewsBehavior.cs" />
+    <Compile Include="Behavior\ImageUriSourceConverter.cs" />
     <Compile Include="Behavior\IViewRegionRegistration.cs" />
+    <Compile Include="Controls\AttachedVirtualKeyboardBehavior.cs" />
     <Compile Include="Controls\ListViewEx.cs" />
     <Compile Include="Command\ActionCommand.cs" />
-    <Compile Include="Controls\WidthBehavior.cs" />
+    <Compile Include="Behavior\WidthBehavior.cs" />
+    <Compile Include="Controls\WinTest.xaml.cs">
+      <DependentUpon>WinTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\IPaymentService.cs" />
     <Compile Include="ViewModel\IScreenViewModel.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
@@ -67,6 +72,12 @@
       <Project>{4AFAF324-0120-45CC-985C-47F175A8BCEA}</Project>
       <Name>Denapoli.Modules.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\WinTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

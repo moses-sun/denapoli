@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
@@ -10,7 +11,13 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         {
             Family = famille;
             Produits = new List<Produit>(produits);
-           
+            produits.ForEach(item => Produits.Add(item));
+            produits.ForEach(item => Produits.Add(item));
+            produits.ForEach(item => Produits.Add(item));
+            produits.ForEach(item => Produits.Add(item));
+            produits.ForEach(item => Produits.Add(item));
+            produits.ForEach(item => Produits.Add(item));
+
         }
         public Famille Family { get; set; }
         public List<Produit> Produits { get; set; }
