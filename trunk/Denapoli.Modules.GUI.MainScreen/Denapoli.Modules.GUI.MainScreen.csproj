@@ -71,7 +71,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Denapoli.Modules.Infrastructure\Denapoli.Modules.Infrastructure.csproj">
       <Project>{B0719092-7564-4A45-B235-54DDBD628578}</Project>

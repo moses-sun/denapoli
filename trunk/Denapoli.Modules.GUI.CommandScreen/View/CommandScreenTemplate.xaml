@@ -4,11 +4,52 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ViewModel="clr-namespace:Denapoli.Modules.GUI.CommandScreen.ViewModel"
                     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                    xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure">
+                    xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure"
+                    xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure">
 
     
     <DataTemplate DataType="{x:Type ViewModel:CommandScreenViewModel}">
         <DockPanel>
+            <DockPanel.Resources>
+                <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
+                <DataTemplate  x:Key="DisplayFamilyImageWithText">
+                    <Border BorderBrush="Black" BorderThickness="4"
+                                                    CornerRadius="5" Margin="6"
+                                                      >
+                        <StackPanel >
+                            <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
+                            <TextBlock Text="{Binding Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+                <DataTemplate  x:Key="DisplayProduct">
+                    <Border BorderBrush="Black" BorderThickness="4"
+                                                CornerRadius="5" Margin="6"
+                                                      >
+                        <StackPanel >
+                            <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Left" Text="{Binding Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                                <TextBlock DockPanel.Dock="Right" Text=" €" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                                <TextBlock DockPanel.Dock="Right" Text="{Binding Prix}" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                            </DockPanel>
+                            <TextBlock Text="{Binding Description}"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+
+                <ControlTemplate x:Key="FlatCombo" TargetType="{x:Type ComboBox}">
+                    <ContentPresenter Name="ContentSite" 
+                          IsHitTestVisible="False" 
+                          Content="{TemplateBinding SelectionBoxItem}" 
+                          ContentTemplate="{StaticResource DisplayProduct}" 
+                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                          Margin="3,3,23,3" 
+                          VerticalAlignment="Center" 
+                          HorizontalAlignment="Left"/>
+                </ControlTemplate>
+                
+            </DockPanel.Resources>
             <DockPanel x:Name="left_panel" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
                 <DockPanel.Resources>
                     <DataTemplate x:Key="ProductTemplate"  DataType="{x:Type ViewModel:ProductViewModel}">
@@ -19,18 +60,25 @@
                     <DataTemplate x:Key="MenusTemplate" DataType="{x:Type ViewModel:MenuViewModel}"     >
                         <StackPanel >
                             <TextBlock Text="{Binding Produit.Nom}"  Margin="5 4 5 6"  FontSize="15" />
-                            <ListBox ItemsSource="{Binding MenuProducts}" ItemTemplate="{StaticResource ProductTemplate}"/>
+                            <ListBox ItemsSource="{Binding MenuProducts}" ItemTemplate="{StaticResource ProductTemplate}"
+                                       Background="Transparent"
+                                       BorderBrush="Transparent"
+                                       BorderThickness="0"/>
                         </StackPanel>
                     </DataTemplate>
                 </DockPanel.Resources>
-                <StackPanel DockPanel.Dock="Top" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBox  Text="Denapoli Pizza"/>
+                    <Image  Width="370" 
+                            Height="180"
+                            Source="{Binding Logo, Converter={StaticResource imageConverter}}" />
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Bottom">
-                    <telerik:RadButton Height="50" Content="Reglement" Command="{Binding ShowCustomerCommand}"/>
+                    <telerik:RadButton Height="70" Content="Reglement" Command="{Binding ShowCustomerCommand}"/>
                 </StackPanel>
-                <DockPanel  Background="#BADD27">
-                    <telerik:RadGridView  Width="370" Background="#BADD27"
+                <DockPanel  >
+                    <telerik:RadGridView  Width="380" 
+                        x:Name="orderlist"
                         ItemsSource="{Binding OrderedProdects}"  
                         IsFilteringAllowed="False"
                         CanUserSortColumns="False"
@@ -44,15 +92,33 @@
                         ShowColumnFooters="True"
                         IsReadOnly="True"
                         SelectedItem="{Binding SelectedOrder}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      >
                         <telerik:RadGridView.Columns>
-                            <telerik:GridViewDataColumn Width="70" DataMemberBinding="{Binding }" Header="#" TextAlignment="Center" >
+                            <telerik:GridViewDataColumn  DataMemberBinding="{Binding }" Header="#" TextAlignment="Center" >
                                     <telerik:GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <telerik:RadButton Width="20" Height="20" Content="-" Command="{Binding RemoveUnitCommand}"  />
-                                            <TextBlock TextAlignment="Center" Width="20" Height="20" Text="{Binding Quantite}"  HorizontalAlignment="Center"/>
-                                            <telerik:RadButton Width="20" Height="20" Content="+" Command="{Binding AddUnitCommand}"  />
+                                            <telerik:RadButton   Command="{Binding RemoveUnitCommand}"  
+                                                                Background="Transparent" 
+                                                                BorderBrush="Transparent" 
+                                                                BorderThickness="0"
+                                                                 >
+                                                <Image Width="25" Height="25" Source="pack://application:,,,/Denapoli;component/images/minus.gif"  />
+                                            </telerik:RadButton>
+                                            <TextBlock TextAlignment="Center" 
+                                                       Width="20" Text="{Binding Quantite}"  
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
+                                            <telerik:RadButton  Command="{Binding AddUnitCommand}"  
+                                                                 Background="Transparent" 
+                                                                 BorderBrush="Transparent" 
+                                                                 BorderThickness="0"
+                                                                  >
+                                                <Image  Width="25" Height="25" Source="pack://application:,,,/Denapoli;component/images/plus.jpg"  />
+                                            </telerik:RadButton>
                                         </StackPanel>
                                         </DataTemplate>
                                     </telerik:GridViewColumn.CellTemplate>
@@ -63,18 +129,27 @@
                                 TextAlignment="Left"
                                >
                                 <telerik:GridViewDataColumn.Footer>
-                                    <TextBlock Text="Total :" TextAlignment="Right"/>
+                                    <TextBlock Text="Total :" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
                                 </telerik:GridViewDataColumn.Footer>
                             </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" Header="Prix"  DataFormatString="{}{0:c}">
+                            <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" Header="Prix"  DataFormatString="{}{0:c}" >
                                 <telerik:GridViewDataColumn.Footer>
-                                    <TextBlock Text="{Binding ElementName=left_panel, Path=DataContext.Total}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding ElementName=left_panel, Path=DataContext.Total}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
+                                        <TextBlock  Text="  €"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
+                                    </StackPanel>
                                 </telerik:GridViewDataColumn.Footer>
                             </telerik:GridViewDataColumn>
                             <telerik:GridViewDataColumn  TextAlignment="Center" >
                                 <telerik:GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <telerik:RadButton Width="40" Content="X" Command="{Binding DeleteCommand}"/>
+                                        <telerik:RadButton   Command="{Binding DeleteCommand}"
+                                                                Background="Transparent" 
+                                                                BorderBrush="Transparent" 
+                                                                BorderThickness="0"
+                                                                >
+                                            <Image Width="25" Height="25" Source="pack://application:,,,/Denapoli;component/images/delete.jpg" />
+                                        </telerik:RadButton>
                                     </DataTemplate>
                                 </telerik:GridViewColumn.CellTemplate>
                             </telerik:GridViewDataColumn>
@@ -86,48 +161,86 @@
                 <DockPanel.Resources>
                     <DataTemplate DataType="{x:Type ViewModel:CommandScreenViewModel}">
                         <DockPanel >
-                            <DockPanel DockPanel.Dock="Top">
-                                <Button DockPanel.Dock="Left" Content="left" 
+                            <DockPanel DockPanel.Dock="Top" Background="DodgerBlue">
+                                <Button 
+                                        Width="50" 
+                                        DockPanel.Dock="Left" 
                                         x:Name="leftButton"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
                                         Command="{Binding ElementName=list1, Path=LeftScrollCommand}" 
-                                       />
+                                       >
+                                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" />
+                                </Button>
+                                <Button 
+                                    DockPanel.Dock="Right" 
+                                    Command="{Binding ElementName=list1, Path=RightScrollCommand}" 
+                                    Background="{Binding ElementName=leftButton, Path=Background}" 
+                                    BorderBrush="{Binding ElementName=leftButton, Path=BorderBrush}" 
+                                    BorderThickness="{Binding ElementName=leftButton, Path=BorderThickness}"
+                                    Width="{Binding ElementName=leftButton, Path=Width}" 
+                                    >
+                                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" >
+                                        <Image.LayoutTransform>
+                                            <RotateTransform Angle="180"/>
+                                        </Image.LayoutTransform>
+                                    </Image>
+                                </Button>
+
                                 <Controls:ListViewEx 
                                     x:Name="list1"
                                     ItemsSource="{Binding Families}" 
                                     SelectedItem="{Binding SelectedFamily}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    Controls:WidthBehavior.WidthEx="{Binding  ElementName=right_panel, Path=ActualWidth}"
+                                    ItemTemplate="{StaticResource DisplayFamilyImageWithText}"
                                     >
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="4"
-                                                    CornerRadius="5" Margin="6"
-                                                      >
-                                                <StackPanel  MinWidth="120" Height="120">
-                                                    <TextBlock Text="{Binding ImageURL}"/>
-                                                    <TextBlock Text="{Binding Nom}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"  />
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
+                              
                                 </Controls:ListViewEx>
-                                <Button DockPanel.Dock="Right" Content="right"  Command="{Binding ElementName=list1, Path=RightScrollCommand}" />
                             </DockPanel>
-                            <DockPanel x:Name="toto">
-                                <telerik:RadButton Content="top"  DockPanel.Dock="Top" Command="{Binding ElementName=list2, Path=TopScrollCommand}"/>
-                                <telerik:RadButton Content="Bottom"  DockPanel.Dock="Bottom" Command="{Binding ElementName=list2, Path=BottomScrollCommand}"/>
+                            <DockPanel x:Name="toto" Background="LightSalmon">
+                                <Button 
+                                    x:Name="topButton"
+                                    DockPanel.Dock="Top" 
+                                    Command="{Binding ElementName=list2, Path=TopScrollCommand}"
+                                    Background="{Binding ElementName=leftButton, Path=Background}" 
+                                    BorderBrush="{Binding ElementName=leftButton, Path=BorderBrush}" 
+                                    BorderThickness="{Binding ElementName=leftButton, Path=BorderThickness}"
+                                    Height="50"
+                                    >
+                                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" >
+                                        <Image.LayoutTransform>
+                                            <RotateTransform Angle="90"/>
+                                        </Image.LayoutTransform>
+                                    </Image>
+                                </Button>
+                                <Button 
+                                    DockPanel.Dock="Bottom" 
+                                    Command="{Binding ElementName=list2, Path=TopScrollCommand}"
+                                    Background="{Binding ElementName=leftButton, Path=Background}" 
+                                    BorderBrush="{Binding ElementName=leftButton, Path=BorderBrush}" 
+                                    BorderThickness="{Binding ElementName=leftButton, Path=BorderThickness}"
+                                    Height="{Binding ElementName=topButton, Path=Height}" 
+                                    >
+                                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" >
+                                        <Image.LayoutTransform>
+                                            <RotateTransform Angle="270"/>
+                                        </Image.LayoutTransform>
+                                    </Image>
+                                </Button>
                                 <Controls:ListViewEx  
                                     x:Name="list2"
                                     ItemsSource="{Binding Products}" 
                                     SelectedItem="{Binding SelectedProduct}"
-                                    Controls:WidthBehavior.HeightEx="{Binding  ElementName=toto, Path=ActualHeight}"
+                                    Behavior:WidthBehavior.HeightEx="{Binding  ElementName=toto, Path=ActualHeight}"
                                     Background="DarkOrchid"
+                                    ItemTemplate="{StaticResource DisplayProduct}"
                                 >
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -137,53 +250,97 @@
                                              />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="Black" BorderThickness="4"
-                                                    CornerRadius="5" Margin="6"
-                                                      >
-                                                <StackPanel  MinWidth="120" Height="120">
-                                                    <Image Source="{Binding ImageURL}"/>
-                                                    <TextBlock Text="{Binding Nom}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"  />
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
                                 </Controls:ListViewEx>
                             </DockPanel>
                         </DockPanel>
                     </DataTemplate>
+                    
                     <DataTemplate DataType="{x:Type ViewModel:MenuViewModel}">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <ListBox  ItemsSource="{Binding MenuProducts}" >
+                        <DockPanel Background="DeepSkyBlue" >
+                            <TextBlock DockPanel.Dock="Top" Text="Composez votre menu" TextAlignment="Center"  FontSize="35" FontFamily="fonts/#Arial Narrow Bold" />
+                            <Grid DockPanel.Dock="Bottom" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <telerik:RadButton Grid.Column="0" Content="Valider" Command="{Binding ValidateCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
+                                <telerik:RadButton  Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
+                            </Grid>
+                            <ListBox Background="DeepSkyBlue" ItemsSource="{Binding MenuProducts}" >
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Padding="5,0,5,0"       Text="{Binding Family.Nom}" />
-                                            <telerik:RadComboBox ItemsSource="{Binding Produits}" SelectedItem="{Binding Produit}" DisplayMemberPath="Nom"/>
-                                        </StackPanel>
+                                        <DockPanel  >
+                                            <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="4"
+                                                    CornerRadius="5" Margin="6" >
+                                                    <StackPanel >
+                                                        <Image Width="120" Height="120" Source="{Binding Family.ImageURL, Converter={StaticResource imageConverter}}"/>
+                                                        <TextBlock Text="{Binding Family.Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                                                    </StackPanel>
+                                                </Border>
+                                            <ComboBox 
+                                                DockPanel.Dock="Right"
+                                                ItemsSource="{Binding Produits}" 
+                                                SelectedItem="{Binding Produit}" 
+                                                ItemTemplate="{StaticResource DisplayProduct}"
+                                                DisplayMemberPath="Nom"
+                                                Width="200">
+                                                <ComboBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel 
+                                                            Background="DarkOrange"
+                                                            Width="{Binding ElementName=right_panel, Path=ActualWidth}"
+                                                         />
+                                                    </ItemsPanelTemplate>
+                                                </ComboBox.ItemsPanel>
+                                            </ComboBox>
+                                        </DockPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <telerik:RadButton Content="Valider" Command="{Binding ValidateCommand}"/>
-                            <telerik:RadButton Content="Annuler" Command="{Binding CancelCommand}"/>
-                        </StackPanel>
+                          
+                        </DockPanel>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type ViewModel:CustomerView}">
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <TextBlock Text="Cooredonnées client :" />
-                            <telerik:DataFormDataField Label="Nom" DataMemberBinding="{Binding Customer.Nom, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="Prenom" DataMemberBinding="{Binding Customer.Prenom, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="Tel" DataMemberBinding="{Binding Customer.Tel, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="E-mail" DataMemberBinding="{Binding Customer.Email, Mode=TwoWay}" />
-
-                            <TextBlock Text="Adresse de livraison :" />
-                            <telerik:DataFormDataField Label="N°" DataMemberBinding="{Binding Address.Num, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="Voie" DataMemberBinding="{Binding Address.Voie, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="Complement" DataMemberBinding="{Binding Address.Complement, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="Code postal" DataMemberBinding="{Binding Address.CP, Mode=TwoWay}" />
-                            <telerik:DataFormDataField Label="Ville" DataMemberBinding="{Binding Address.Ville, Mode=TwoWay}" />
-                            
+                        <StackPanel Width="{Binding ElementName=right_panel, Path=ActualWidth}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <GroupBox Header="Cooredonnées client">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Nom" />   <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Customer.Nom, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Prenom" /><TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Customer.Prenom, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Tel" />   <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Customer.Tel, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="E-mail" /><TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Customer.Email, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="Adresse de livraison">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="N°" Grid.Column="0" Grid.Row="0" />        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.Num, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Voie" />      <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Address.Voie, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Complement" /><TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Address.Complement, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Code postal" /><TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Address.CP, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Ville" />     <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Address.Ville, Mode=TwoWay}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                                </Grid>
+                            </GroupBox>
+                               
                             <telerik:RadButton Content="Valider" Command="{Binding PaiementCommand}"/>
                             <telerik:RadButton Content="Annuler" Command="{Binding CancelCommand}"/>
                         </StackPanel>
