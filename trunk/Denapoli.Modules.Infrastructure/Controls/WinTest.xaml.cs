@@ -539,7 +539,7 @@ namespace Denapoli.Modules.Infrastructure.Controls
             }
             else if (e.Command == CmdEnter)
             {
-               Close();
+              Hide();
             }
             else if (e.Command == CmdShift) //Fourth Row
             {
