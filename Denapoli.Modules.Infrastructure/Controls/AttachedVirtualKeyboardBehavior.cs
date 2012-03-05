@@ -10,7 +10,7 @@ namespace Denapoli.Modules.Infrastructure.Controls
     {
 
         private static readonly WinTest TactileKeyboard = Intialize();
-
+        public static bool IsClosing { get; set; }
         private static WinTest Intialize()
         {
             var keyboard = new WinTest
@@ -21,7 +21,8 @@ namespace Denapoli.Modules.Infrastructure.Controls
                                      Topmost = true
                                };
             keyboard.PropertyChanged += (a,b) =>{TouchScreenText = keyboard.Text;};
-            keyboard.Closed += OnKeyboardclosed;
+            keyboard.Deactivated += OnKeyboardclosed;
+
             return keyboard;
         }
 
@@ -95,20 +96,21 @@ namespace Denapoli.Modules.Infrastructure.Controls
             host.BorderBrush = Brushes.Red;
             host.BorderThickness = new Thickness(4);
 
-            if (_currentControl != null)
-                _currentControl.LayoutUpdated -= TbLayoutUpdated;
+            //if (_currentControl != null)
+            //    _currentControl.LayoutUpdated -= TbLayoutUpdated;
 
             _currentControl = host;
 
             var ct = Window.GetWindow(_currentControl);
             if (ct != null)
             {
-                ct.LocationChanged += TactileKeyboardLocationChanged;
+                //ct.LocationChanged += TactileKeyboardLocationChanged;
                 ct.Activated += TactileKeyboardActivated;
                 ct.Deactivated += TactileKeyboardDeactivated;
             }
             TactileKeyboard.Text = TouchScreenText;
-            host.LayoutUpdated += TbLayoutUpdated;
+            Syncchild();
+            //host.LayoutUpdated += TbLayoutUpdated;
         }
 
         private static void OnLostFocus(object sender, RoutedEventArgs e)
@@ -117,8 +119,7 @@ namespace Denapoli.Modules.Infrastructure.Controls
             host.Background = _previousTextBoxBackgroundBrush;
             host.BorderBrush = _previousTextBoxBorderBrush;
             host.BorderThickness = _previousTextBoxBorderThickness;
-
-            TactileKeyboard.Close();
+            TactileKeyboard.Hide();
         }
 
         private static void Syncchild()
@@ -166,7 +167,6 @@ namespace Denapoli.Modules.Infrastructure.Controls
 
         private static void OnKeyboardclosed(object sender, EventArgs eventArgs)
         {
-            TactileKeyboard.Close();
             _currentControl.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
         }
     }
