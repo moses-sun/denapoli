@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le : Mar 21 Février 2012 à 23:54
+-- Généré le : Ven 09 Mars 2012 à 21:42
 -- Version du serveur: 5.5.16
 -- Version de PHP: 5.3.8
 
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `famille` (
   `NOM` varchar(100) DEFAULT NULL,
   `IMAGE_URL` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID_FAMIL`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Contenu de la table `famille`
@@ -143,9 +143,11 @@ CREATE TABLE IF NOT EXISTS `famille` (
 
 INSERT INTO `famille` (`ID_FAMIL`, `NOM`, `IMAGE_URL`) VALUES
 (1, 'boissons', 'boissons.png'),
-(2, 'pizza', 'pizza.png'),
-(3, 'chiken', 'chiken.png'),
-(4, 'menu', 'menu.png');
+(2, 'pizzas', 'pizzas.png'),
+(3, 'tex-mexs', 'tex-mexs.png'),
+(4, 'menus', 'menus.png'),
+(5, 'salades', 'salades.png'),
+(6, 'paninis', 'paninis.png');
 
 -- --------------------------------------------------------
 
@@ -194,11 +196,11 @@ CREATE TABLE IF NOT EXISTS `produit` (
 
 INSERT INTO `produit` (`ID_PROD`, `NOM`, `IMAGE_URL`, `DESCRIPTION`, `PRIX`, `ID_FAMIL`) VALUES
 (3, 'cocacola', 'cocacola.png', 'zero 33cl', 1.5, 1),
-(4, 'orangina', 'orangina.png', '33cl', 1.5, 1),
+(4, 'orangina', 'orangina.jpg', '33cl', 1.5, 1),
 (5, 'oasis', 'oasis.png', '33 cl', 2, 1),
 (6, 'pizza margarita', 'margarita.png', NULL, 10, 2),
 (7, 'pizza 4 fromages', 'pizza_4_fromages.png', NULL, 12, 2),
-(8, 'pizza v?g?tarienne', 'vegetarienne.png', NULL, 13, 2),
+(8, 'pizza végétarienne', 'vegetarienne.png', NULL, 13, 2),
 (9, 'menu 1', 'menu1.png', NULL, 15, 4),
 (10, 'menu 2', 'menu2.png', NULL, 14, 4),
 (11, 'chiken 1', 'chiken1.png', NULL, 5, 3),
