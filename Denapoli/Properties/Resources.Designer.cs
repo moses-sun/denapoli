@@ -67,9 +67,23 @@ namespace Denapoli.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap livraison {
+            get {
+                object obj = ResourceManager.GetObject("livraison", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap minus {
             get {
                 object obj = ResourceManager.GetObject("minus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap pizza_splash {
+            get {
+                object obj = ResourceManager.GetObject("pizza_splash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

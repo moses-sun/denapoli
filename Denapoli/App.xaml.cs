@@ -9,7 +9,7 @@ namespace Denapoli
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
 
         protected override void OnStartup(StartupEventArgs e)
@@ -24,8 +24,8 @@ namespace Denapoli
             //}
             var dir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location);
             Directory.SetCurrentDirectory(dir);
-            //var splashScreen = new SplashScreen(Assembly.GetExecutingAssembly(), "Resources/splash_screen.png");
-            //splashScreen.Show(true);
+            var splashScreen = new SplashScreen(Assembly.GetExecutingAssembly(), "Resources/pizza_splash.png");
+            splashScreen.Show(true);
 
 #if (DEBUG)
             RunInDebugMode();

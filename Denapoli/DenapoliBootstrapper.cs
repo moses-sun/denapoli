@@ -6,6 +6,7 @@ using System.Windows;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.GUI.CommandScreen;
 using Denapoli.Modules.GUI.MainScreen;
+using Denapoli.Modules.I18n;
 using Denapoli.Modules.Infrastructure.Behavior;
 using Denapoli.Modules.Payment;
 using Microsoft.Practices.Prism.Logging;
@@ -25,6 +26,7 @@ namespace Denapoli
             base.ConfigureAggregateCatalog();
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DenapoliBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AutoPopulateExportedViewsBehavior).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(MainScreenModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(PaymentModule).Assembly));
@@ -54,6 +56,8 @@ namespace Denapoli
         protected override DependencyObject CreateShell()
         {
             var shell = Container.GetExportedValue<Shell>();
+            var toto = Container.GetExportedValue<IDataProvider>();
+            var t = toto.GetAvailableFamilies().Count;
             return shell;
         }
 

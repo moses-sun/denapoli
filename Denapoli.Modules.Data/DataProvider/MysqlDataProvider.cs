@@ -13,9 +13,11 @@ namespace Denapoli.Modules.Data.DataProvider
     {
         public MysqlDataProvider()
         {
+            Console.WriteLine("connecting ...");
             var connStr = String.Format("server={0};user id={1}; password={2}; database={3}", "localhost", "root", "", "denapoli");
             DAO = new DenapoliDTO(new MySqlConnection(connStr));
-            
+            GetAvailableFamilies().Count();
+            Console.WriteLine("connected");
         }
 
         private DenapoliDTO DAO { get; set; }
