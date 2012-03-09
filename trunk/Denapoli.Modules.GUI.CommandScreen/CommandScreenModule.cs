@@ -34,8 +34,6 @@ namespace Denapoli.Modules.GUI.CommandScreen
             _eventAggregator.GetEvent<NewCommandEvent>().Subscribe(NewCommandEventHandler);
         }
 
-       
-
         private void NewCommandEventHandler(object obj)
         {
             _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(new CommandScreenViewModel(_eventAggregator,_dataProvider, PaymentService));

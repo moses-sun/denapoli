@@ -256,9 +256,12 @@
                     </DataTemplate>
                     
                     <DataTemplate DataType="{x:Type ViewModel:MenuViewModel}">
-                        <DockPanel Background="DeepSkyBlue" >
-                            <TextBlock DockPanel.Dock="Top" Text="Composez votre menu" TextAlignment="Center"  FontSize="35" FontFamily="fonts/#Arial Narrow Bold" />
-                            <Grid DockPanel.Dock="Bottom" >
+                        <DockPanel Background="DeepSkyBlue"  Margin="20 20 20 20">
+                            <TextBlock DockPanel.Dock="Top" 
+                                       Text="Composez votre menu" 
+                                       TextAlignment="Center"  
+                                       FontSize="35" FontFamily="fonts/#Arial Narrow Bold" />
+                            <Grid DockPanel.Dock="Bottom" Margin="20 20 20 20">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
@@ -266,7 +269,7 @@
                                 <telerik:RadButton Grid.Column="0" Content="Valider" Command="{Binding ValidateCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
                                 <telerik:RadButton  Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
                             </Grid>
-                            <ListBox Background="DeepSkyBlue" ItemsSource="{Binding MenuProducts}" >
+                            <ListBox Background="DeepSkyBlue" ItemsSource="{Binding MenuProducts}" Margin="20 10 10 20">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel  >

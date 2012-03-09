@@ -173,6 +173,10 @@
       <Project>{6EF42FB8-C89D-4076-995D-F79BA8A67791}</Project>
       <Name>Denapoli.Modules.GUI.MainScreen</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.I18n\Denapoli.Modules.I18n.csproj">
+      <Project>{6A2288EC-F1AC-4FF4-BF97-B7992B296635}</Project>
+      <Name>Denapoli.Modules.I18n</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Denapoli.Modules.Infrastructure\Denapoli.Modules.Infrastructure.csproj">
       <Project>{B0719092-7564-4A45-B235-54DDBD628578}</Project>
       <Name>Denapoli.Modules.Infrastructure</Name>
@@ -216,6 +220,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\plus.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="Resources\pizza_splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\livraison.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

@@ -4,7 +4,7 @@ using Microsoft.Practices.Prism.Modularity;
 
 namespace Denapoli.Modules.GUI.MainScreen
 {
-    [ModuleExport(typeof(MainScreenModule))]
+    [ModuleExport(typeof(MainScreenModule), DependsOnModuleNames = new[] { "I18NModule" })]
     public class MainScreenModule : IModule
     {
         [Import]

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denapoli.Modules.GUI.Comman
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denapoli.Modules.Payment", "Denapoli.Modules.Payment\Denapoli.Modules.Payment.csproj", "{EB68BAF5-E059-4D48-995A-F1C3F0862CD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denapoli.Modules.I18n", "Denapoli.Modules.I18n\Denapoli.Modules.I18n.csproj", "{6A2288EC-F1AC-4FF4-BF97-B7992B296635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,16 @@ Global
 		{EB68BAF5-E059-4D48-995A-F1C3F0862CD8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EB68BAF5-E059-4D48-995A-F1C3F0862CD8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EB68BAF5-E059-4D48-995A-F1C3F0862CD8}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,5 +129,6 @@ Global
 		{4AFAF324-0120-45CC-985C-47F175A8BCEA} = {FEB3D900-93DD-427C-A31E-5CCDD0ED1DF0}
 		{B0719092-7564-4A45-B235-54DDBD628578} = {FEB3D900-93DD-427C-A31E-5CCDD0ED1DF0}
 		{EB68BAF5-E059-4D48-995A-F1C3F0862CD8} = {FEB3D900-93DD-427C-A31E-5CCDD0ED1DF0}
+		{6A2288EC-F1AC-4FF4-BF97-B7992B296635} = {FEB3D900-93DD-427C-A31E-5CCDD0ED1DF0}
 	EndGlobalSection
 EndGlobal
