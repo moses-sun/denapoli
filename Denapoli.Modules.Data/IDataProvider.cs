@@ -8,5 +8,6 @@ namespace Denapoli.Modules.Data
         List<Famille> GetAvailableFamilies();
         List<Produit> GetFamilyProducts(Famille famille);
         List<Famille> GetMenuComposition(Produit menu);
+        void AddCommande(Commande com);
     }
 }

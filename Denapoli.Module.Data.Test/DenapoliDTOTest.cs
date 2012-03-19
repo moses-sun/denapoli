@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Denapoli.Modules.Data;
+using Denapoli.Modules.Data.Entities;
 using MySql.Data.MySqlClient;
 using NUnit.Framework;
 
@@ -143,6 +144,49 @@ namespace Denapoli.Module.Data.Test
                 }
 
                 
+            }
+        }
+
+        [Test]
+        public void AddCommandeTest()
+        {
+            var product1 = _dto.Produit.First();
+            var product2 = _dto.Produit.Last();
+            var borne   = _dto.Borne.First();
+            var adresse  = _dto.Adresse.First();
+            var client = _dto.Client.First();
+            var command = new Commande
+                              {
+                                  IdaDr = adresse.IdaDr,
+                                  IDBorn = borne.IDBorn,
+                                  IDCLien = client.IDCLien,
+                                  Statut = "ATTENTE"
+                              };
+            command.ProduitsCommande.Add(new ProduitsCommande{IDProd = product1.IDProd});
+            command.ProduitsCommande.Add(new ProduitsCommande{IDProd = product2.IDProd});
+            var m = new Menu{IDProd = 9};
+            m.ProduitsMenu.Add(new ProduitsMenu { IDProd = product2.IDProd });
+            command.Menus.Add(m);
+            _dto.Commande.InsertOnSubmit(command);
+            _dto.SubmitChanges();
+
+            var com = _dto.Commande.Last();
+            Console.WriteLine("Commande num:" + com.Num + " Client:" + com.Client.Nom);
+            Console.WriteLine("             Addre de livr :" + com.Adresse.Num + " " + com.Adresse.Voie + " Ville=" + com.Adresse.Ville);
+            Console.WriteLine("             Borne :" + com.Borne.IDBorn + " : " + com.Borne.Adresse.Voie + " Ville=" + com.Borne.Adresse.Ville);
+            Console.WriteLine("             List Produits :");
+
+            foreach (var prod in com.ProduitsCommande.Where(item => item.Produit.IDFaMil != 4))
+            {
+                Console.WriteLine("                           : " + prod.Produit.Nom + " x " + prod.Quantite + "=" + prod.Produit.Prix);
+            }
+            foreach (var menu in com.Menus)
+            {
+                Console.WriteLine("                           : menu :" + menu.Produit.Nom + "  = " + menu.Produit.Prix);
+                foreach (var p in menu.ProduitsMenu)
+                {
+                    Console.WriteLine("                                  :" + p.Produit.Nom + "  = " + p.Quantite);
+                }
             }
         }
     }
