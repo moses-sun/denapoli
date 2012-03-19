@@ -40,25 +40,46 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         private void PaiementViewHandler(object sender, PropertyChangedEventArgs e)
         {
+            
             PaiementView.ScreenMessage = PaymentService.Message;
             PaiementView.IsSuccesfull = PaymentService.State;
             if(PaiementView.IsSuccesfull)
             {
+                PaymentService.PropertyChanged -= PaiementViewHandler;
+                FinalizeOrder();
                 PaiementView.ScreenMessage = "Votre commande sera livrée dans 30 minutes\n au revoir";
-                var timer = new Timer(5000);
-                timer.Elapsed += (o, args) =>
-                                     {
-                                         FinalizeOrder();
-                                         EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
-                                         timer.Stop();
-                                     };
-                timer.Start();
+                EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
             } 
         }
 
         private void FinalizeOrder()
         {
-            PaymentService.PropertyChanged -= PaiementViewHandler;
+
+          
+            var command = new Commande
+                              {
+                                  IDCLien = 2,
+                                  IDBorn = 1,
+                                  IdaDr = 1,
+                                  Statut = "ATTENTE",
+                                  Total = Total,
+                              };
+
+            OrderedProdects.ForEach(prod=>
+                                        {
+                                            if(prod.IsMenu)
+                                            {
+                                                var menu = new Menu{IDProd = prod.Produit.IDProd};
+                                                var m = (MenuViewModel)prod;
+                                                m.MenuProducts.ForEach(item => menu.ProduitsMenu.Add(new ProduitsMenu{IDProd = item.Produit.IDProd}));
+                                                command.Menus.Add(menu);
+                                            }
+                                            else
+                                                command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd });
+
+                                            
+                                        });
+            DataProvider.AddCommande(command);
         }
 
 
@@ -139,10 +160,10 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             }
         }
 
-        private double _total;
+        private float _total;
         private bool _isActive;
 
-        public double Total
+        public float Total
         {
             get { return _total; }
             set
@@ -224,7 +245,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         private void UpdateTotal(object sender, PropertyChangedEventArgs e)
         {
-            var total = 0.0;
+            var total = 0.0f;
             OrderedProdects.ForEach(item => total += item.PrixTotal);
             Total = total;
         }

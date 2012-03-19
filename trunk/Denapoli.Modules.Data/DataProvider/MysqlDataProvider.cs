@@ -38,5 +38,11 @@ namespace Denapoli.Modules.Data.DataProvider
             menu.ProduitComposition.Select(item => item.Famille).ForEach(list.Add);
             return list;
         }
+
+        public void AddCommande(Commande com)
+        {
+            DAO.Commande.InsertOnSubmit(com);
+            DAO.SubmitChanges();
+        }
     }
 }

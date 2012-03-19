@@ -54,8 +54,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             }
         }
 
-        private double _prixTotal;
-        public double PrixTotal
+        private float _prixTotal;
+        public float PrixTotal
         {
             get { return _prixTotal; }
             set

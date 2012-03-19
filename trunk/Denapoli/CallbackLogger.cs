@@ -17,14 +17,14 @@ namespace Denapoli
        
         public void Log(string message, Category category, Priority priority)
         {
-            Messages.Add(new Tuple<string, Category, Priority,DateTime>(message, category, priority, DateTime.Now));
+           // Messages.Add(new Tuple<string, Category, Priority,DateTime>(message, category, priority, DateTime.Now));
         }
 
         public void DumpLog(string fileName)
         {
-            var writer = new StreamWriter(fileName);
+            /*var writer = new StreamWriter(fileName);
             Messages.ForEach(msg=> writer.WriteLine(msg.Item4 + ":" + msg.Item2 + ":" + msg.Item3 + ": " + msg.Item1));
-            writer.Close();
+            writer.Close();*/
         }
     }
 }
