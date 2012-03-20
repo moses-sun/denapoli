@@ -9,7 +9,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
     {
         public CustomerView()
         {
-            Customer = new Client();
+            Customer = new Client{Nom="Nom",Prenom = "Prenom", Email = "Email", Tel = "Tel"};
             Address = new Adresse();
             PaiementCommand = new ActionCommand(()=>NotifyChanged("Validate"));
             CancelCommand = new ActionCommand(() => NotifyChanged("Cancel"));

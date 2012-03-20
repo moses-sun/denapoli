@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
@@ -18,6 +19,8 @@ namespace Denapoli.Modules.I18n
                                         new Langage{Code="EN",Name = "English"},
                                         new Langage{Code="ES",Name = "Español"}
                                     };
+            Dico = new Dico();
+            CurrentLangage = AvailableLangages.First();
         }
 
         
@@ -36,6 +39,8 @@ namespace Denapoli.Modules.I18n
             }
         }
 
+        public Dico Dico { get; private set; }
+
         public string Localize(string key)
         {
             return _currentdict.ContainsKey(key) ? _currentdict[key] : "";
@@ -44,6 +49,7 @@ namespace Denapoli.Modules.I18n
         private void Load()
         {
             _currentdict = new Dictionary<string, string>();
+            Dico.Notify();
         }
       
     }

@@ -9,7 +9,7 @@
 
     
     <DataTemplate DataType="{x:Type ViewModel:CommandScreenViewModel}">
-        <DockPanel>
+        <DockPanel x:Name="full">
             <DockPanel.Resources>
                 <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
                 <DataTemplate  x:Key="DisplayFamilyImageWithText">
@@ -50,6 +50,49 @@
                 </ControlTemplate>
                 
             </DockPanel.Resources>
+            <DockPanel DockPanel.Dock="Top" Background="DodgerBlue">
+                <Button 
+                                        Width="50" 
+                                        DockPanel.Dock="Left" 
+                                        x:Name="leftButton"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="0"
+                                        Command="{Binding ElementName=list1, Path=LeftScrollCommand}" 
+                                       >
+                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" />
+                </Button>
+                <Button 
+                                    DockPanel.Dock="Right" 
+                                    Command="{Binding ElementName=list1, Path=RightScrollCommand}" 
+                                    Background="{Binding ElementName=leftButton, Path=Background}" 
+                                    BorderBrush="{Binding ElementName=leftButton, Path=BorderBrush}" 
+                                    BorderThickness="{Binding ElementName=leftButton, Path=BorderThickness}"
+                                    Width="{Binding ElementName=leftButton, Path=Width}" 
+                                    >
+                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" >
+                        <Image.LayoutTransform>
+                            <RotateTransform Angle="180"/>
+                        </Image.LayoutTransform>
+                    </Image>
+                </Button>
+
+                <Controls:ListViewEx 
+                                    x:Name="list1"
+                                    ItemsSource="{Binding Families}" 
+                                    SelectedItem="{Binding SelectedFamily}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ItemTemplate="{StaticResource DisplayFamilyImageWithText}"
+                                    >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                </Controls:ListViewEx>
+            </DockPanel>
             <DockPanel x:Name="left_panel" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
                 <DockPanel.Resources>
                     <DataTemplate x:Key="ProductTemplate"  DataType="{x:Type ViewModel:ProductViewModel}">
@@ -67,12 +110,7 @@
                         </StackPanel>
                     </DataTemplate>
                 </DockPanel.Resources>
-                <StackPanel DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBox  Text="Denapoli Pizza"/>
-                    <Image  Width="370" 
-                            Height="180"
-                            Source="{Binding Logo, Converter={StaticResource imageConverter}}" />
-                </StackPanel>
+                
                 <StackPanel DockPanel.Dock="Bottom">
                     <telerik:RadButton Height="70" Content="Reglement" Command="{Binding ShowCustomerCommand}"/>
                 </StackPanel>
@@ -161,49 +199,7 @@
                 <DockPanel.Resources>
                     <DataTemplate DataType="{x:Type ViewModel:CommandScreenViewModel}">
                         <DockPanel >
-                            <DockPanel DockPanel.Dock="Top" Background="DodgerBlue">
-                                <Button 
-                                        Width="50" 
-                                        DockPanel.Dock="Left" 
-                                        x:Name="leftButton"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
-                                        BorderThickness="0"
-                                        Command="{Binding ElementName=list1, Path=LeftScrollCommand}" 
-                                       >
-                                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" />
-                                </Button>
-                                <Button 
-                                    DockPanel.Dock="Right" 
-                                    Command="{Binding ElementName=list1, Path=RightScrollCommand}" 
-                                    Background="{Binding ElementName=leftButton, Path=Background}" 
-                                    BorderBrush="{Binding ElementName=leftButton, Path=BorderBrush}" 
-                                    BorderThickness="{Binding ElementName=leftButton, Path=BorderThickness}"
-                                    Width="{Binding ElementName=leftButton, Path=Width}" 
-                                    >
-                                    <Image  Source="{Binding LeftScollImage, Converter={StaticResource imageConverter}}" >
-                                        <Image.LayoutTransform>
-                                            <RotateTransform Angle="180"/>
-                                        </Image.LayoutTransform>
-                                    </Image>
-                                </Button>
-
-                                <Controls:ListViewEx 
-                                    x:Name="list1"
-                                    ItemsSource="{Binding Families}" 
-                                    SelectedItem="{Binding SelectedFamily}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    ItemTemplate="{StaticResource DisplayFamilyImageWithText}"
-                                    >
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                              
-                                </Controls:ListViewEx>
-                            </DockPanel>
+                           
                             <DockPanel x:Name="toto" Background="LightSalmon">
                                 <Button 
                                     x:Name="topButton"

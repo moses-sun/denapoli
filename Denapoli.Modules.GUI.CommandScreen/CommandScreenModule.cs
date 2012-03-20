@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.GUI.CommandScreen.ViewModel;
 using Denapoli.Modules.Infrastructure.Events;
@@ -36,7 +37,11 @@ namespace Denapoli.Modules.GUI.CommandScreen
 
         private void NewCommandEventHandler(object obj)
         {
-            _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(new CommandScreenViewModel(_eventAggregator,_dataProvider, PaymentService));
+            var d1 = DateTime.Now;
+            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService);
+            _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(screen);
+            var d2 = DateTime.Now;
+            Console.WriteLine(d2 - d1);
         }
     }
 }

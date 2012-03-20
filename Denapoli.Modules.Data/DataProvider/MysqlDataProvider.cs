@@ -44,5 +44,36 @@ namespace Denapoli.Modules.Data.DataProvider
             DAO.Commande.InsertOnSubmit(com);
             DAO.SubmitChanges();
         }
+
+        public Client InsertIfNotExists(Client client)
+        {
+            var c = DAO.Client.FirstOrDefault(item =>item.Nom == client.Nom && item.Prenom == client.Prenom);
+            if(c==null)
+            {
+                DAO.Client.InsertOnSubmit(client);
+                DAO.SubmitChanges();
+                c = DAO.Client.FirstOrDefault(item =>item.Nom == client.Nom && item.Prenom == client.Prenom);
+            }
+            c.Email = client.Email;
+            c.Tel = client.Tel;
+            DAO.SubmitChanges();
+            return c;
+        }
+
+        public Adresse InsertIfNotExists(Adresse addr)
+        {
+            DAO.Adresse.InsertOnSubmit(addr);
+            DAO.SubmitChanges();
+            return DAO.Adresse.FirstOrDefault(item => 
+                   item.Num == addr.Num
+                && item.Voie == addr.Voie
+                && item.Ville == addr.Ville
+                && item.Complement == addr.Complement);
+        }
+
+        public Borne GetBorne(int id)
+        {
+            return DAO.Borne.FirstOrDefault(item => item.IDBorn == id);
+        }
     }
 }
