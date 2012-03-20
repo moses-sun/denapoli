@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Timers;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
@@ -29,7 +28,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Products = new ObservableCollection<Produit>();
             OrderedProdects = new ObservableCollection<ProductViewModel>();
             SelectedView = this;
-            CustommerView = new CustomerView();
+            Borne = DataProvider.GetBorne(1);
+            CustommerView = new CustomerView {Address = Borne.Adresse};
             CustommerView.PropertyChanged += CustommerViewHandler;
             PaymentService.PropertyChanged += PaiementViewHandler;
             PaiementView = new PaiementViewModel();
@@ -54,13 +54,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         private void FinalizeOrder()
         {
-
-          
+            var client = DataProvider.InsertIfNotExists(CustommerView.Customer);
             var command = new Commande
                               {
-                                  IDCLien = 2,
-                                  IDBorn = 1,
-                                  IdaDr = 1,
+                                  IDCLien = client.IDCLien,
+                                  IDBorn = Borne.IDBorn,
+                                  IdaDr =  Borne.IdaDr,
                                   Statut = "ATTENTE",
                                   Total = Total,
                               };
@@ -119,6 +118,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 NotifyChanged("IsActive");
             }
         }
+
+        public Borne Borne { get; set; }
 
         public PaiementViewModel PaiementView { get; set; }
 

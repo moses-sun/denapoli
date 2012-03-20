@@ -9,5 +9,8 @@ namespace Denapoli.Modules.Data
         List<Produit> GetFamilyProducts(Famille famille);
         List<Famille> GetMenuComposition(Produit menu);
         void AddCommande(Commande com);
+        Client InsertIfNotExists(Client client);
+        Adresse InsertIfNotExists(Adresse addAdresse);
+        Borne GetBorne(int i);
     }
 }
