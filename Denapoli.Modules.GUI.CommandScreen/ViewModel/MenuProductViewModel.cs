@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Windows;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
-    public class MenuProductViewModel  : NotifyPropertyChanged
+    public class MenuProductViewModel  : NotifyPropertyChanged, ICommandView
     {
         public MenuProductViewModel(Famille famille, IEnumerable<Produit> produits)
         {
@@ -33,5 +34,20 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             }
         }
 
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value;
+                NotifyChanged("Visibility");
+            }
+        }
+        public Visibility Visibility
+        {
+            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
+
+        }
     }
 }

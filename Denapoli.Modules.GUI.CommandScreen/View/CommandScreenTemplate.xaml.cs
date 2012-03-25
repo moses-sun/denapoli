@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows;
-
-namespace Denapoli.Modules.GUI.CommandScreen.View
+﻿namespace Denapoli.Modules.GUI.CommandScreen.View
 {
     /// <summary>
     /// Interaction logic for CommandScreenTemplate.xaml
@@ -12,6 +9,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.View
         {
           InitializeComponent();
         }  
+
+
 
 
     }

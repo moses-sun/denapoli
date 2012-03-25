@@ -1,3 +1,4 @@
+using System.Windows;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
@@ -51,6 +52,22 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 _screenMessage = value;
                 NotifyChanged("ScreenMessage");
             }
+        }
+
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value;
+                NotifyChanged("Visibility");
+            }
+        }
+        public Visibility Visibility
+        {
+            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
+
         }
     }
 }

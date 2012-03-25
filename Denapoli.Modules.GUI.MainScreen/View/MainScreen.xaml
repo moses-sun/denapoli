@@ -3,55 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:MainScreen="clr-namespace:Denapoli.Modules.GUI.MainScreen"
              xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+             xmlns:Regions="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
              mc:Ignorable="d" 
              
             >
-    <UserControl.Resources>
-        <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
-        <DataTemplate DataType="{x:Type MainScreen:WellcomeScreenViewModel}">
-            <DockPanel >
-                <DockPanel.Background>
-                    <ImageBrush  ImageSource="pack://application:,,,/Denapoli;component/Resources/pizza_splash.png" />
-                </DockPanel.Background>
-                <ListBox DockPanel.Dock="Top" 
-                         BorderBrush="Transparent"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         HorizontalAlignment="Right"
-                         ItemsSource="{Binding AvailableLangages}" SelectedItem="{Binding SelectedLangage}">
-                  
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel  Background="Transparent" 
-                                         VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-                                <TextBlock Text="{Binding Name}" Background="Transparent" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-                <Button  FontSize="55" FontFamily="fonts/#Arial Narrow Bold"
-                    Content="Touchez l'écran pour commander" 
-                    Command="{Binding OrderCommand}"
-                    BorderBrush="Transparent" 
-                    Background="Transparent"
-                    BorderThickness="0">
-                    
-                </Button>
-            </DockPanel>
-        </DataTemplate>
-    </UserControl.Resources>
-    <telerik:RadTransitionControl  Content="{Binding SelectedScreen}">
-        <telerik:RadTransitionControl.Transition>
-            <telerik:MotionBlurredZoomTransition />
-        </telerik:RadTransitionControl.Transition>
-    </telerik:RadTransitionControl>
+    <DockPanel x:Name="parent">
+        <ContentControl  
+            Width="{Binding ElementName=parent, Path=ActualWidth}"
+            Visibility="{Binding WellcomeVisibility,Mode=TwoWay}"
+            Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.WellComeRegion}"/>
+        <ContentControl  
+             Visibility="{Binding CommandVisibility,Mode=TwoWay}"
+            Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.CommandRegion}"/>
+    </DockPanel>
 </UserControl>

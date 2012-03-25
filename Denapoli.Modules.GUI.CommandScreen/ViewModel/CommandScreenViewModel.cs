@@ -12,7 +12,7 @@ using Microsoft.Practices.Prism.Events;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
-    public class CommandScreenViewModel : NotifyPropertyChanged, IScreenViewModel, ICommandView
+    public class CommandScreenViewModel : AbstractScreenViewModel, ICommandView
     {
 
         public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService)
@@ -24,23 +24,22 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             IsVisible = true;
             Families = new ObservableCollection<Famille>();
             dataProvider.GetAvailableFamilies().ForEach(item => Families.Add(item));
-            
             Products = new ObservableCollection<Produit>();
             OrderedProdects = new ObservableCollection<ProductViewModel>();
-            SelectedView = this;
             Borne = DataProvider.GetBorne(1);
-            CustommerView = new CustomerView {Address = Borne.Adresse};
-            CustommerView.PropertyChanged += CustommerViewHandler;
+            CustomerView = new CustomerView {Address = Borne.Adresse,IsVisible = false};
+            CustomerView.PropertyChanged += CustommerViewHandler;
             PaymentService.PropertyChanged += PaiementViewHandler;
-            PaiementView = new PaiementViewModel();
-            ShowCustomerCommand = new ActionCommand(() => SelectedView = CustommerView);
+            PaiementView = new PaiementViewModel {IsVisible = false};
+            ShowCustomerCommand = new ActionCommand(() => SelectedView = CustomerView);
             LeftScollImage = "scroll_left.png";
             Logo = "logo.jpg";
+            SelectedView = this;
         }
+
 
         private void PaiementViewHandler(object sender, PropertyChangedEventArgs e)
         {
-            
             PaiementView.ScreenMessage = PaymentService.Message;
             PaiementView.IsSuccesfull = PaymentService.State;
             if(PaiementView.IsSuccesfull)
@@ -54,7 +53,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         private void FinalizeOrder()
         {
-            var client = DataProvider.InsertIfNotExists(CustommerView.Customer);
+            var client = DataProvider.InsertIfNotExists(CustomerView.Customer);
             var command = new Commande
                               {
                                   IDCLien = client.IDCLien,
@@ -78,9 +77,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
                                             
                                         });
-            DataProvider.AddCommande(command);
+           // DataProvider.AddCommande(command);
         }
-
 
         private void CustommerViewHandler(object sender, PropertyChangedEventArgs e)
         {
@@ -103,7 +101,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             set
             {
                 _selectedView = value;
-                 IsActive = value == this;
+                IsActive = value == this;
+                CustomerView.IsVisible = false;
+                PaiementView.IsVisible = false;
+                IsVisible = false;
+                OrderedProdects.ForEach(item=>item.IsVisible=false);
+                value.IsVisible = true;
                 NotifyChanged("SelectedView");
             }
         }
@@ -122,12 +125,23 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         public Borne Borne { get; set; }
 
         public PaiementViewModel PaiementView { get; set; }
-
+        public MenuViewModel MenuViewModel { get; set; }
         public ObservableCollection<ProductViewModel> OrderedProdects { get; set; }
-        public CustomerView CustommerView { get; set; }
+        public CustomerView CustomerView { get; set; }
 
-        public bool IsVisible { get; set; }
         public string ScreenName { get; set; }
+
+        private IView _view;
+        public IView View
+        {
+            get { return _view; }
+            set
+            {
+                _view = value;
+                _view.ViewModel = this;
+            }
+        }
+
         public IEventAggregator EventAggregator { get; set; }
         private IDataProvider DataProvider { get; set; }
         public IPaymentService PaymentService { get; set; }

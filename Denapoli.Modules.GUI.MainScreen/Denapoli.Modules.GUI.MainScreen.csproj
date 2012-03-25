@@ -59,7 +59,10 @@
   <ItemGroup>
     <Compile Include="MainScreenModule.cs" />
     <Compile Include="ViewModel\MainScreenViewModel.cs" />
-    <Compile Include="WellcomeScreenViewModel.cs" />
+    <Compile Include="View\WellcomeScreenView.xaml.cs">
+      <DependentUpon>WellcomeScreenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WellcomeAbstractScreenViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\MainScreen.xaml.cs">
       <DependentUpon>MainScreen.xaml</DependentUpon>
@@ -67,6 +70,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="View\MainScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WellcomeScreenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

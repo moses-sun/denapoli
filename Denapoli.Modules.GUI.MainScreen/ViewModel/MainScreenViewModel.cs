@@ -1,9 +1,8 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Windows;
+using Denapoli.Modules.GUI.MainScreen.View;
 using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
-using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using Microsoft.Practices.Prism.Events;
 
 namespace Denapoli.Modules.GUI.MainScreen.ViewModel
@@ -12,80 +11,96 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
     public class MainScreenViewModel : NotifyPropertyChanged
     {
         private IEventAggregator EventAggregator { get; set; }
-        private WellcomeScreenViewModel _wellcomeScreenViewModel;
+        private WellcomeAbstractScreenViewModel _wellcomeAbstractScreenViewModel;
 
         [ImportingConstructor]
         public MainScreenViewModel(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
-            Screens = new ObservableCollection<IScreenViewModel>();
             EventAggregator.GetEvent<ScreenChangedEvent>().Subscribe(ScreenChangerEventHandler);
             EventAggregator.GetEvent<EndCommandEvent>().Subscribe(EndCommandEventHandler);
+            CommandVisibility = Visibility.Collapsed;
+            WellcomeVisibility = Visibility.Visible;
         }
 
-        private void EndCommandEventHandler(IScreenViewModel screen)
+        private void EndCommandEventHandler(AbstractScreenViewModel screen)
         {
-            if (Screens.Contains(screen))
-            {
-                Screens.Remove(screen);
-                screen.PropertyChanged -= ScreenSelected;
-            }
-            SelectedScreen = WellcomeScreenViewModel;
             screen.IsVisible = false;
-            Screens.ForEach(s => s.IsVisible = false);
+            SelectedScreen = WellcomeAbstractScreenViewModel;
         }
 
-        private void ScreenChangerEventHandler(IScreenViewModel screen)
+        private void ScreenChangerEventHandler(AbstractScreenViewModel screen)
         {
-            if (!Screens.Contains(screen))
-            {
-                Screens.Add(screen);
-                screen.PropertyChanged += ScreenSelected;
-            }
+            SelectedScreen.IsVisible = false;
             SelectedScreen = screen;
-            screen.IsVisible = true;
-            Screens.ForEach(s => s.IsVisible = false);
-        }
-
-        private void ScreenSelected(object sender, PropertyChangedEventArgs e)
-        {
-            var screen = sender as IScreenViewModel;
-            if (e.PropertyName != "IsVisible") return;
-            if (screen.IsVisible)
-            {
-                SelectedScreen = screen;
-                Screens.ForEach(s => { if (s != screen) s.IsVisible = false; });
-            }
-            else SelectedScreen.IsVisible = true;
         }
 
         [Import]
-        private WellcomeScreenViewModel WellcomeScreenViewModel
+        private WellcomeAbstractScreenViewModel WellcomeAbstractScreenViewModel
         {
-            get { return _wellcomeScreenViewModel; }
+            get { return _wellcomeAbstractScreenViewModel; }
             set
             {
-                _wellcomeScreenViewModel = value;
-                 SelectedScreen = WellcomeScreenViewModel;
+                _wellcomeAbstractScreenViewModel = value;
+                SelectedScreen = value;
             }
         }
 
-        private IScreenViewModel _selectedScreen;
-        public IScreenViewModel SelectedScreen
+
+        private Visibility _commandVisibility;
+        public Visibility CommandVisibility
+        {
+            get { return _commandVisibility; }
+            set
+            {
+                _commandVisibility = value;
+                NotifyChanged("CommandVisibility");
+            }
+        }
+
+        private Visibility _wellcomeVisibility;
+        public Visibility WellcomeVisibility
+        {
+            get { return _wellcomeVisibility; }
+            set
+            {
+                _wellcomeVisibility = value;
+                NotifyChanged("WellcomeVisibility");
+            }
+        }
+
+        private WellcomeScreenView _view;
+        [Import]
+        public WellcomeScreenView View
+        {
+            set
+            {
+                _view = value;
+                WellcomeAbstractScreenViewModel.View = value;
+            }
+            get { return _view; }
+        }
+
+        private AbstractScreenViewModel _selectedScreen;
+        public AbstractScreenViewModel SelectedScreen
         {
             get { return _selectedScreen; }
             set
             {
                 _selectedScreen = value;
                 NotifyChanged("SelectedScreen");
-
-                EventAggregator.GetEvent<ScreenChangedEvent>().Unsubscribe(ScreenChangerEventHandler);
-                EventAggregator.GetEvent<ScreenChangedEvent>().Publish(value);
-                EventAggregator.GetEvent<ScreenChangedEvent>().Subscribe(ScreenChangerEventHandler);
-
+                _selectedScreen.IsVisible = true;
+              if (_selectedScreen == WellcomeAbstractScreenViewModel)
+                {
+                    WellcomeVisibility = Visibility.Visible;
+                    CommandVisibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    WellcomeVisibility = Visibility.Collapsed;
+                    CommandVisibility = Visibility.Visible;
+                }
             }
         }
-
-        public ObservableCollection<IScreenViewModel> Screens { get; private set; }
     }
 }
