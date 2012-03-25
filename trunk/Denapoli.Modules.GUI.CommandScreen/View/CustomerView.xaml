@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Denapoli.Modules.GUI.CommandScreen.View.CustomerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             >
+    <UserControl.Resources>
+    </UserControl.Resources>
+    <DockPanel x:Name="customerPanel" DataContext="{Binding SelectedView, Mode=TwoWay}">
+        <TextBlock DockPanel.Dock="Top" 
+                                       Background="DodgerBlue"
+                                       FontSize="25" FontFamily="fonts/#Arial Narrow Bold"
+                                       TextAlignment="Center"
+                                       Text="Client et adresse de livraison"/>
+        <StackPanel Background="LawnGreen" VerticalAlignment="Center" Width="{Binding ElementName=customerPanel, Path=ActualWidth}" HorizontalAlignment="Center">
+            <StackPanel.Resources>
+                <Style x:Key="textStyle" >
+                    <Setter Property="Control.FontSize" Value="20" />
+                    <Setter Property="Control.FontFamily" Value="fonts/#Arial Narrow Bold" />
+                    <Setter Property="Control.Margin" Value="5 5 5 5" />
+                </Style>
+            </StackPanel.Resources>
+            <GroupBox Header="Cooredonnées client"  Margin="20 20 20 20"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Nom" Style="{StaticResource textStyle}" x:Name="text"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Customer.Nom, Mode=TwoWay}" Style="{StaticResource textStyle}"  Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Prenom"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Customer.Prenom, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Tel"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Customer.Tel, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="E-mail"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Customer.Email, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Adresse de livraison"  Margin="20 20 20 20"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold" >
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="N°" Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.Num, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Voie"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Address.Voie, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Complement"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Address.Complement, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Code postal"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Address.CP, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Ville"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Address.Ville, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                </Grid>
+            </GroupBox>
+
+            <Grid   Margin="20 20 20 20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <telerik:RadButton Grid.Column="0"  Content="Valider" Command="{Binding PaiementCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
+                <telerik:RadButton Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
+            </Grid>
+
+        </StackPanel>
+    </DockPanel>
+</UserControl>

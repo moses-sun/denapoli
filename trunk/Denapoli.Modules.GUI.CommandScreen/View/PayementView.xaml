@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="Denapoli.Modules.GUI.CommandScreen.View.PayementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+  </UserControl.Resources>
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding SelectedView, Mode=TwoWay}">
+        <TextBlock Text="Paiement de :"/>
+        <TextBlock Text="{Binding TotalPrice}"/>
+        <TextBlock Text="{Binding ScreenMessage}"/>
+    </StackPanel>
+</UserControl>

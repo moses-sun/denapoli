@@ -3,14 +3,13 @@ namespace Denapoli.Modules.Infrastructure.Behavior
     public static class RegionNames
     {
         public const string MainRegion = "MainRegion";
+        public const string CommandRegion = "CommandRegion";
+        public const string WellComeRegion = "WellComeRegion";
+        public const string CommandSubRegion = "CommandSubRegion";
+        public const string ProductsRegion = "CommandSubRegion";
         public const string MenuRegion = "MenuRegion";
-        public const string ProjectToolBar = "ProjectToolBar";
-        public const string SettingsMenu = "SettingsMenu";
-        public const string EditionToolBar = "EditionToolBar";
-        public const string FooterRegion = "FooterRegion";
-        public const string EditionMenu = "EditionMenu";
-        public const string ToolbarRegion = "ToolbarRegion";
-        public const string ProjectMenu = "ProjectMenu";
-        public const string EtudeMenu = "EtudeMenu";
+        public const string CustomerRegion = "CustomerRegion";
+        public const string PaiementRegion = "PaiementRegion";
+
     }
 }

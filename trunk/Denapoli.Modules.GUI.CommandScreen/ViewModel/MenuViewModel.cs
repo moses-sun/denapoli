@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
@@ -71,6 +72,22 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         public ICommand RemoveUnitCommand { get; protected set; }
 
         public bool IsMenu { get; set; }
+
+        private bool _isVisible;
+        public bool IsVisible
+        {
+            get { return _isVisible; }
+            set
+            {
+                _isVisible = value;
+                NotifyChanged("Visibility");
+            }
+        }
+        public Visibility Visibility
+        {
+            get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
+
+        }
 
     }
 

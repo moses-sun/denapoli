@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using Denapoli.Modules.Data;
+using Denapoli.Modules.GUI.CommandScreen.View;
 using Denapoli.Modules.GUI.CommandScreen.ViewModel;
 using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
@@ -30,6 +31,19 @@ namespace Denapoli.Modules.GUI.CommandScreen
             _dataProvider = dataProvider;
         }
 
+        private CommandScreenView _view;
+
+        [Import]
+        private CommandScreenView View
+        {
+            get { return _view; }
+            set
+            {
+                _view = value;
+                new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService) {View = value, IsVisible = false};
+            }
+        }
+
         public void Initialize()
         {
             _eventAggregator.GetEvent<NewCommandEvent>().Subscribe(NewCommandEventHandler);
@@ -38,7 +52,7 @@ namespace Denapoli.Modules.GUI.CommandScreen
         private void NewCommandEventHandler(object obj)
         {
             var d1 = DateTime.Now;
-            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService);
+            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService) {View = View};
             _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(screen);
             var d2 = DateTime.Now;
             Console.WriteLine(d2 - d1);
