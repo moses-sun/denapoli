@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
@@ -34,6 +35,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
     public class ProductViewModel : NotifyPropertyChanged, ICommandView
     {
+        public ILocalizationService LocalizationService { get; set; }
+
         public  ProductViewModel(Produit prod)
         {
             Produit = prod;

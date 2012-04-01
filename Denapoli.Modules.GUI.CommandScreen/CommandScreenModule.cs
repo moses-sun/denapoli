@@ -19,14 +19,16 @@ namespace Denapoli.Modules.GUI.CommandScreen
     {
         private ILoggerFacade Logger { get; set; }
         public IPaymentService PaymentService { get; set; }
+        public ILocalizationService LocalizationService { get; set; }
         private readonly IEventAggregator _eventAggregator;
         private readonly IDataProvider _dataProvider;
 
         [ImportingConstructor]
-        public CommandScreenModule(IEventAggregator eventAggregator, IDataProvider dataProvider, ILoggerFacade logger, IPaymentService paymentService)
+        public CommandScreenModule(IEventAggregator eventAggregator, IDataProvider dataProvider, ILoggerFacade logger, IPaymentService paymentService, ILocalizationService localizationService)
         {
             Logger = logger;
             PaymentService = paymentService;
+            LocalizationService = localizationService;
             _eventAggregator = eventAggregator;
             _dataProvider = dataProvider;
         }
@@ -40,7 +42,7 @@ namespace Denapoli.Modules.GUI.CommandScreen
             set
             {
                 _view = value;
-                new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService) {View = value, IsVisible = false};
+                new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService) {View = value, IsVisible = false};
             }
         }
 
@@ -52,7 +54,7 @@ namespace Denapoli.Modules.GUI.CommandScreen
         private void NewCommandEventHandler(object obj)
         {
             var d1 = DateTime.Now;
-            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService) {View = View};
+            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService,LocalizationService) {View = View};
             _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(screen);
             var d2 = DateTime.Now;
             Console.WriteLine(d2 - d1);

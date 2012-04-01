@@ -6,6 +6,7 @@
              >
     <UserControl.Resources>
         <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
+        <Behavior:LocalizationConverter x:Key="localizationConverter"/>
         <Style x:Key="ShadowStyle">
             <Setter Property="Control.Foreground" Value="LightGray" />
         </Style>
@@ -51,27 +52,45 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="ListItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        
+                            <ContentPresenter />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <DockPanel >
         <DockPanel.Background>
             <ImageBrush  ImageSource="pack://application:,,,/Denapoli;component/Resources/pizza_splash.png" />
         </DockPanel.Background>
         <ListBox DockPanel.Dock="Top" 
-                         BorderBrush="Transparent"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         HorizontalAlignment="Right"
-                         ItemsSource="{Binding AvailableLangages}" SelectedItem="{Binding SelectedLangage}">
-
+                 BorderBrush="Transparent"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 HorizontalAlignment="Right"
+                 ItemContainerStyle="{StaticResource ListItemStyle}"
+                 ItemsSource="{Binding AvailableLangages}" SelectedItem="{Binding SelectedLangage, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel  Background="Transparent" 
-                                         VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-                        <TextBlock Text="{Binding Name}" Background="Transparent" />
-                    </StackPanel>
+                    <DockPanel  Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}" Background="Transparent" TextAlignment="Center"/>
+                        <Image  Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
+                    </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+           
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"/>
@@ -79,7 +98,7 @@
             </ListBox.ItemsPanel>
         </ListBox>
         <Button 
-                    Content="Touchez l'écran pour commander" 
+                    Content="{Binding LocalizationService.Dico.TouchezLecranPourCommander,Converter={StaticResource localizationConverter}}" 
                     Command="{Binding OrderCommand}"
                   
                  Style="{StaticResource InformButton}">

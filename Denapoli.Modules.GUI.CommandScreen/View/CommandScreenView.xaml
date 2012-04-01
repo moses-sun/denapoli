@@ -9,6 +9,7 @@
     <DockPanel>
         <DockPanel.Resources>
             <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
+            <Behavior:LocalizationConverter x:Key="localizationConverter" />
             <Behavior:VisibilityConverter x:Key="visibilityConverter" />
             <DataTemplate  x:Key="DisplayFamilyImageWithText">
                 <Border BorderBrush="Black" BorderThickness="4"
@@ -16,12 +17,10 @@
                                                       >
                     <StackPanel >
                         <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-                        <TextBlock Text="{Binding Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                        <TextBlock Text="{Binding Nom, Converter={StaticResource localizationConverter}}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                     </StackPanel>
                 </Border>
             </DataTemplate>
-           
-
         </DockPanel.Resources>
         <DockPanel DockPanel.Dock="Top" Background="DodgerBlue" Visibility="{Binding IsActive, Converter={StaticResource visibilityConverter}}">
             <Button 
@@ -85,7 +84,9 @@
             </DockPanel.Resources>
 
             <StackPanel DockPanel.Dock="Bottom">
-                <telerik:RadButton Height="70" Content="Reglement" Command="{Binding ShowCustomerCommand}"/>
+                <telerik:RadButton Height="70" Content="{Binding LocalizationService.Dico.Valider, Converter={StaticResource localizationConverter}}"
+                                   Command="{Binding ShowCustomerCommand}"
+                                   FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
             </StackPanel>
             <DockPanel  >
                 <telerik:RadGridView  Width="380" 
@@ -107,7 +108,7 @@
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      >
                     <telerik:RadGridView.Columns>
-                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding }" Header="#" TextAlignment="Center" >
+                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding }" Header="{Binding LocalizationService.Dico.Quantite, Converter={StaticResource localizationConverter}}" TextAlignment="Center" >
                             <telerik:GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -135,19 +136,23 @@
                             </telerik:GridViewColumn.CellTemplate>
                         </telerik:GridViewDataColumn>
                         <telerik:GridViewDataColumn Width="180" 
-                                DataMemberBinding="{Binding}" Header="Produit" 
+                                DataMemberBinding="{Binding}" Header="{Binding LocalizationService.Dico.Produits, Converter={StaticResource localizationConverter}}" 
                                 CellTemplate="{StaticResource MenusTemplate}"
                                 TextAlignment="Left"
                                >
                             <telerik:GridViewDataColumn.Footer>
-                                <TextBlock Text="Total :" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
+                                <TextBlock Text="{Binding LocalizationService.Dico.Total, Converter={StaticResource localizationConverter}}" TextAlignment="Right" 
+                                           FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
                             </telerik:GridViewDataColumn.Footer>
                         </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" Header="Prix"  DataFormatString="{}{0:c}" >
+                        <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" 
+                                                     Header="{Binding LocalizationService.Dico.Prix, Converter={StaticResource localizationConverter}}"  
+                                                     DataFormatString="{}{0:c}" 
+                                                     >
                             <telerik:GridViewDataColumn.Footer>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding ElementName=left_panel, Path=DataContext.Total}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
-                                    <TextBlock  Text="  €"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
+                                    <TextBlock Text="{Binding ElementName=left_panel,Path=DataContext.Total}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"/>
+                                    <TextBlock  Text="  €"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
                                 </StackPanel>
                             </telerik:GridViewDataColumn.Footer>
                         </telerik:GridViewDataColumn>
@@ -173,7 +178,7 @@
          
             
             <ContentControl 
-                Visibility="{Binding CustomerView.Visibility}"
+                Visibility="{Binding CustomerViewModel.Visibility}"
                 Width="{Binding ElementName=sub, Path=ActualWidth}"
                 Height="{Binding ElementName=sub, Path=ActualHeight}"
                 Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.CustomerRegion}"/>

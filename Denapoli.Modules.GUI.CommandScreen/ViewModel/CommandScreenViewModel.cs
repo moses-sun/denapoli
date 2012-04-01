@@ -15,11 +15,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
     public class CommandScreenViewModel : AbstractScreenViewModel, ICommandView
     {
 
-        public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService)
+        public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService, ILocalizationService localizationService)
         {
             EventAggregator = eventAggregator;
             DataProvider = dataProvider;
             PaymentService = paymentService;
+            LocalizationService = localizationService;
             ScreenName = "Commande";
             IsVisible = true;
             Families = new ObservableCollection<Famille>();
@@ -27,11 +28,11 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Products = new ObservableCollection<Produit>();
             OrderedProdects = new ObservableCollection<ProductViewModel>();
             Borne = DataProvider.GetBorne(1);
-            CustomerView = new CustomerView {Address = Borne.Adresse,IsVisible = false};
-            CustomerView.PropertyChanged += CustommerViewHandler;
+            CustomerViewModel = new CustomerViewModel {Address = Borne.Adresse,IsVisible = false, LocalizationService = localizationService};
+            CustomerViewModel.PropertyChanged += CustommerViewHandler;
             PaymentService.PropertyChanged += PaiementViewHandler;
-            PaiementView = new PaiementViewModel {IsVisible = false};
-            ShowCustomerCommand = new ActionCommand(() => SelectedView = CustomerView);
+            PaiementView = new PaiementViewModel {IsVisible = false, LocalizationService = localizationService};
+            ShowCustomerCommand = new ActionCommand(() => SelectedView = CustomerViewModel);
             LeftScollImage = "scroll_left.png";
             Logo = "logo.jpg";
             SelectedView = this;
@@ -53,7 +54,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         private void FinalizeOrder()
         {
-            var client = DataProvider.InsertIfNotExists(CustomerView.Customer);
+            var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
             var command = new Commande
                               {
                                   IDCLien = client.IDCLien,
@@ -102,7 +103,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             {
                 _selectedView = value;
                 IsActive = value == this;
-                CustomerView.IsVisible = false;
+                CustomerViewModel.IsVisible = false;
                 PaiementView.IsVisible = false;
                 IsVisible = false;
                 OrderedProdects.ForEach(item=>item.IsVisible=false);
@@ -127,7 +128,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         public PaiementViewModel PaiementView { get; set; }
         public MenuViewModel MenuViewModel { get; set; }
         public ObservableCollection<ProductViewModel> OrderedProdects { get; set; }
-        public CustomerView CustomerView { get; set; }
+        public CustomerViewModel CustomerViewModel { get; set; }
 
         public string ScreenName { get; set; }
 
@@ -145,6 +146,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         public IEventAggregator EventAggregator { get; set; }
         private IDataProvider DataProvider { get; set; }
         public IPaymentService PaymentService { get; set; }
+        public ILocalizationService LocalizationService { get; set; }
         public ObservableCollection<Famille> Families { get; set; }
         public ObservableCollection<Produit> Products { get; set; }
 
@@ -216,7 +218,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             
             if(produit.IsMenu)
             {
-                var menuVm = new MenuViewModel(produit, DataProvider.GetMenuComposition(produit)){Quantite = 1};
+                var menuVm = new MenuViewModel(produit, DataProvider.GetMenuComposition(produit)){Quantite = 1, LocalizationService = LocalizationService};
                 menuVm.PropertyChanged += OnMenuViewAction;
                 menuVm.PropertyChanged += UpdateTotal;
                 menuVm.PropertyChanged += DeleteHandler;

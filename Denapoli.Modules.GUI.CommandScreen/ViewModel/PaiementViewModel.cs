@@ -1,4 +1,5 @@
 using System.Windows;
+using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
@@ -20,6 +21,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 NotifyChanged("TotalPrice");
             }
         }
+
+        public ILocalizationService LocalizationService { get; set; }
 
         private bool _isBusy;
         public bool IsBusy

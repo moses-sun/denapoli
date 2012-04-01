@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             >
+             xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure">
     <UserControl.Resources>
+        <Behavior:LocalizationConverter x:Key="localizationConverter" />
     </UserControl.Resources>
     <DockPanel x:Name="customerPanel" DataContext="{Binding SelectedView, Mode=TwoWay}">
         <TextBlock DockPanel.Dock="Top" 
                                        Background="DodgerBlue"
                                        FontSize="25" FontFamily="fonts/#Arial Narrow Bold"
                                        TextAlignment="Center"
-                                       Text="Client et adresse de livraison"/>
+                                       Text="{Binding LocalizationService.Dico.ClientEtAdresseDeLivraison, Converter={StaticResource localizationConverter}}"/>
         <StackPanel Background="LawnGreen" VerticalAlignment="Center" Width="{Binding ElementName=customerPanel, Path=ActualWidth}" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style x:Key="textStyle" >
@@ -20,7 +21,8 @@
                     <Setter Property="Control.Margin" Value="5 5 5 5" />
                 </Style>
             </StackPanel.Resources>
-            <GroupBox Header="Cooredonnées client"  Margin="20 20 20 20"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold" >
+            <GroupBox Header="{Binding LocalizationService.Dico.CoordoneesClient, Converter={StaticResource localizationConverter}}"
+                      Margin="20 20 20 20"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -32,19 +34,29 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Nom" Style="{StaticResource textStyle}" x:Name="text"/>
+                    <TextBlock Grid.Column="0" Grid.Row="0" 
+                               Text="{Binding LocalizationService.Dico.Nom, Converter={StaticResource localizationConverter}}" 
+                               Style="{StaticResource textStyle}" x:Name="text"/>
                     <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Customer.Nom, Mode=TwoWay}" Style="{StaticResource textStyle}"  Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Prenom"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" 
+                               Text="{Binding LocalizationService.Dico.Prenom, Converter={StaticResource localizationConverter}}"  
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Customer.Prenom, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Tel"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" 
+                               Text="{Binding LocalizationService.Dico.Tel, Converter={StaticResource localizationConverter}}" 
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Customer.Tel, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="E-mail"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" 
+                               Text="{Binding LocalizationService.Dico.Email, Converter={StaticResource localizationConverter}}"  
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Customer.Email, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                 </Grid>
             </GroupBox>
-            <GroupBox Header="Adresse de livraison"  Margin="20 20 20 20"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold" >
+            <GroupBox Header="{Binding LocalizationService.Dico.AdresseDeLivraison, Converter={StaticResource localizationConverter}}"
+                      Margin="20 20 20 20"  FontSize="25" FontFamily="fonts/#Arial Narrow Bold" >
                 <Grid >
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -55,15 +67,30 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="N°" Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
+                    <TextBlock 
+                        Text="{Binding LocalizationService.Dico.NumChambre, Converter={StaticResource localizationConverter}}" 
+                        Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.RoomNum, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+
+                    <TextBlock 
+                        Text="{Binding LocalizationService.Dico.Num, Converter={StaticResource localizationConverter}}" 
+                        Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.Num, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Voie"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" 
+                               Text="{Binding LocalizationService.Dico.Voie, Converter={StaticResource localizationConverter}}" 
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Address.Voie, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Complement"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" 
+                               Text="{Binding LocalizationService.Dico.ComplementAdresse, Converter={StaticResource localizationConverter}}" 
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Address.Complement, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Code postal"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" 
+                               Text="{Binding LocalizationService.Dico.CodePostal, Converter={StaticResource localizationConverter}}"  
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Address.CP, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Ville"  Style="{StaticResource textStyle}"/>
+                    <TextBlock Grid.Column="0" Grid.Row="4"
+                               Text="{Binding LocalizationService.Dico.Ville, Converter={StaticResource localizationConverter}}" 
+                               Style="{StaticResource textStyle}"/>
                     <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Address.Ville, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                 </Grid>
             </GroupBox>
@@ -73,8 +100,12 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <telerik:RadButton Grid.Column="0"  Content="Valider" Command="{Binding PaiementCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
-                <telerik:RadButton Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
+                <telerik:RadButton Grid.Column="0"  
+                                   Content="{Binding LocalizationService.Dico.Valider, Converter={StaticResource localizationConverter}}" 
+                                   Command="{Binding PaiementCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
+                <telerik:RadButton Grid.Column="1" 
+                                   Content="{Binding LocalizationService.Dico.Annuler, Converter={StaticResource localizationConverter}}" 
+                                   Command="{Binding CancelCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
             </Grid>
 
         </StackPanel>

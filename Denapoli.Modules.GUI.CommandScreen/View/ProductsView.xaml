@@ -6,16 +6,17 @@
              Visibility="{Binding Visibility}">
   <UserControl.Resources>
         <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
+        <Behavior:LocalizationConverter x:Key="localizationConverter" />
         <DataTemplate  x:Key="DisplayProduct">
             <Border BorderBrush="Black" BorderThickness="4"   CornerRadius="5" Margin="6" >
                 <StackPanel >
                     <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Nom, Converter={StaticResource localizationConverter}}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                         <TextBlock DockPanel.Dock="Right" Text=" €" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                         <TextBlock DockPanel.Dock="Right" Text="{Binding Prix}" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                     </DockPanel>
-                    <TextBlock Text="{Binding Description}"/>
+                    <TextBlock Text="{Binding Description, Converter={StaticResource localizationConverter}}"/>
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -55,6 +56,8 @@
                                     x:Name="list2"
                                     ItemsSource="{Binding Products}" 
                                     SelectedItem="{Binding SelectedProduct}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                     Behavior:WidthBehavior.HeightEx="{Binding  ElementName=toto, Path=ActualHeight}"
                                     Background="DarkOrchid"
                                     ItemTemplate="{StaticResource DisplayProduct}"

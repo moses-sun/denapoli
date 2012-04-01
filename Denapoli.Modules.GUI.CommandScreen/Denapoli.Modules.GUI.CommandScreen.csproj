@@ -75,7 +75,7 @@
     <Compile Include="CommandScreenModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CommandScreenViewModel.cs" />
-    <Compile Include="ViewModel\CustomerView.cs" />
+    <Compile Include="ViewModel\CustomerViewModel.cs" />
     <Compile Include="ViewModel\ICommandView.cs" />
     <Compile Include="ViewModel\MenuProductViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
