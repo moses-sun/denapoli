@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using Denapoli.Modules.Data.Entities;
+using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
@@ -20,6 +21,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             produits.ForEach(item => Produits.Add(item));
 
         }
+
+        public ILocalizationService LocalizationService { get; set; }
         public Famille Family { get; set; }
         public List<Produit> Produits { get; set; }
 

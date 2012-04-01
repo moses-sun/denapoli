@@ -1,0 +1,6 @@
+FR=Fraiçais
+TouchezLecranPourCommander=Touchez l'écran pour commancer votre commande
+Produits=Produits
+Produit=Produit
+Prix=Prix
+Quantite=Quantité 

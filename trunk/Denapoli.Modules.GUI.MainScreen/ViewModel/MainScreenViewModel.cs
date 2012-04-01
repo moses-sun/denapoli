@@ -2,6 +2,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using Denapoli.Modules.GUI.MainScreen.View;
 using Denapoli.Modules.Infrastructure.Events;
+using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.Prism.Events;
 
@@ -11,12 +12,14 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
     public class MainScreenViewModel : NotifyPropertyChanged
     {
         private IEventAggregator EventAggregator { get; set; }
+        public ILocalizationService LocalizationService { get; set; }
         private WellcomeAbstractScreenViewModel _wellcomeAbstractScreenViewModel;
 
         [ImportingConstructor]
-        public MainScreenViewModel(IEventAggregator eventAggregator)
+        public MainScreenViewModel(IEventAggregator eventAggregator, ILocalizationService localizationService)
         {
             EventAggregator = eventAggregator;
+            LocalizationService = localizationService;
             EventAggregator.GetEvent<ScreenChangedEvent>().Subscribe(ScreenChangerEventHandler);
             EventAggregator.GetEvent<EndCommandEvent>().Subscribe(EndCommandEventHandler);
             CommandVisibility = Visibility.Collapsed;

@@ -52,6 +52,7 @@
     <Compile Include="Behavior\AutoPopulateExportedViewsBehavior.cs" />
     <Compile Include="Behavior\ImageUriSourceConverter.cs" />
     <Compile Include="Behavior\IViewRegionRegistration.cs" />
+    <Compile Include="Behavior\LocalizationConverter.cs" />
     <Compile Include="Behavior\VisibilityConverter.cs" />
     <Compile Include="Controls\AttachedVirtualKeyboardBehavior.cs" />
     <Compile Include="Controls\ListViewEx.cs" />

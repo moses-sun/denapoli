@@ -6,6 +6,7 @@
              >
     <UserControl.Resources>
         <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
+        <Behavior:LocalizationConverter x:Key="localizationConverter" />
         <DataTemplate  x:Key="DisplayProduct">
             <Border BorderBrush="Black" BorderThickness="4"
                                                 CornerRadius="5" Margin="6"
@@ -13,7 +14,7 @@
                 <StackPanel >
                     <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                        <TextBlock DockPanel.Dock="Left" Text="{Binding Nom, Converter={StaticResource localizationConverter}}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                         <TextBlock DockPanel.Dock="Right" Text=" €" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                         <TextBlock DockPanel.Dock="Right" Text="{Binding Prix}" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                     </DockPanel>
@@ -35,7 +36,7 @@
     </UserControl.Resources>
     <DockPanel x:Name="menuPanel" Background="DeepSkyBlue"  Margin="20 20 20 20" DataContext="{Binding SelectedView, Mode=TwoWay}">
         <TextBlock DockPanel.Dock="Top" 
-                                       Text="Composez votre menu" 
+                                       Text="{Binding LocalizationService.Dico.ComposezVotreMenu, Converter={StaticResource localizationConverter}}"  
                                        TextAlignment="Center"  
                                        FontSize="35" FontFamily="fonts/#Arial Narrow Bold" />
         <Grid DockPanel.Dock="Bottom" Margin="20 20 20 20">
@@ -43,8 +44,12 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <telerik:RadButton Grid.Column="0" Content="Valider" Command="{Binding ValidateCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
-            <telerik:RadButton  Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
+            <telerik:RadButton Grid.Column="0" 
+                               Content="{Binding LocalizationService.Dico.Valider, Converter={StaticResource localizationConverter}}" 
+                               Command="{Binding ValidateCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
+            <telerik:RadButton  Grid.Column="1" 
+                                Content="{Binding LocalizationService.Dico.Annuler, Converter={StaticResource localizationConverter}}" 
+                                Command="{Binding CancelCommand}" FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
         </Grid>
         <ListBox Background="DeepSkyBlue" ItemsSource="{Binding MenuProducts}" Margin="20 10 10 20">
             <ListBox.ItemTemplate>

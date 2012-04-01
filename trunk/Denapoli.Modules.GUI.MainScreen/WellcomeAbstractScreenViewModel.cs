@@ -14,7 +14,7 @@ namespace Denapoli.Modules.GUI.MainScreen
     {
 
         private IEventAggregator EventAggregator { get; set; }
-        private ILocalizationService LocalizationService { get; set; }
+        public ILocalizationService LocalizationService { get; set; }
 
         [ImportingConstructor]
         public WellcomeAbstractScreenViewModel(IEventAggregator eventAggregator, ILocalizationService localizationService)
