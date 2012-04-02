@@ -99,13 +99,18 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <telerik:RadButton Grid.Column="0"  
+                <telerik:RadButton Grid.Column="0" 
+                                   Content="{Binding LocalizationService.Dico.Retour, Converter={StaticResource localizationConverter}}" 
+                                   Command="{Binding BackCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
+                <telerik:RadButton Grid.Column="1"  
                                    Content="{Binding LocalizationService.Dico.Valider, Converter={StaticResource localizationConverter}}" 
                                    Command="{Binding PaiementCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
-                <telerik:RadButton Grid.Column="1" 
+                <telerik:RadButton Grid.Column="2" 
                                    Content="{Binding LocalizationService.Dico.Annuler, Converter={StaticResource localizationConverter}}" 
                                    Command="{Binding CancelCommand}" Margin="20 0 0 20"   Style="{StaticResource textStyle}" />
+               
             </Grid>
 
         </StackPanel>
