@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Timers;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
@@ -32,7 +34,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             CustomerViewModel.PropertyChanged += CustommerViewHandler;
             PaymentService.PropertyChanged += PaiementViewHandler;
             PaiementView = new PaiementViewModel {IsVisible = false, LocalizationService = localizationService};
-            ShowCustomerCommand = new ActionCommand(() => SelectedView = CustomerViewModel);
+            ShowCustomerCommand = new ActionCommand(() =>
+                                                        {
+                                                            if(OrderedProdects.Count > 0)
+                                                                SelectedView = CustomerViewModel;
+                                                        });
+            CancelCommand = new ActionCommand(() => EventAggregator.GetEvent<EndCommandEvent>().Publish(this));
             LeftScollImage = "scroll_left.png";
             Logo = "logo.jpg";
             SelectedView = this;
@@ -91,6 +98,10 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                     PaymentService.Pay(Total);
                     break;
                 case "Cancel" :
+                    CancelCommand.Execute(null);
+                    break;
+                case "Back":
+                    SelectedView = this;
                     break;
             }
         }
@@ -158,7 +169,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             {
                 _selectedFamily = value;
                 NotifyChanged("SelectedFamily");
-                UpdateProductsList();
+                if (_selectedFamily != null)
+                    UpdateProductsList();
             }
         }
 
@@ -172,8 +184,13 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 NotifyChanged("SelectedProduct");
                 if (value != null)
                     AddProductToCommand(_selectedProduct);
-              
-                    
+                SelectedFamily = null;
+                if (value == null) return;
+                var timer = new Timer();
+                timer.Elapsed += (sender, args) => { SelectedProduct = null;timer.Stop(); }; 
+                timer.Interval = (100);             
+                timer.Enabled = true;                       
+                timer.Start();   
             }
         }
 
@@ -191,6 +208,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         }
 
         public ICommand ShowCustomerCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
 
         private ProductViewModel _selectedOrder;
         public ProductViewModel SelectedOrder
@@ -287,14 +305,6 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void UpdateProductsList()
        {
            Products.Clear();
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
            DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
        }
     }

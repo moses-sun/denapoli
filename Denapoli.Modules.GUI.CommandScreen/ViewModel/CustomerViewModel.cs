@@ -15,6 +15,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Address = new Adresse();
             PaiementCommand = new ActionCommand(()=>NotifyChanged("Validate"));
             CancelCommand = new ActionCommand(() => NotifyChanged("Cancel"));
+            BackCommand = new ActionCommand(() => NotifyChanged("Back"));
         }
 
         public ILocalizationService LocalizationService { get; set; }
@@ -25,6 +26,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         public ICommand PaiementCommand { get; set; }
 
         public ICommand CancelCommand { get; private set; }
+        public ICommand BackCommand { get; private set; }
 
         private bool _isVisible;
         public bool IsVisible
