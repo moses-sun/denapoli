@@ -13,11 +13,11 @@ namespace Denapoli.Modules.Data.DataProvider
     {
         public MysqlDataProvider()
         {
-            Console.WriteLine("connecting ...");
+            Console.WriteLine("=============================connecting ...");
             var connStr = String.Format("server={0};user id={1}; password={2}; database={3}", "localhost", "root", "", "denapoli");
             DAO = new DenapoliDTO(new MySqlConnection(connStr));
             GetAvailableFamilies().Count();
-            Console.WriteLine("connected");
+            Console.WriteLine("=============================connected");
         }
 
         private DenapoliDTO DAO { get; set; }
@@ -36,6 +36,20 @@ namespace Denapoli.Modules.Data.DataProvider
         {
             var list = new List<Famille>();
             menu.ProduitComposition.Select(item => item.Famille).ForEach(list.Add);
+            return list;
+        }
+
+        public List<Commande> GetMenuAllCommandes()
+        {
+            var list = new List<Commande>();
+            DAO.Commande.ForEach(list.Add);
+            return list;
+        }
+
+        public List<Commande> GetMenuTodayCommandes()
+        {
+            var list = new List<Commande>();
+            DAO.Commande.ForEach(list.Add);
             return list;
         }
 

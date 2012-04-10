@@ -1,0 +1,21 @@
+﻿<Window x:Class="DenapoliAdmin.AdminShell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+        xmlns:Regions="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
+        Title="Di Napoli pizza (Admin)"
+        WindowState="Maximized"
+       
+        >
+    <!--  
+     WindowStyle="None"
+    Height="350" Width="525" -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <ContentControl  Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.MainRegion}"/>
+</Window>
