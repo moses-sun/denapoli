@@ -1,28 +1,25 @@
 ﻿using System.ComponentModel.Composition;
 
-namespace Denapoli
+namespace DenapoliAdmin
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
     [Export]
-    public partial class Shell
+    public partial class AdminShell
     {
-        public Shell()
+        public AdminShell()
         {
             InitializeComponent();
         }
 
-        private ShellPresenter _presenter;
-
         [Import]
-        public ShellPresenter ViewModel
+        public AdminShellPresenter ViewModel
         {
             set
             {
                 DataContext = value;
-                _presenter = value;
             }
         }
     }
