@@ -108,7 +108,15 @@ namespace Denapoli.Modules.Data
        {
            get { return GetTable<Borne>(); }
        }
-	}
+
+       public Table<Livreur> LiVReUR
+       {
+           get
+           {
+               return this.GetTable<Livreur>();
+           }
+       }
+   }
 }
 
 
