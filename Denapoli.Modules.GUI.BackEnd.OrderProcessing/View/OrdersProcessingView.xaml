@@ -22,13 +22,13 @@
               <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" />
               
               <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" />
-              <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Heure}" />
+              <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date}" />
               
               <TextBlock Grid.Column="0" Grid.Row="2"  Text="Chrono :" />
-              <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Chrono}" />
+              <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Chrono}" Background="{Binding Color}" Foreground="White"/>
 
               <TextBlock Grid.Column="0" Grid.Row="3"  Text="Livreur :" />
-              <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Livreur}" />
+              <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Livreur.PreNoM}" />
 
               <TextBlock Grid.Column="0" Grid.Row="4"  Text="Montant :" />
               <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding Total}" />
@@ -97,7 +97,7 @@
                 >
                 <telerik:RadGridView.Columns>
                     <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" />
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="Heure" TextAlignment="Center" />
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}" Header="Heure" TextAlignment="Center" />
                     <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Poit livraison" TextAlignment="Center" >
                         <telerik:GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -110,9 +110,11 @@
                             </DataTemplate>
                         </telerik:GridViewColumn.CellTemplate>
                     </telerik:GridViewDataColumn>
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur}" Header="Livreur" TextAlignment="Center" />
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" />
                     <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" />
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Chrono}" Header="Chrono" TextAlignment="Center" />
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Chrono}" Header="Chrono" TextAlignment="Center"
+                                                 Background="{Binding Color}"
+                                                 />
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </DockPanel>
