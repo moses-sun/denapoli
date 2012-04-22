@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
+using System.Windows.Media;
 using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
@@ -23,7 +24,7 @@ namespace Denapoli.Modules.Data.Entities
         private EntityRef<Borne> _borne;
         private EntityRef<Client> _client;
         private int? _idlIVrEUr;
-        private EntityRef<Livreur> _liVrEUr;
+        private EntityRef<Livreur> _liVrEUr = new EntityRef<Livreur>();
 		
         public Commande()
         {
@@ -32,22 +33,23 @@ namespace Denapoli.Modules.Data.Entities
         }
 
         [Column(Storage = "_idlIVrEUr", Name = "ID_LIVREUR", DbType = "int", AutoSync = AutoSync.Never)]
-        [DebuggerNonUserCode]
+        [DebuggerNonUserCode()]
         public int? IDLiVReUR
         {
             get
             {
-                return _idlIVrEUr;
+                return this._idlIVrEUr;
             }
             set
             {
-                if ((_idlIVrEUr == value)) return;
-                SendPropertyChanging();
-                _idlIVrEUr = value;
-                SendPropertyChanged("IDLiVReUR");
+                if ((_idlIVrEUr != value))
+                {
+                    this.SendPropertyChanging();
+                    this._idlIVrEUr = value;
+                    this.SendPropertyChanged("IDLiVReUR");
+                }
             }
         }
-	
 
         [Column(Storage = "_date", Name = "DATE", DbType = "datetime", AutoSync = AutoSync.Never)]
         [DebuggerNonUserCode()]
@@ -59,16 +61,25 @@ namespace Denapoli.Modules.Data.Entities
             }
             set
             {
-                if ((_date != value))
-                {
-                    SendPropertyChanging();
-                    _date = value;
-                    SendPropertyChanged("Date");
-                }
+                if ((_date == value)) _date = DateTime.Now;
+                SendPropertyChanging();
+                _date = value;
+                SendPropertyChanged("Date");
             }
         }
-	
-		
+
+        private SolidColorBrush _color = Brushes.Green;
+        public SolidColorBrush Color
+        {
+            get { return _color; }
+            set
+            {
+                _color = value;
+                SendPropertyChanged("Color");
+            }
+        }
+
+
         [Column(Storage="_idaDr", Name="ID_ADR", DbType="int", AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]
         public int IdaDr
@@ -291,40 +302,50 @@ namespace Denapoli.Modules.Data.Entities
             }
         }
 
-        //[Association(Storage = "_liVrEUr", OtherKey = "IDLiVReUR", ThisKey = "IDLiVReUR", Name = "livreur_de_commande", IsForeignKey = true)]
-        //[DebuggerNonUserCode()]
-        //public Livreur LiVReUR
-        //{
-        //    get
-        //    {
-        //        return this._liVrEUr.Entity;
-        //    }
-        //    set
-        //    {
-        //        if (((this._liVrEUr.Entity == value)
-        //                    == false))
-        //        {
-        //            if ((this._liVrEUr.Entity != null))
-        //            {
-        //                var previousLiVReUR = _liVrEUr.Entity;
-        //                this._liVrEUr.Entity = null;
-        //                previousLiVReUR.Commande.Remove(this);
-        //            }
-        //            this._liVrEUr.Entity = value;
-        //            if ((value != null))
-        //            {
-        //                value.Commande.Add(this);
-        //                _idlIVrEUr = value.IDLiVReUR;
-        //            }
-        //            else
-        //            {
-        //                _idlIVrEUr = null;
-        //            }
-        //        }
-        //    }
-        //}
-	
-        
+        [Association(Storage = "_liVrEUr", OtherKey = "IDLiVReUR", ThisKey = "IDLiVReUR", Name = "livreur_de_commande", IsForeignKey = true)]
+        [DebuggerNonUserCode]
+        public Livreur Livreur
+        {
+            get
+            {
+                return _liVrEUr.Entity;
+            }
+            set
+            {
+                if ((_liVrEUr.Entity == value)) return;
+                if ((_liVrEUr.Entity != null))
+                {
+                    var previousLiVreUr = _liVrEUr.Entity;
+                    _liVrEUr.Entity = null;
+                    previousLiVreUr.Commandes.Remove(this);
+                }
+                _liVrEUr.Entity = value;
+                if ((value != null))
+                {
+                    value.Commandes.Add(this);
+                    _idlIVrEUr = value.IDLiVReUR;
+                }
+                else
+                {
+                    _idlIVrEUr = null;
+                }
+            }
+        }
+
+        private int _chrono;
+        public int Chrono
+        {
+            set
+            {
+                _chrono = value;
+                if (_chrono < 46) Color = Brushes.Green;
+                if (_chrono < 30) Color = Brushes.Orange;
+                if (_chrono < 15) Color = Brushes.Red;
+                SendPropertyChanged("Chrono");
+            }
+            get { return _chrono; }
+        }
+
         #endregion
 		
         public event PropertyChangingEventHandler PropertyChanging;

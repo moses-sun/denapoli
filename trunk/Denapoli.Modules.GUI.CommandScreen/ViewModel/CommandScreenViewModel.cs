@@ -69,6 +69,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                   IdaDr =  Borne.IdaDr,
                                   Statut = "ATTENTE",
                                   Total = Total,
+                                  Date = DateTime.Now
                               };
 
             OrderedProdects.ForEach(prod=>
@@ -85,7 +86,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
                                             
                                         });
-           // DataProvider.AddCommande(command);
+           DataProvider.AddCommande(command);
         }
 
         private void CustommerViewHandler(object sender, PropertyChangedEventArgs e)

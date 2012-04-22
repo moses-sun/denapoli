@@ -13,27 +13,32 @@ namespace Denapoli.Modules.Data.DataProvider
     {
         public MysqlDataProvider()
         {
-            Console.WriteLine("=============================connecting ...");
+           
+        }
+
+        private void Connect()
+        {
             var connStr = String.Format("server={0};user id={1}; password={2}; database={3}", "localhost", "root", "", "denapoli");
             DAO = new DenapoliDTO(new MySqlConnection(connStr));
-            GetAvailableFamilies().Count();
-            Console.WriteLine("=============================connected");
         }
 
         private DenapoliDTO DAO { get; set; }
 
         public List<Famille> GetAvailableFamilies()
         {
+            Connect();
             return new List<Famille>( DAO.Famille);
         }
 
         public List<Produit> GetFamilyProducts(Famille famille)
         {
+            Connect();
             return new List<Produit>(famille.Produits);
         }
 
         public List<Famille> GetMenuComposition(Produit menu)
         {
+            Connect();
             var list = new List<Famille>();
             menu.ProduitComposition.Select(item => item.Famille).ForEach(list.Add);
             return list;
@@ -41,6 +46,7 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public List<Commande> GetMenuAllCommandes()
         {
+            Connect();
             var list = new List<Commande>();
             DAO.Commande.ForEach(list.Add);
             return list;
@@ -48,6 +54,7 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public List<Commande> GetMenuTodayCommandes()
         {
+            Connect();
             var list = new List<Commande>();
             DAO.Commande.ForEach(list.Add);
             return list;
@@ -76,8 +83,10 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Adresse InsertIfNotExists(Adresse addr)
         {
+            Connect();
             DAO.Adresse.InsertOnSubmit(addr);
             DAO.SubmitChanges();
+            Connect();
             return DAO.Adresse.FirstOrDefault(item => 
                    item.Num == addr.Num
                 && item.Voie == addr.Voie
@@ -87,6 +96,7 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Borne GetBorne(int id)
         {
+            Connect();
             return DAO.Borne.FirstOrDefault(item => item.IDBorn == id);
         }
     }

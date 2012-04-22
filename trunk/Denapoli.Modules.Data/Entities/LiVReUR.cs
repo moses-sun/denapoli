@@ -9,18 +9,20 @@ namespace Denapoli.Modules.Data.Entities
     {
 
         private static readonly System.ComponentModel.PropertyChangingEventArgs EmptyChangingEventArgs = new System.ComponentModel.PropertyChangingEventArgs("");
+
         private int _idlIVrEUr;
         private string _noM;
         private string _preNoM;
-        private EntitySet<Commande> _Commande;
+        private EntitySet<Commande> _commandes;
+
 
         public Livreur()
         {
-            _Commande = new EntitySet<Commande>(Commande_Attach, Commande_Detach);
+            _commandes = new EntitySet<Commande>(CommandEAttach, CommandEDetach);
         }
 
         [Column(Storage = "_idlIVrEUr", Name = "ID_LIVREUR", DbType = "int", IsPrimaryKey = true, IsDbGenerated = true, AutoSync = AutoSync.Never, CanBeNull = false)]
-        [DebuggerNonUserCode]
+        [DebuggerNonUserCode()]
         public int IDLiVReUR
         {
             get
@@ -37,65 +39,63 @@ namespace Denapoli.Modules.Data.Entities
         }
 
         [Column(Storage = "_noM", Name = "NOM", DbType = "varchar(50)", AutoSync = AutoSync.Never, CanBeNull = false)]
-        [DebuggerNonUserCode()]
+        [DebuggerNonUserCode]
         public string NoM
         {
             get
             {
-                return this._noM;
+                return _noM;
             }
             set
             {
                 if (((_noM == value)
-                     == false))
+                            == false))
                 {
-                    this.SendPropertyChanging();
-                    this._noM = value;
-                    this.SendPropertyChanged("NoM");
+                    SendPropertyChanging();
+                    _noM = value;
+                    SendPropertyChanged("NoM");
                 }
             }
         }
 
         [Column(Storage = "_preNoM", Name = "PRENOM", DbType = "varchar(50)", AutoSync = AutoSync.Never, CanBeNull = false)]
-        [DebuggerNonUserCode()]
+        [DebuggerNonUserCode]
         public string PreNoM
         {
             get
             {
-                return this._preNoM;
+                return _preNoM;
             }
             set
             {
                 if (((_preNoM == value)
-                     == false))
+                            == false))
                 {
-                    this.SendPropertyChanging();
-                    this._preNoM = value;
-                    this.SendPropertyChanged("PreNoM");
+                    SendPropertyChanging();
+                    _preNoM = value;
+                    SendPropertyChanged("PreNoM");
                 }
             }
         }
 
         #region Children
-        [Association(Storage = "_Commande", OtherKey = "IDLiVReUR", ThisKey = "IDLiVReUR", Name = "livreur_de_Commande")]
-        [DebuggerNonUserCode()]
-        public EntitySet<Commande> Commande
+        [Association(Storage = "_commandE", OtherKey = "IDLiVReUR", ThisKey = "IDLiVReUR", Name = "livreur_de_commande")]
+        [DebuggerNonUserCode]
+        public EntitySet<Commande> Commandes
         {
             get
             {
-                return this._Commande;
+                return _commandes;
             }
             set
             {
-                this._Commande = value;
+                _commandes = value;
             }
         }
         #endregion
 
         public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
-
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void SendPropertyChanging()
         {
             System.ComponentModel.PropertyChangingEventHandler h = this.PropertyChanging;
@@ -115,17 +115,18 @@ namespace Denapoli.Modules.Data.Entities
         }
 
         #region Attachment handlers
-        private void Commande_Attach(Commande entity)
+        private void CommandEAttach(Commande entity)
         {
-            this.SendPropertyChanging();
-            //entity.LiVReUR = this;
+            SendPropertyChanging();
+            entity.Livreur = this;
         }
 
-        private void Commande_Detach(Commande entity)
+        private void CommandEDetach(Commande entity)
         {
-            this.SendPropertyChanging();
-            //entity.LiVReUR = null;
+            SendPropertyChanging();
+            entity.Livreur = null;
         }
         #endregion
     }
+	
 }

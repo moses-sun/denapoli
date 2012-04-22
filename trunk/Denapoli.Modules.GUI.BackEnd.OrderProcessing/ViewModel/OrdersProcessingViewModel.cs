@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Timers;
@@ -8,6 +9,7 @@ using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.GUI.BackEnd.OrderProcessing.View;
 using Denapoli.Modules.GUI.CommandScreen.ViewModel;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 {
@@ -24,10 +26,11 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             Orders = new ObservableCollection<Commande>();
            
             Products = new ObservableCollection<ProductViewModel>();
-           var timer = new Timer {Interval = 10000};
+           var timer = new Timer {Interval = 6000};
             timer.Elapsed += (sender, args) => View.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                                                                            new System.Windows.Threading.DispatcherOperationCallback(delegate
                                                                                                                                         {
+                                                                                                                                            Orders.ForEach(item => item.Chrono--);
                                                                                                                                             UpdateCommandes();
                                                                                                                                             return null;
                                                                                                                       }), null);
@@ -43,7 +46,12 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
         {
             var old = SelectedCommand == null ? -1  : SelectedCommand.Num;
             Orders.Clear();
-            DataProvider.GetMenuAllCommandes().ForEach(item => Orders.Add(item));
+            DataProvider.GetMenuAllCommandes().ForEach(item =>
+                                                           {
+                                                               var diff = DateTime.Now - item.Date;
+                                                               item.Chrono = diff!=null ? 45-diff.Value.Minutes : 0;
+                                                               Orders.Add(item);
+                                                           });
             SelectedCommand = Orders.FirstOrDefault(item => item.Num == old);
             SelectedCommand = SelectedCommand ?? Orders.FirstOrDefault();
         }

@@ -90,9 +90,9 @@ namespace Denapoli.Module.Data.Test
         [Test]
         public void LivreurTableTest()
         {
-            Console.WriteLine("count=" + _dto.LiVReUR.Count());
+            Console.WriteLine("count=" + _dto.Livreur.Count());
 
-            foreach (var v in _dto.LiVReUR)
+            foreach (var v in _dto.Livreur)
             {
                 Console.WriteLine(v.NoM + " - " + v.PreNoM );
             }
@@ -105,6 +105,8 @@ namespace Denapoli.Module.Data.Test
             foreach (var v in _dto.Commande)
             {
                 Console.WriteLine("------------------------- ");
+                if(v.Livreur != null)
+                    Console.WriteLine("Livreur: " + v.Livreur.NoM);
                 Console.WriteLine(v.Num + " - client=" + v.Client.Nom+" borne="+v.Borne.IDBorn+"  stat="+v.Statut);
                 Console.WriteLine("les produits : ");
                 foreach (var com in v.ProduitsCommande)

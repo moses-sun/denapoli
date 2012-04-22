@@ -74,6 +74,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModule.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\Commande.cs" />
     <Compile Include="Entities\Famille.cs" />
-    <Compile Include="Entities\LiVReUR.cs" />
+    <Compile Include="Entities\Livreur.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\Produit.cs" />
     <Compile Include="IDataProvider.cs" />

@@ -109,7 +109,7 @@ namespace Denapoli.Modules.Data
            get { return GetTable<Borne>(); }
        }
 
-       public Table<Livreur> LiVReUR
+       public Table<Livreur> Livreur
        {
            get
            {
