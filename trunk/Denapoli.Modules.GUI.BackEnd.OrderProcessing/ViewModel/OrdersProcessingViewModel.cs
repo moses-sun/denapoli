@@ -1,14 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Timers;
+using System.Windows;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.GUI.BackEnd.OrderProcessing.View;
+using Denapoli.Modules.GUI.CommandScreen.ViewModel;
+using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 {
     [Export]
-    public class OrdersProcessingViewModel
+    public class OrdersProcessingViewModel : NotifyPropertyChanged
     {
         private IDataProvider DataProvider { get; set; }
         public OrdersProcessingView View { get; set; }
@@ -18,24 +22,68 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
         {
             DataProvider = dataProvider;
             Orders = new ObservableCollection<Commande>();
-           var timer = new Timer {Interval = 2000};
+           
+            Products = new ObservableCollection<ProductViewModel>();
+           var timer = new Timer {Interval = 10000};
             timer.Elapsed += (sender, args) => View.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                                                                            new System.Windows.Threading.DispatcherOperationCallback(delegate
                                                                                                                                         {
                                                                                                                                             UpdateCommandes();
                                                                                                                                             return null;
-                                                                                                                                        }), null);
-           timer.Start();
+                                                                                                                      }), null);
+            UpdateCommandes();   
+            timer.Start();
         }
+
+        public ObservableCollection<ProductViewModel> Products { get; set; } 
 
         public ObservableCollection<Commande> Orders { get; set; }
 
-        public void UpdateCommandes()
+        private void UpdateCommandes()
         {
+            var old = SelectedCommand == null ? -1  : SelectedCommand.Num;
             Orders.Clear();
             DataProvider.GetMenuAllCommandes().ForEach(item => Orders.Add(item));
+            SelectedCommand = Orders.FirstOrDefault(item => item.Num == old);
+            SelectedCommand = SelectedCommand ?? Orders.FirstOrDefault();
         }
 
-       
+        private Commande _selectedCommand;
+        public Commande SelectedCommand
+        {
+            get { return _selectedCommand; }
+            set
+            {
+                _selectedCommand = value;
+                NotifyChanged("SelectedCommand");
+                Updateproducts();
+            }
+        }
+
+        private void Updateproducts()
+        {
+            Products.Clear();
+            if (SelectedCommand == null) return;
+            foreach (var produit in SelectedCommand.ProduitsCommande)
+            {
+                if (produit.Produit.IsMenu)
+                {
+                    var menu = new MenuVM(produit.Produit){Quantite = produit.Quantite};
+                    Products.Add(menu);
+                }
+                Products.Add(new ProductViewModel(produit.Produit) { Quantite = produit .Quantite});
+            }
+        }
+    }
+
+    public class MenuVM : ProductViewModel
+    {
+        public MenuVM(Produit prod ) : base(prod)
+        {
+           Composition = new ObservableCollection<ProductViewModel>();
+           
+        }
+
+        public ObservableCollection<ProductViewModel> Composition { get; private set; } 
     }
 }

@@ -1,7 +1,7 @@
+using System;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
-using System.Windows.Input;
 using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
@@ -10,6 +10,7 @@ namespace Denapoli.Modules.Data.Entities
     public sealed class Commande : INotifyPropertyChanging, INotifyPropertyChanged
     {
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");
+        private DateTime? _date;
         private int _idaDr;
         private int _idbOrn;
         private int _idclIen;
@@ -21,12 +22,52 @@ namespace Denapoli.Modules.Data.Entities
         private EntityRef<Adresse> _adRessE;
         private EntityRef<Borne> _borne;
         private EntityRef<Client> _client;
+        private int? _idlIVrEUr;
+        private EntityRef<Livreur> _liVrEUr;
 		
         public Commande()
         {
             _menus = new EntitySet<Menu>(MenuAttach, MenuDetach);
             _prodUiTsCommandE = new EntitySet<ProduitsCommande>(ProdUItsCommandEAttach, ProdUItsCommandEDetach);
         }
+
+        [Column(Storage = "_idlIVrEUr", Name = "ID_LIVREUR", DbType = "int", AutoSync = AutoSync.Never)]
+        [DebuggerNonUserCode]
+        public int? IDLiVReUR
+        {
+            get
+            {
+                return _idlIVrEUr;
+            }
+            set
+            {
+                if ((_idlIVrEUr == value)) return;
+                SendPropertyChanging();
+                _idlIVrEUr = value;
+                SendPropertyChanged("IDLiVReUR");
+            }
+        }
+	
+
+        [Column(Storage = "_date", Name = "DATE", DbType = "datetime", AutoSync = AutoSync.Never)]
+        [DebuggerNonUserCode()]
+        public DateTime? Date
+        {
+            get
+            {
+                return _date;
+            }
+            set
+            {
+                if ((_date != value))
+                {
+                    SendPropertyChanging();
+                    _date = value;
+                    SendPropertyChanged("Date");
+                }
+            }
+        }
+	
 		
         [Column(Storage="_idaDr", Name="ID_ADR", DbType="int", AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]
@@ -249,6 +290,41 @@ namespace Denapoli.Modules.Data.Entities
                 }
             }
         }
+
+        //[Association(Storage = "_liVrEUr", OtherKey = "IDLiVReUR", ThisKey = "IDLiVReUR", Name = "livreur_de_commande", IsForeignKey = true)]
+        //[DebuggerNonUserCode()]
+        //public Livreur LiVReUR
+        //{
+        //    get
+        //    {
+        //        return this._liVrEUr.Entity;
+        //    }
+        //    set
+        //    {
+        //        if (((this._liVrEUr.Entity == value)
+        //                    == false))
+        //        {
+        //            if ((this._liVrEUr.Entity != null))
+        //            {
+        //                var previousLiVReUR = _liVrEUr.Entity;
+        //                this._liVrEUr.Entity = null;
+        //                previousLiVReUR.Commande.Remove(this);
+        //            }
+        //            this._liVrEUr.Entity = value;
+        //            if ((value != null))
+        //            {
+        //                value.Commande.Add(this);
+        //                _idlIVrEUr = value.IDLiVReUR;
+        //            }
+        //            else
+        //            {
+        //                _idlIVrEUr = null;
+        //            }
+        //        }
+        //    }
+        //}
+	
+        
         #endregion
 		
         public event PropertyChangingEventHandler PropertyChanging;
@@ -449,5 +525,4 @@ namespace Denapoli.Modules.Data.Entities
             }
         }
     }
-
 }

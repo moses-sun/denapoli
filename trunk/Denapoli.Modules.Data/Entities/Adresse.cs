@@ -8,7 +8,7 @@ namespace Denapoli.Modules.Data.Entities
     [Table(Name="denapoli.adresse")]
     public sealed class Adresse : INotifyPropertyChanging, INotifyPropertyChanged
     {
-		
+        private string _numChAmBrE;
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");
         private string _complement;
         private string _cp;
@@ -24,6 +24,27 @@ namespace Denapoli.Modules.Data.Entities
             _borne = new EntitySet<Borne>(BorneAttach, BorneDetach);
             _commandes = new EntitySet<Commande>(CommandEAttach, CommandEDetach);
         }
+
+        [Column(Storage = "_numChAmBrE", Name = "NUM_CHAMBRE", DbType = "varchar(15)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public string NumCHamBRe
+        {
+            get
+            {
+                return _numChAmBrE;
+            }
+            set
+            {
+                if (((_numChAmBrE == value)
+                            == false))
+                {
+                    SendPropertyChanging();
+                    _numChAmBrE = value;
+                    SendPropertyChanged("NumCHamBRe");
+                }
+            }
+        }
+		
 		
         [Column(Storage="_complement", Name="COMPLEMENT", DbType="varchar(200)", AutoSync=AutoSync.Never)]
         [DebuggerNonUserCode]

@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DbLinq, Version=0.20.0.0, Culture=neutral, PublicKeyToken=61e015a67077348b, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
@@ -87,6 +88,10 @@
     <ProjectReference Include="..\Denapoli.Modules.Data\Denapoli.Modules.Data.csproj">
       <Project>{4AFAF324-0120-45CC-985C-47F175A8BCEA}</Project>
       <Name>Denapoli.Modules.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.GUI.CommandScreen\Denapoli.Modules.GUI.CommandScreen.csproj">
+      <Project>{C1FEC7AE-A7C0-4CBE-905E-31731C393351}</Project>
+      <Name>Denapoli.Modules.GUI.CommandScreen</Name>
     </ProjectReference>
     <ProjectReference Include="..\Denapoli.Modules.Infrastructure\Denapoli.Modules.Infrastructure.csproj">
       <Project>{B0719092-7564-4A45-B235-54DDBD628578}</Project>

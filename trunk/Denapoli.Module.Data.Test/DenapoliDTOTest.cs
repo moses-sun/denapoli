@@ -56,7 +56,7 @@ namespace Denapoli.Module.Data.Test
             Console.WriteLine("count=" + _dto.Adresse.Count());
             foreach (var v in _dto.Adresse)
             {
-                Console.WriteLine(v.Num + " - " + v.Voie+" - "+v.Ville);
+                Console.WriteLine(v.Num + " - " + v.Voie+" - "+v.Ville+" numChambre:"+v.NumCHamBRe);
                 foreach (var com in v.Commandes)
                     Console.WriteLine("     "+com.Num);
             }
@@ -83,6 +83,18 @@ namespace Denapoli.Module.Data.Test
                 Console.WriteLine(v.Nom + " - " + v.ImageURL);
                 foreach (var com in v.Produits)
                     Console.WriteLine("     " + com.Nom);
+            }
+        }
+
+
+        [Test]
+        public void LivreurTableTest()
+        {
+            Console.WriteLine("count=" + _dto.LiVReUR.Count());
+
+            foreach (var v in _dto.LiVReUR)
+            {
+                Console.WriteLine(v.NoM + " - " + v.PreNoM );
             }
         }
 
@@ -125,7 +137,7 @@ namespace Denapoli.Module.Data.Test
 
             foreach (var com in _dto.Commande)
             {
-                Console.WriteLine("Commande num:"+com.Num+" Client:"+com.Client.Nom);
+                Console.WriteLine("Commande num:"+com.Num+" Client:"+com.Client.Nom+" Date:"+com.Date);
                 Console.WriteLine("             Addre de livr :"+com.Adresse.Num+" "+com.Adresse.Voie+" Ville="+com.Adresse.Ville);
                 Console.WriteLine("             Borne :" + com.Borne.IDBorn + " : " + com.Borne.Adresse.Voie + " Ville=" + com.Borne.Adresse.Ville);
                 Console.WriteLine("             List Produits :");
