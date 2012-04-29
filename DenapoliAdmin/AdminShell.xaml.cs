@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 
 namespace DenapoliAdmin
 {
@@ -9,9 +10,11 @@ namespace DenapoliAdmin
     [Export]
     public partial class AdminShell
     {
+
         public AdminShell()
         {
             InitializeComponent();
+              Closing += ApplicationCommandsCloseExecuted;
         }
 
         [Import]
@@ -21,6 +24,10 @@ namespace DenapoliAdmin
             {
                 DataContext = value;
             }
+        }
+
+        private void ApplicationCommandsCloseExecuted(object sender, EventArgs executedRoutedEventArgs)
+        {
         }
     }
 }

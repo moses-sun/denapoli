@@ -1,0 +1,121 @@
+﻿<Window x:Class="Denapoli.Modules.GUI.BackEnd.Stats.View.StatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   xmlns:Entities="clr-namespace:Denapoli.Modules.Data.Entities;assembly=Denapoli.Modules.Data"
+                   WindowState="Maximized" >
+  <DockPanel x:Name="myroot">
+    <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}">
+      <StackPanel Width="400">
+        <GroupBox Header="Commande"    FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*" />
+              <RowDefinition Height="*" />
+              <RowDefinition Height="*" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" />
+            <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" />
+            <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date}" />
+
+
+            <TextBlock Grid.Column="0" Grid.Row="2"  Text="Livreur :" />
+            <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Livreur.PreNoM}" />
+
+            <TextBlock Grid.Column="0" Grid.Row="3"  Text="Montant :" />
+            <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Total}" />
+          </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+          <StackPanel >
+            <StackPanel Orientation="Horizontal" DataContext="{Binding Client}" >
+              <TextBlock Text="{Binding Nom}" />
+              <TextBlock Text="  " />
+              <TextBlock Text="{Binding Prenom}"/>
+            </StackPanel>
+            <StackPanel  DataContext="{Binding Adresse}" >
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Num}" />
+                <TextBlock Text="  " />
+                <TextBlock Text="{Binding Voie}"/>
+              </StackPanel>
+              <TextBlock Text="{Binding Complement}"/>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding CP}"/>
+                <TextBlock Text="  " />
+                <TextBlock Text="{Binding Ville}"/>
+              </StackPanel>
+            </StackPanel>
+          </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+          <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 2 2 2"
+            ItemsSource="{Binding ElementName=myroot, Path=DataContext.Products}"
+              >
+            <ListBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel>
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Quantite}"/>
+                    <TextBlock Text=" X "/>
+                    <TextBlock  Text="{Binding Produit.Nom}"/>
+                  </StackPanel>
+                  <ListBox Margin="10 2 2 2" ItemsSource="{Binding Composition}"                                >
+                    <ListBox.ItemTemplate>
+                      <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                          <TextBlock Text="{Binding Entities:Produit.Quantite}"/>
+                          <TextBlock Text=" X "/>
+                          <TextBlock  Text="{Binding Entities:Produit.Nom}"/>
+                        </StackPanel>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </StackPanel>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </GroupBox>
+      </StackPanel>
+    </DockPanel>
+    <DockPanel>
+      <telerik:RadGridView
+          ItemsSource="{Binding Orders}"
+          AutoGenerateColumns="False"
+          CanUserReorderColumns="False"
+          IsReadOnly="True"
+          SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
+                >
+        <telerik:RadGridView.Columns>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}" Header="Heure" TextAlignment="Center" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Poit livraison" TextAlignment="Center" >
+            <telerik:GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Num}"/>
+                  <TextBlock Text="{Binding Voie}" />
+                  <TextBlock Text="{Binding CP}" />
+                  <TextBlock Text="{Binding Ville}" />
+                </StackPanel>
+              </DataTemplate>
+            </telerik:GridViewColumn.CellTemplate>
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Chrono}" Header="Chrono" TextAlignment="Center"
+                                       Background="{Binding Color}"
+                                                 />
+        </telerik:RadGridView.Columns>
+      </telerik:RadGridView>
+    </DockPanel>
+  </DockPanel>
+</Window>

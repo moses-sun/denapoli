@@ -30,6 +30,12 @@ namespace Denapoli.Modules.Data.DataProvider
             return new List<Famille>( DAO.Famille);
         }
 
+        public List<Produit> GetAllProducts()
+        {
+            Connect();
+            return new List<Produit>(DAO.Produit);
+        }
+
         public List<Produit> GetFamilyProducts(Famille famille)
         {
             Connect();
@@ -38,7 +44,6 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public List<Famille> GetMenuComposition(Produit menu)
         {
-            Connect();
             var list = new List<Famille>();
             menu.ProduitComposition.Select(item => item.Famille).ForEach(list.Add);
             return list;
@@ -83,15 +88,30 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Adresse InsertIfNotExists(Adresse addr)
         {
-            Connect();
-            DAO.Adresse.InsertOnSubmit(addr);
-            DAO.SubmitChanges();
-            Connect();
-            return DAO.Adresse.FirstOrDefault(item => 
+            var add =  DAO.Adresse.FirstOrDefault(item => 
                    item.Num == addr.Num
                 && item.Voie == addr.Voie
                 && item.Ville == addr.Ville
-                && item.Complement == addr.Complement);
+                && item.Complement == addr.Complement
+                && item.NumCHamBRe == addr.NumCHamBRe);
+            if(add == null )
+            {
+                add = new Adresse { 
+                    Num = addr.Num,
+                    Voie = addr.Voie,
+                    Ville = addr.Ville,
+                    Complement = addr.Complement,
+                    NumCHamBRe = addr.NumCHamBRe};
+                DAO.Adresse.InsertOnSubmit(add);
+                DAO.SubmitChanges();
+                add =  DAO.Adresse.FirstOrDefault(item => 
+                   item.Num == addr.Num
+                && item.Voie == addr.Voie
+                && item.Ville == addr.Ville
+                && item.Complement == addr.Complement
+                && item.NumCHamBRe == addr.NumCHamBRe);
+            }
+            return add;
         }
 
         public Borne GetBorne(int id)

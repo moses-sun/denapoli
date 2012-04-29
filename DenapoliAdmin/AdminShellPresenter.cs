@@ -1,5 +1,6 @@
 using System.ComponentModel.Composition;
 using Denapoli.Modules.Infrastructure.Behavior;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.Prism.Events;
@@ -10,15 +11,16 @@ namespace DenapoliAdmin
     public class AdminShellPresenter : NotifyPropertyChanged
     {
         public ILocalizationService LocalizationService { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
 
         [ImportingConstructor]
-        public AdminShellPresenter(ILocalizationService localizationService)
+        public AdminShellPresenter(ILocalizationService localizationService, IEventAggregator eventAggregator)
         {
             LocalizationService = localizationService;
+            EventAggregator = eventAggregator;
             LocalizationConverter.LocalizationService = LocalizationService;
         }
 
-        private IEventAggregator EventsAggregator { get; set; }
         private bool _isBusy = false;
 
         public bool IsBusy

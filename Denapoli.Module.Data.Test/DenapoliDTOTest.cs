@@ -57,8 +57,7 @@ namespace Denapoli.Module.Data.Test
             foreach (var v in _dto.Adresse)
             {
                 Console.WriteLine(v.Num + " - " + v.Voie+" - "+v.Ville+" numChambre:"+v.NumCHamBRe);
-                foreach (var com in v.Commandes)
-                    Console.WriteLine("     "+com.Num);
+              
             }
         }
 
