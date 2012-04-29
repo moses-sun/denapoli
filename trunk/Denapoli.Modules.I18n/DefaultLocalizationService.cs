@@ -14,6 +14,7 @@ namespace Denapoli.Modules.I18n
     public class DefaultLocalizationService : NotifyPropertyChanged, ILocalizationService
     {
         private Dictionary<string, string> _currentdict = new Dictionary<string, string>();
+        private Dictionary<string, Dictionary<string, string>> _loadedDicts = new Dictionary<string, Dictionary<string, string>>(); 
         private const string HostName = "http://127.0.0.1:8080/i18n/";
 
         public DefaultLocalizationService()
@@ -31,13 +32,17 @@ namespace Denapoli.Modules.I18n
         public IEnumerable<Langage> AvailableLangages { get; private set; }
 
         private Langage _currentLangage;
+       
+
         public Langage CurrentLangage
         {
             get { return _currentLangage; }
             set
             {
                 _currentLangage = value;
-                Load();
+                Load(_currentLangage);
+                _currentdict = _loadedDicts[_currentLangage.Name];
+                Dico.Notify();
                 NotifyChanged("CurrentLangage");
             }
         }
@@ -53,10 +58,24 @@ namespace Denapoli.Modules.I18n
             return r;
         }
 
-        private void Load()
+        public string Localize(string key, Langage langage)
         {
-            _currentdict = DownloadDico(CurrentLangage.DictURL);
-            Dico.Notify();
+            Load(langage);
+            var dict = _loadedDicts[langage.Name];
+            if (string.IsNullOrEmpty(key)) return "";
+            var r = dict.ContainsKey(key) ? dict[key] : langage.Code;
+            if (string.IsNullOrEmpty(r))
+                Console.WriteLine("--------------------to traduce----------- :" + langage.Code + " : " + key);
+            return r;
+        }
+
+        private void Load(Langage langage)
+        {
+            if(!_loadedDicts.ContainsKey(langage.Name))
+            {
+                var dict = DownloadDico(langage.DictURL);
+                _loadedDicts[langage.Name] = dict;
+            }
         }
 
 

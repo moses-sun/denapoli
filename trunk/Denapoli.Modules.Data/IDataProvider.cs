@@ -6,6 +6,7 @@ namespace Denapoli.Modules.Data
     public interface IDataProvider
     {
         List<Famille> GetAvailableFamilies();
+        List<Produit> GetAllProducts();
         List<Produit> GetFamilyProducts(Famille famille);
         List<Famille> GetMenuComposition(Produit menu);
         List<Commande> GetMenuAllCommandes();

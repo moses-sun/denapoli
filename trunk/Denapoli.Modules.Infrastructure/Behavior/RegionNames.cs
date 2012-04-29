@@ -10,6 +10,7 @@ namespace Denapoli.Modules.Infrastructure.Behavior
         public const string MenuRegion = "MenuRegion";
         public const string CustomerRegion = "CustomerRegion";
         public const string PaiementRegion = "PaiementRegion";
-
+        public const string FileMenuRegion = "FileMenuRegion";
+        public const string AdminMenuRegion = "AdminMenuRegion";
     }
 }

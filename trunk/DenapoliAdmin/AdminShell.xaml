@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
         xmlns:Regions="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
-        Title="Di Napoli pizza (Admin)"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" Title="Di Napoli pizza (Admin)"
         WindowState="Maximized"
        
         >
@@ -16,6 +16,22 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
+  <Window.CommandBindings>
+    <CommandBinding Command="ApplicationCommands.Close" Executed="ApplicationCommandsCloseExecuted" />
+  </Window.CommandBindings>
+  <DockPanel LastChildFill="True">
+    <!-- Menu -->
+    <Menu DockPanel.Dock="Top"	Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.MenuRegion}"	>
+      <MenuItem  Header="Fichier" Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.FileMenuRegion}">
+      <MenuItem Header="Quit                     Ctrl+Q"             Command="ApplicationCommands.Close" />
+    </MenuItem>
+
+    <MenuItem  Header="Administration" Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.AdminMenuRegion}" />
+    </Menu>
+
     <ContentControl  Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.MainRegion}"/>
+  </DockPanel>
+
+    
 </Window>

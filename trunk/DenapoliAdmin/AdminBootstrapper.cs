@@ -3,7 +3,9 @@ using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Denapoli;
 using Denapoli.Modules.Data;
+using Denapoli.Modules.GUI.BackEnd.DataAdmin;
 using Denapoli.Modules.GUI.BackEnd.OrderProcessing;
+using Denapoli.Modules.GUI.BackEnd.Stats;
 using Denapoli.Modules.I18n;
 using Denapoli.Modules.Infrastructure.Behavior;
 using Microsoft.Practices.Prism.Logging;
@@ -23,6 +25,8 @@ namespace DenapoliAdmin
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(OrdersProcessingModule).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(StatsModule).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataAdminModule).Assembly));
         }
 
         protected override void InitializeShell()

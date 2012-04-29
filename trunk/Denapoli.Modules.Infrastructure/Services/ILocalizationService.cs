@@ -6,6 +6,7 @@ namespace Denapoli.Modules.Infrastructure.Services
     {
         IEnumerable<Langage> AvailableLangages { get; }
         string Localize(string key);
+        string Localize(string key, Langage langage);
         Langage CurrentLangage { get; set; }
         Dico Dico { get; }
     }

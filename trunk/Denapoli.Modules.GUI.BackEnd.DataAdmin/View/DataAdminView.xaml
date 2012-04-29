@@ -1,0 +1,81 @@
+﻿<Window x:Class="Denapoli.Modules.GUI.BackEnd.DataAdmin.View.DataAdminView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+        WindowState="Maximized"
+        Title="Administration de la base de données">
+  <TabControl>
+    <TabControl.Resources>
+      <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
+      <DataTemplate x:Key="DisplayProduct">
+        <StackPanel>
+          <telerik:DataFormDataField Label="ID" DataMemberBinding="{Binding Prod.IDProd}" />
+          <telerik:DataFormDataField Label="Nom" DataMemberBinding="{Binding Prod.Nom}" />
+          <telerik:DataFormDataField Label="Description" DataMemberBinding="{Binding Prod.Description}" />
+          <telerik:DataFormDataField Label="Prix" DataMemberBinding="{Binding Prod.Prix}" />
+          
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Famille "/>
+            <telerik:DataFormComboBoxField Label="Famille" DataMemberBinding="{Binding Prod.Famille}" SelectedValuePath="Nom" ItemsSource="{Binding Families}"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal">
+            <telerik:DataFormDataField Label="Image" DataMemberBinding="{Binding Prod.ImageURL}" />
+            <Button Command="{Binding BrowseImageCommand}">
+              <Image Width="50" Height="50" Source="{Binding Prod.ImageURL, Converter={StaticResource imageConverter}}"/>
+            </Button>
+            <Image Width="50" Height="50" Source="{Binding ImageURL, Mode=TwoWay}"/>
+          </StackPanel>
+          
+          <TextBlock Text="Traduction :" />
+          <telerik:RadGridView 
+            AutoGenerateColumns="False"
+            ShowGroupPanel="False"
+            ItemsSource="{Binding Traductions}">
+            <telerik:RadGridView.Columns>
+              <telerik:GridViewDataColumn IsEnabled="False" DataMemberBinding="{Binding Langue}" Header="Langue" TextAlignment="Center" />
+              <telerik:GridViewDataColumn  DataMemberBinding="{Binding Nom}" Header="Nom" TextAlignment="Center" />
+              <telerik:GridViewDataColumn  DataMemberBinding="{Binding Description}" Header="Description" TextAlignment="Center" />
+            </telerik:RadGridView.Columns>
+          </telerik:RadGridView>
+        </StackPanel>
+      </DataTemplate>
+    </TabControl.Resources>
+    <TabItem Header="Produits" DataContext="{Binding ProduitsViewModel}">
+      <DockPanel>
+        <telerik:RadDataForm
+          DockPanel.Dock="Right"
+          Header="Produit" 
+          Width="400"
+          AutoGenerateFields="False" 
+          ItemsSource="{Binding Produits}"
+          CurrentItem="{Binding SelectedProduit, Mode=TwoWay}"
+          ReadOnlyTemplate="{StaticResource DisplayProduct}"
+          EditTemplate="{StaticResource DisplayProduct}"
+          NewItemTemplate="{StaticResource DisplayProduct}" />
+        
+        <telerik:RadGridView
+         ItemsSource="{Binding Produits}"
+         SelectedItem="{Binding SelectedProduit, Mode=TwoWay}"
+         AutoGenerateColumns="False"
+         CanUserReorderColumns="False"
+         IsReadOnly="True"
+         
+                >
+          <telerik:RadGridView.Columns>
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.IDProd}" Header="ID" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.Nom}" Header="Nom" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.Description}" Header="Livreur" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.Prix}" Header="Prix" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.Famille.Nom}" Header="Famille" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.ImageURL}" Header="ImageURL" TextAlignment="Center" />
+          </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+      </DockPanel>
+    </TabItem>
+    <TabItem Header="Familles"  DataContext="{Binding FamillesViewModel}" >
+      The Familles Tab
+    </TabItem>
+    
+  </TabControl>
+</Window>

@@ -134,9 +134,17 @@
       <Project>{4AFAF324-0120-45CC-985C-47F175A8BCEA}</Project>
       <Name>Denapoli.Modules.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.GUI.BackEnd.DataAdmin\Denapoli.Modules.GUI.BackEnd.DataAdmin.csproj">
+      <Project>{7921DD6D-C633-4252-8E8B-EF46AF3C5DB5}</Project>
+      <Name>Denapoli.Modules.GUI.BackEnd.DataAdmin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Denapoli.Modules.GUI.BackEnd.OrderProcessing\Denapoli.Modules.GUI.BackEnd.OrderProcessing.csproj">
       <Project>{82723946-92BF-48A3-A50B-7CE091396797}</Project>
       <Name>Denapoli.Modules.GUI.BackEnd.OrderProcessing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.GUI.BackEnd.Stats\Denapoli.Modules.GUI.BackEnd.Stats.csproj">
+      <Project>{6D625513-9DA1-4414-848D-87317C882E32}</Project>
+      <Name>Denapoli.Modules.GUI.BackEnd.Stats</Name>
     </ProjectReference>
     <ProjectReference Include="..\Denapoli.Modules.I18n\Denapoli.Modules.I18n.csproj">
       <Project>{6A2288EC-F1AC-4FF4-BF97-B7992B296635}</Project>

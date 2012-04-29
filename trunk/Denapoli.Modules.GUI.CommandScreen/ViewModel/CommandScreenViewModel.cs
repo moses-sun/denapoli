@@ -62,11 +62,13 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void FinalizeOrder()
         {
             var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
+            CustomerViewModel.Address.NumCHamBRe = "1";
+            var addr = DataProvider.InsertIfNotExists(CustomerViewModel.Address);
             var command = new Commande
                               {
                                   IDCLien = client.IDCLien,
                                   IDBorn = Borne.IDBorn,
-                                  IdaDr =  Borne.IdaDr,
+                                  IdaDr = addr.IdaDr,
                                   Statut = "ATTENTE",
                                   Total = Total,
                                   Date = DateTime.Now
@@ -83,8 +85,6 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                             }
                                             else
                                                 command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd });
-
-                                            
                                         });
            DataProvider.AddCommande(command);
         }

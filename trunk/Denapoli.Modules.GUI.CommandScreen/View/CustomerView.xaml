@@ -70,28 +70,35 @@
                     <TextBlock 
                         Text="{Binding LocalizationService.Dico.NumChambre, Converter={StaticResource localizationConverter}}" 
                         Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.RoomNum, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.NumCHamBRe, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
 
                     <TextBlock 
                         Text="{Binding LocalizationService.Dico.Num, Converter={StaticResource localizationConverter}}" 
-                        Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.Num, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="1" 
+                        Grid.Column="0" Grid.Row="1"  Style="{StaticResource textStyle}"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Address.Num, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    
+                  <TextBlock Grid.Column="0" Grid.Row="2" 
                                Text="{Binding LocalizationService.Dico.Voie, Converter={StaticResource localizationConverter}}" 
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Address.Voie, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="2" 
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Address.Voie, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                   
+                  
+                  <TextBlock Grid.Column="0" Grid.Row="3" 
                                Text="{Binding LocalizationService.Dico.ComplementAdresse, Converter={StaticResource localizationConverter}}" 
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Address.Complement, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="3" 
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Address.Complement, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    
+                  
+                  <TextBlock Grid.Column="0" Grid.Row="4" 
                                Text="{Binding LocalizationService.Dico.CodePostal, Converter={StaticResource localizationConverter}}"  
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Address.CP, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
-                    <TextBlock Grid.Column="0" Grid.Row="4"
+                    <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Address.CP, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    
+                  
+                  <TextBlock Grid.Column="0" Grid.Row="5"
                                Text="{Binding LocalizationService.Dico.Ville, Converter={StaticResource localizationConverter}}" 
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding Address.Ville, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding Address.Ville, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                 </Grid>
             </GroupBox>
 
