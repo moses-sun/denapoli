@@ -78,17 +78,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModule.cs" />
+    <Compile Include="DataProvider\SettingsService.cs" />
     <Compile Include="DenapoliDataContex.cs" />
     <Compile Include="Entities\Adresse.cs" />
     <Compile Include="Entities\Borne.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\Commande.cs" />
     <Compile Include="Entities\Famille.cs" />
+    <Compile Include="ISettingsService.cs" />
     <Compile Include="Entities\Livreur.cs" />
     <Compile Include="Entities\Menu.cs" />
     <Compile Include="Entities\Produit.cs" />
     <Compile Include="IDataProvider.cs" />
     <Compile Include="DataProvider\MysqlDataProvider.cs" />
+    <Compile Include="Entities\Langue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

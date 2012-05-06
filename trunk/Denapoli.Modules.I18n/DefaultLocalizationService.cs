@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Denapoli.Modules.Data;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
@@ -13,18 +14,21 @@ namespace Denapoli.Modules.I18n
     [Export(typeof(ILocalizationService))]
     public class DefaultLocalizationService : NotifyPropertyChanged, ILocalizationService
     {
+        public IDataProvider DataProvider { get; set; }
+        public ISettingsService SettingsService { get; set; }
         private Dictionary<string, string> _currentdict = new Dictionary<string, string>();
-        private Dictionary<string, Dictionary<string, string>> _loadedDicts = new Dictionary<string, Dictionary<string, string>>(); 
-        private const string HostName = "http://127.0.0.1:8080/i18n/";
+        private readonly Dictionary<string, Dictionary<string, string>> _loadedDicts = new Dictionary<string, Dictionary<string, string>>();
+        private string HostName { set; get; }
 
-        public DefaultLocalizationService()
+        [ImportingConstructor]
+        public DefaultLocalizationService(IDataProvider dataProvider, ISettingsService settingsService)
         {
-            AvailableLangages = new List<Langage>
-                                    {
-                                        new Langage{Code="FR",Name = "Français"},
-                                        new Langage{Code="EN",Name = "English"},
-                                        new Langage{Code="SP",Name = "Español"}
-                                    };
+            DataProvider = dataProvider;
+            SettingsService = settingsService;
+            HostName = SettingsService.GetDataRepositoryRootPath() + "i18n/";
+            var list = new List<Langage>();
+            DataProvider.GetAvailableLanguages().ForEach(item=>list.Add(new Langage{Code = item.Code, Name = item.NoM}));
+            AvailableLangages = list;
             Dico = new Dico();
             CurrentLangage = AvailableLangages.First();
         }
@@ -48,6 +52,11 @@ namespace Denapoli.Modules.I18n
         }
 
         public Dico Dico { get; private set; }
+
+        public List<string> Keys
+        {
+            get { return new List<string>(_currentdict.Keys); }
+        }
 
         public string Localize(string key)
         {
@@ -79,7 +88,7 @@ namespace Denapoli.Modules.I18n
         }
 
 
-        private static Dictionary<string, string> DownloadDico(string language)
+        private  Dictionary<string, string> DownloadDico(string language)
         {
             if (string.IsNullOrEmpty(language)) return new Dictionary<string, string>();
 

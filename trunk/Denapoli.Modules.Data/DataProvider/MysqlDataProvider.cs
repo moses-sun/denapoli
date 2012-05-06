@@ -11,34 +11,37 @@ namespace Denapoli.Modules.Data.DataProvider
     [Export(typeof(IDataProvider))]
     public class MysqlDataProvider : IDataProvider
     {
-        public MysqlDataProvider()
+        public ISettingsService SettingsService { get; set; }
+
+        [ImportingConstructor]
+        public MysqlDataProvider(ISettingsService  settingsService)
         {
-           
+            SettingsService = settingsService;
+            Connect();
         }
 
         private void Connect()
         {
-            var connStr = String.Format("server={0};user id={1}; password={2}; database={3}", "localhost", "root", "", "denapoli");
-            DAO = new DenapoliDTO(new MySqlConnection(connStr));
+            DAO = new DenapoliDTO(new MySqlConnection(SettingsService.GetDbConnextionParameters()));
         }
 
         private DenapoliDTO DAO { get; set; }
 
         public List<Famille> GetAvailableFamilies()
         {
-            Connect();
+            
             return new List<Famille>( DAO.Famille);
         }
 
         public List<Produit> GetAllProducts()
         {
-            Connect();
+            
             return new List<Produit>(DAO.Produit);
         }
 
         public List<Produit> GetFamilyProducts(Famille famille)
         {
-            Connect();
+            
             return new List<Produit>(famille.Produits);
         }
 
@@ -51,15 +54,36 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public List<Commande> GetMenuAllCommandes()
         {
-            Connect();
+            
             var list = new List<Commande>();
             DAO.Commande.ForEach(list.Add);
             return list;
         }
 
+        public List<Livreur> GetAllLivreurs()
+        {
+            var list = new List<Livreur>();
+            DAO.Livreur.ForEach(list.Add);
+            return list;
+        }
+
+        public List<Borne> GetAllBornes()
+        {
+            var list = new List<Borne>();
+            DAO.Borne.ForEach(list.Add);
+            return list;
+        }
+
+        public List<Langue> GetAvailableLanguages()
+        {
+            var list = new List<Langue>();
+            DAO.Langue.ForEach(list.Add);
+            return list;
+        }
+
         public List<Commande> GetMenuTodayCommandes()
         {
-            Connect();
+            
             var list = new List<Commande>();
             DAO.Commande.ForEach(list.Add);
             return list;
@@ -114,10 +138,35 @@ namespace Denapoli.Modules.Data.DataProvider
             return add;
         }
 
+        public Famille InsertIfNotExists(Famille p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Livreur InsertIfNotExists(Livreur l)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Borne InsertIfNotExists(Borne b)
+        {
+            throw new NotImplementedException();
+        }
+
         public Borne GetBorne(int id)
         {
-            Connect();
+          
             return DAO.Borne.FirstOrDefault(item => item.IDBorn == id);
+        }
+
+        public Produit InsertIfNotExists(Produit p)
+        {
+            /*if(p.IDProd == 0)
+            {
+                DAO.Produit.InsertOnSubmit(p);
+            }*/
+            DAO.SubmitChanges();
+            return p;
         }
     }
 }

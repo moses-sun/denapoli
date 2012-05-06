@@ -3,7 +3,7 @@ using Microsoft.Practices.Prism.Modularity;
 
 namespace Denapoli.Modules.I18n
 {
-    [ModuleExport(typeof(I18NModule))]
+    [ModuleExport(typeof(I18NModule), DependsOnModuleNames = new[] { "DataModule" })]
     public class I18NModule : IModule
     {
         public void Initialize()

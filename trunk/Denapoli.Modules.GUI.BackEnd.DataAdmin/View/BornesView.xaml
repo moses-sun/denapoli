@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="Denapoli.Modules.GUI.BackEnd.DataAdmin.View.BornesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation">
+  <UserControl.Resources>
+    <DataTemplate x:Key="DisplayBorne">
+      <StackPanel>
+        <telerik:DataFormDataField Label="ID" DataMemberBinding="{Binding Borne.IDBorn}" />
+        <telerik:DataFormDataField Label="N°" x:Name="enable" DataMemberBinding="{Binding Num}" />
+        <telerik:DataFormDataField Label="Voie" DataMemberBinding="{Binding Voie}" />
+        <telerik:DataFormDataField Label="Complement" DataMemberBinding="{Binding Complement}" />
+        <telerik:DataFormDataField Label="CP" DataMemberBinding="{Binding CP}" />
+        <telerik:DataFormDataField Label="Ville" DataMemberBinding="{Binding Ville}" />
+      </StackPanel>
+    </DataTemplate>
+  </UserControl.Resources>
+  <DockPanel Margin="10 10 10 10">
+    <telerik:RadDataForm
+      DockPanel.Dock="Right"
+      Header="Produit"
+      Width="400"
+      AutoGenerateFields="False"
+      ItemsSource="{Binding Bornes}"
+      CurrentItem="{Binding SelectedBorne, Mode=TwoWay}"
+      ReadOnlyTemplate="{StaticResource DisplayBorne}"
+      EditTemplate="{StaticResource DisplayBorne}"
+      NewItemTemplate="{StaticResource DisplayBorne}" />
+
+    <telerik:RadGridView
+     ItemsSource="{Binding Bornes}"
+     SelectedItem="{Binding SelectedBorne, Mode=TwoWay}"
+     AutoGenerateColumns="False"
+     CanUserReorderColumns="False"
+     IsReadOnly="True"
+         
+                >
+      <telerik:RadGridView.Columns>
+        <telerik:GridViewDataColumn Header="ID" DataMemberBinding="{Binding Borne.IDBorn}"  TextAlignment="Center" />
+        <telerik:GridViewDataColumn Header="N°" DataMemberBinding="{Binding Num}"  TextAlignment="Center" />
+        <telerik:GridViewDataColumn Header="Voie" DataMemberBinding="{Binding Voie}"  TextAlignment="Center" />
+        <telerik:GridViewDataColumn Header="Complement" DataMemberBinding="{Binding Complement}"  TextAlignment="Center" />
+        <telerik:GridViewDataColumn Header="CP" DataMemberBinding="{Binding CP}"  TextAlignment="Center" />
+        <telerik:GridViewDataColumn Header="Ville" DataMemberBinding="{Binding Ville}"  TextAlignment="Center" />
+      </telerik:RadGridView.Columns>
+    </telerik:RadGridView>
+  </DockPanel>
+</UserControl>

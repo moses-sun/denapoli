@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.Windows.Controls;
 using Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel;
 using Denapoli.Modules.Infrastructure.Behavior;
 
