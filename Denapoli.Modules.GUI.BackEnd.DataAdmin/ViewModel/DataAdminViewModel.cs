@@ -35,6 +35,15 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         [Import]
         public LanguagesAdminViewModel LanguagesViewModel { get; private set; }
 
+        [Import]
+        public MenusAdminViewModel MenusViewModel { get; private set; }
+
+        [Import]
+        public BornesAdminViewModel BornesViewModel { get; private set; }
+
+        [Import]
+        public LivreurAdminViewModel LivreursViewModel { get; private set; }
+
 
 
         private delegate void OpenCallback();

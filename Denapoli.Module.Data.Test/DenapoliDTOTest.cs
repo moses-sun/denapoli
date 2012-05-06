@@ -39,6 +39,23 @@ namespace Denapoli.Module.Data.Test
         }
 
         [Test]
+        public void InsertProduitTest()
+        {
+            var prod = _dto.Produit.FirstOrDefault();
+          
+            if(prod!=null)
+            {
+                //prod.Nom = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            }
+            var prod2 = new Produit {Nom = "toto", Description = "Description", IDFaMil = 2, Prix = 4.5f,};
+           // _dto.Produit.InsertOnSubmit(prod2);
+            _dto.SubmitChanges();
+            var p = _dto.Produit.FirstOrDefault(item => item.Nom == "toto");
+            Assert.IsNotNull(p);
+            Assert.AreEqual(4.5f, p.Prix);
+        }
+
+        [Test]
         public void ClientTableTest()
         {
             Console.WriteLine("count=" + _dto.Client.Count());
@@ -129,6 +146,17 @@ namespace Denapoli.Module.Data.Test
                 Console.WriteLine(v.Produit.Nom);
                 foreach (var com in v.ProduitsMenu)
                     Console.WriteLine("     " + com.Produit.Famille.Nom+" : " + com.Produit.Nom);
+            }
+        }
+
+        [Test]
+        public void LangueTableTest()
+        {
+            Console.WriteLine("count=" + _dto.Langue.Count());
+
+            foreach (var v in _dto.Langue)
+            {
+                Console.WriteLine(v.NoM + " - " + v.Code);
             }
         }
 

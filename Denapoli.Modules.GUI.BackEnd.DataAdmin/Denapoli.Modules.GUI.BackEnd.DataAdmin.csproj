@@ -31,6 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DbLinq, Version=0.20.0.0, Culture=neutral, PublicKeyToken=61e015a67077348b, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
@@ -72,9 +74,22 @@
   <ItemGroup>
     <Compile Include="DataAdminModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\BornesAdminViewModel.cs" />
+    <Compile Include="ViewModel\BorneVm.cs" />
     <Compile Include="ViewModel\FamillesAdminViewModel.cs" />
+    <Compile Include="ViewModel\FamilleVm.cs" />
+    <Compile Include="ViewModel\LangageVm.cs" />
     <Compile Include="ViewModel\LanguagesAdminViewModel.cs" />
+    <Compile Include="ViewModel\LivreurAdminViewModel.cs" />
+    <Compile Include="ViewModel\LivreurVm.cs" />
+    <Compile Include="ViewModel\MenusAdminViewModel.cs" />
+    <Compile Include="ViewModel\MenuVm.cs" />
     <Compile Include="ViewModel\ProduitsAdminViewModel.cs" />
+    <Compile Include="ViewModel\ProduitVm.cs" />
+    <Compile Include="ViewModel\Traduction.cs" />
+    <Compile Include="View\BornesView.xaml.cs">
+      <DependentUpon>BornesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DataAdminMenuView.xaml.cs">
       <DependentUpon>DataAdminMenuView.xaml</DependentUpon>
     </Compile>
@@ -82,13 +97,52 @@
       <DependentUpon>DataAdminView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\DataAdminViewModel.cs" />
+    <Compile Include="View\FamiliesView.xaml.cs">
+      <DependentUpon>FamiliesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\I18nView.xaml.cs">
+      <DependentUpon>I18nView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LivreursView.xaml.cs">
+      <DependentUpon>LivreursView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MenusView.xaml.cs">
+      <DependentUpon>MenusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProductsView.xaml.cs">
+      <DependentUpon>ProductsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\BornesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\DataAdminMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DataAdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\FamiliesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\I18nView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LivreursView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MenusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ProductsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

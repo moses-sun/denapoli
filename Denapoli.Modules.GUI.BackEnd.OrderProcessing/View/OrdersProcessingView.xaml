@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation">
     <DockPanel x:Name="myroot">
-        <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}">
+        <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}" Margin="20 20 20 20">
           <StackPanel Width="400">
           <GroupBox Header="Commande"    FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
             <Grid>
               <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*"  />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -18,46 +18,44 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" />
-              <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" />
+              <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" Margin="7 3 7 3"/>
+              <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" Margin="7 3 7 3"/>
               
-              <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" />
-              <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date}" />
+              <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" Margin="7 3 7 3"/>
+              <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date}" Margin="7 3 7 3"/>
               
-              <TextBlock Grid.Column="0" Grid.Row="2"  Text="Chrono :" />
-              <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Chrono}" Background="{Binding Color}" Foreground="White"/>
+              <TextBlock Grid.Column="0" Grid.Row="2"  Text="Chrono :" Margin="7 3 7 3"/>
+              <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Chrono}" Margin="7 3 7 3" Background="{Binding Color}" Foreground="White"/>
 
-              <TextBlock Grid.Column="0" Grid.Row="3"  Text="Livreur :" />
-              <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Livreur.PreNoM}" />
+              <TextBlock Grid.Column="0" Grid.Row="3"  Text="Livreur :" Margin="7 3 7 3"/>
+              <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Livreur.PreNoM}" Margin="7 3 7 3"/>
 
-              <TextBlock Grid.Column="0" Grid.Row="4"  Text="Montant :" />
-              <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding Total}" />
+              <TextBlock Grid.Column="0" Grid.Row="4"  Text="Montant :" Margin="7 3 7 3"/>
+              <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding Total}" Margin="7 3 7 3"/>
             </Grid>
           </GroupBox>
           
-            <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+            <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 20 0 0">
                 <StackPanel >
                     <StackPanel Orientation="Horizontal" DataContext="{Binding Client}" >
-                        <TextBlock Text="{Binding Nom}" />
-                      <TextBlock Text="  " />
-                        <TextBlock Text="{Binding Prenom}"/>
+                        <TextBlock Text="{Binding Nom}" Margin="7 3 7 3"/>
+                        <TextBlock Text="{Binding Prenom}" Margin="7 3 7 3"/>
                     </StackPanel>
-                    <StackPanel  DataContext="{Binding Adresse}" >
-                      <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Num}" />
-                        <TextBlock Text="  " />
-                        <TextBlock Text="{Binding Voie}"/>
+                    <StackPanel  DataContext="{Binding Adresse}" Margin="7 3 7 3">
+                      <StackPanel Orientation="Horizontal" Margin="7 3 7 3">
+                        <TextBlock Text="{Binding Num}" Margin="7 3 7 3" />
+                        <TextBlock Text="{Binding Voie}" Margin="7 3 7 3"/>
                       </StackPanel>
-                      <TextBlock Text="{Binding Complement}"/>
+                      <TextBlock Text="{Binding Complement}" Margin="7 3 7 3"/>
                       <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding CP}"/>
+                        <TextBlock Text="{Binding CP}" Margin="7 3 7 3"/>
                         <TextBlock Text="  " />
-                        <TextBlock Text="{Binding Ville}"/>
+                        <TextBlock Text="{Binding Ville}" Margin="7 3 7 3"/>
                       </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-          <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+          <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 20 0 0">
             <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 2 2 2"
               ItemsSource="{Binding ElementName=myroot, Path=DataContext.Products}"
               >

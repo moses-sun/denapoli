@@ -5,7 +5,7 @@
                    xmlns:Entities="clr-namespace:Denapoli.Modules.Data.Entities;assembly=Denapoli.Modules.Data"
                    WindowState="Maximized" >
   <DockPanel x:Name="myroot">
-    <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}">
+    <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}" Margin="20 20 20 20">
       <StackPanel Width="400">
         <GroupBox Header="Commande"    FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
           <Grid>

@@ -9,6 +9,7 @@ namespace Denapoli.Modules.Infrastructure.Services
         string Localize(string key, Langage langage);
         Langage CurrentLangage { get; set; }
         Dico Dico { get; }
+        List<string> Keys { get; } 
     }
 
     public class Langage

@@ -26,9 +26,9 @@ namespace Denapoli
             base.ConfigureAggregateCatalog();
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DenapoliBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AutoPopulateExportedViewsBehavior).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(MainScreenModule).Assembly));
-            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(PaymentModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(CommandScreenModule).Assembly));
         }

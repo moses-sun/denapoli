@@ -116,6 +116,14 @@ namespace Denapoli.Modules.Data
                return this.GetTable<Livreur>();
            }
        }
+
+       public Table<Langue> Langue
+       {
+           get
+           {
+               return this.GetTable<Langue>();
+           }
+       }
    }
 }
 

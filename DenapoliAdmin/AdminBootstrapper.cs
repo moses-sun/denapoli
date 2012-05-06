@@ -22,8 +22,8 @@ namespace DenapoliAdmin
             base.ConfigureAggregateCatalog();
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AdminBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AutoPopulateExportedViewsBehavior).Assembly));
-            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(OrdersProcessingModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(StatsModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataAdminModule).Assembly));

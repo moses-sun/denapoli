@@ -14,6 +14,7 @@ namespace Denapoli.Modules.Data.Entities
         private int _idfAMil;
         private string _imageUrl;
         private string _noM;
+        private string _description;
         private EntitySet<ProduitComposition> _proDuiTcOmposition;
         private EntitySet<Produit> _produits;
 		
@@ -73,7 +74,25 @@ namespace Denapoli.Modules.Data.Entities
                 SendPropertyChanged("Nom");
             }
         }
+
+        [Column(Storage = "_description", Name = "DESCRIPTION", DbType = "varchar(150)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                if ((_description == value)) return;
+                SendPropertyChanging();
+                _description = value;
+                SendPropertyChanged("Description");
+            }
+        }
 		
+
         #region Children
         [Association(Storage="_proDuiTcOmposition", OtherKey="IDFaMil", ThisKey="IDFaMil", Name="familles_produit")]
         [DebuggerNonUserCode]
