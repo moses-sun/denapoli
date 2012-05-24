@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
@@ -64,19 +63,15 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldPrenom = Prenom;
         }
 
-        private void UpdateProduit()
+        private void UpdateLivreur()
         {
-           /* Prod.Nom = Nom;
-            Prod.Description = Description;
-            Prod.Prix = Prix;
-            var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
-            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
-            Prod.Famille = family;*/
+            Livreur.NoM = Nom;
+            Livreur.PreNoM = Prenom;
         }
 
         public void EndEdit()
         {
-            UpdateProduit();
+            UpdateLivreur();
             DataProvider.InsertIfNotExists(Livreur);
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Data.Linq;
 using System.Linq;
 using Denapoli.Modules.Data.Entities;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
@@ -112,30 +113,21 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Adresse InsertIfNotExists(Adresse addr)
         {
-            var add =  DAO.Adresse.FirstOrDefault(item => 
-                   item.Num == addr.Num
-                && item.Voie == addr.Voie
-                && item.Ville == addr.Ville
-                && item.Complement == addr.Complement
-                && item.NumCHamBRe == addr.NumCHamBRe);
-            if(add == null )
+            Connect();
+          
+            if(addr.IdaDr == 0 )
+                DAO.Adresse.InsertOnSubmit(addr);
+            else
             {
-                add = new Adresse { 
-                    Num = addr.Num,
-                    Voie = addr.Voie,
-                    Ville = addr.Ville,
-                    Complement = addr.Complement,
-                    NumCHamBRe = addr.NumCHamBRe};
-                DAO.Adresse.InsertOnSubmit(add);
-                DAO.SubmitChanges();
-                add =  DAO.Adresse.FirstOrDefault(item => 
-                   item.Num == addr.Num
-                && item.Voie == addr.Voie
-                && item.Ville == addr.Ville
-                && item.Complement == addr.Complement
-                && item.NumCHamBRe == addr.NumCHamBRe);
+                var add = DAO.Adresse.First(item=>item.IdaDr==addr.IdaDr);
+                add.Num = addr.Num;
+                add.Voie = addr.Voie;
+                add.Ville = addr.Ville;
+                add.Complement = addr.Complement;
+                add.NumCHamBRe = addr.NumCHamBRe;
             }
-            return add;
+            DAO.SubmitChanges();
+            return addr;
         }
 
         public Famille InsertIfNotExists(Famille p)
@@ -145,12 +137,35 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Livreur InsertIfNotExists(Livreur l)
         {
-            throw new NotImplementedException();
+            Connect();
+            if (l.IDLiVReUR == 0)
+                DAO.Livreur.InsertOnSubmit(l);
+            else
+            {
+                var livreur = DAO.Livreur.First(item => item.IDLiVReUR == l.IDLiVReUR);
+                livreur.NoM = l.NoM;
+                livreur.PreNoM = l.PreNoM;
+            }
+            DAO.SubmitChanges();
+            return l;
         }
 
         public Borne InsertIfNotExists(Borne b)
         {
-            throw new NotImplementedException();
+            var addr = InsertIfNotExists(b.Adresse);
+            b.Adresse = addr;
+            b.IdaDr = addr.IdaDr;
+            Connect();
+            if (b.IDBorn == 0)
+                DAO.Borne.InsertOnSubmit(b);
+            else
+            {
+                var borne = DAO.Borne.First(item => item.IDBorn == b.IDBorn);
+                borne.Adresse = b.Adresse;
+                borne.IdaDr = b.IdaDr;
+            }
+            DAO.SubmitChanges();
+            return b;
         }
 
         public Borne GetBorne(int id)
@@ -161,10 +176,17 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Produit InsertIfNotExists(Produit p)
         {
-            /*if(p.IDProd == 0)
-            {
+            Connect();
+            if (p.IDProd == 0)
                 DAO.Produit.InsertOnSubmit(p);
-            }*/
+            else
+            {
+                var produit = DAO.Produit.First(item => item.IDProd == p.IDProd);
+                produit.Nom = p.Nom;
+                produit.Prix = p.Prix;
+                produit.Description = p.Description;
+                produit.IDFaMil = p.IDFaMil;
+            }
             DAO.SubmitChanges();
             return p;
         }

@@ -102,6 +102,65 @@ namespace Denapoli.Module.Data.Test
             }
         }
 
+        [Test]
+        public void AddFamilleTest()
+        {
+            var famille = new Famille {Description = "Desc1", Nom = "TestFamility",ImageURL = "URL"};
+            _dto.Famille.InsertOnSubmit(famille);
+            _dto.SubmitChanges();
+            var last = _dto.Famille.Last();
+            Assert.AreEqual(famille.Nom, last.Nom);
+            _dto.Famille.DeleteOnSubmit(last);
+            _dto.SubmitChanges();
+        }
+
+        [Test]
+        public void AddProduitTest()
+        {
+            var produit = new Produit() { Description = "Desc1", Nom = "TestProd", ImageURL = "URL", IDFaMil = _dto.Famille.Last().IDFaMil};
+            _dto.Produit.InsertOnSubmit(produit);
+            _dto.SubmitChanges();
+            var last = _dto.Produit.Last();
+            Assert.AreEqual(produit.Nom, last.Nom);
+            _dto.Produit.DeleteOnSubmit(last);
+            _dto.SubmitChanges();
+        }
+
+        [Test]
+        public void AddBorneTest()
+        {
+            var addr = _dto.Adresse.Last();
+            var borne = new Borne { Adresse = addr, IdaDr = addr.IdaDr};
+            _dto.Borne.InsertOnSubmit(borne);
+            _dto.SubmitChanges();
+            var last = _dto.Borne.Last();
+            Assert.AreEqual(borne.IdaDr, last.IdaDr);
+            _dto.Borne.DeleteOnSubmit(last);
+            _dto.SubmitChanges();
+        }
+
+        [Test]
+        public void AddLivreurTest()
+        {
+            var livreur = new Livreur { NoM = "LIvreurTest", PreNoM = "momo"};
+            _dto.Livreur.InsertOnSubmit(livreur);
+            _dto.SubmitChanges();
+            var last = _dto.Livreur.Last();
+            Assert.AreEqual(livreur.NoM, last.NoM);
+            _dto.Livreur.DeleteOnSubmit(last);
+            _dto.SubmitChanges();
+
+          
+        }
+
+        [Test]
+        public void UpdateLivreurTest()
+        {
+            var livreur = _dto.Livreur.FirstOrDefault();
+            livreur.NoM = "toto";
+            _dto.SubmitChanges();
+        }
+
 
         [Test]
         public void LivreurTableTest()

@@ -121,12 +121,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UpdateProduit()
         {
-           /* Prod.Nom = Nom;
-            Prod.Description = Description;
-            Prod.Prix = Prix;
-            var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
-            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
-            Prod.Famille = family;*/
+            BorneAdresse.Num = Num;
+            BorneAdresse.Voie = Voie;
+            BorneAdresse.Complement = Complement;
+            BorneAdresse.Ville = Ville;
+            BorneAdresse.CP = CP;
         }
 
         public void EndEdit()
