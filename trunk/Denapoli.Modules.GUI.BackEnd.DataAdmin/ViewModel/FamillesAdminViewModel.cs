@@ -16,14 +16,16 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
     {
         private IDataProvider DataProvider { get; set; }
         private ILocalizationService LocalizationService { get; set; }
+        public ISettingsService SettingsService { get; set; }
         public ObservableCollection<FamilleVm> Familles { get; set; }
        
 
         [ImportingConstructor]
-        public FamillesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService)
+        public FamillesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
             DataProvider = dataProvider;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             Familles = new ObservableCollection<FamilleVm>();
             UpdateFamilles();
             Familles.CollectionChanged += OnFamilleschanged;
@@ -50,7 +52,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Familles.CollectionChanged -= OnFamilleschanged;
             Familles.Clear();
             var familles = DataProvider.GetAvailableFamilies();
-            familles.ForEach(item => Familles.Add(new FamilleVm(item, DataProvider, LocalizationService)));
+            familles.ForEach(item => Familles.Add(new FamilleVm(item, DataProvider, LocalizationService, SettingsService)));
             SelectedFamille = Familles.FirstOrDefault();
             Familles.CollectionChanged += OnFamilleschanged;
         }
