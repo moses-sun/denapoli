@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Net;
 using System.Windows;
 using System.Windows.Forms;
 using Denapoli.Modules.Data;
@@ -10,6 +10,7 @@ using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
+using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -21,12 +22,14 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static ILocalizationService LocalizationService { get; set; }
         public ObservableCollection<Traduction> Traductions { get; set; }
         public ObservableCollection<Produit> FamilyProducts { get; set; }
+        public static ISettingsService SettingsService { get; set; }
 
-        public FamilleVm(Famille f, IDataProvider dataProvider, ILocalizationService localizationService)
+        public FamilleVm(Famille f, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
             Family = f;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             FamilyProducts = new ObservableCollection<Produit>();
@@ -36,8 +39,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         public FamilleVm()
         {
+            Family = new Famille();
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
+            FamilyProducts = new ObservableCollection<Produit>();
             ReSetProperties();
         }
 
@@ -45,7 +50,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             Nom = Family.Nom;
             Description = Family.Description;
-            _imageURL = Family.ImageURL;
+            ImageURL = Family.ImageURL;
 
             Traductions.Clear();
             foreach (var language in LocalizationService.AvailableLangages)
@@ -59,7 +64,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
 
             FamilyProducts.Clear();
-            Family.Produitss.ForEach(item => FamilyProducts.Add(item));
+            if(Family.Produitss != null)
+                Family.Produitss.ForEach(item => FamilyProducts.Add(item));
         }
 
         private string _oldNom;
@@ -113,6 +119,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         }
 
         private Visibility _isPodImage;
+
         public Visibility IsPodImage
         {
             get { return _isPodImage; }
@@ -125,13 +132,30 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         public ActionCommand BrowseImageCommand { get; set; }
 
+        private string _imageLocalURL;
+        public string ImageLocalURL
+        {
+            get
+            {
+                return _imageLocalURL;
+            }
+            set
+            {
+                _imageLocalURL = value;
+                NotifyChanged("ImageLocalURL");
+            }
+        }
+
         private void BrowseImage()
         {
             var chooser = new OpenFileDialog {Filter = "Image files (*.png, *.jpg)|*.png;*.jpg"};
             var res = chooser.ShowDialog();
             if (DialogResult.Cancel.Equals(res))
                 return;
-            ImageURL = chooser.FileName;
+            ImageLocalURL = chooser.FileName;
+            ImageURL = Path.GetFileName(ImageLocalURL);
+            IsImageLoaded = Visibility.Visible;
+            IsPodImage = Visibility.Collapsed;
         }
 
         public void BeginEdit()
@@ -143,25 +167,34 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UpdateProduit()
         {
-           /* Prod.Nom = Nom;
-            Prod.Description = Description;
-            Prod.Prix = Prix;
-            var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
-            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
-            Prod.Famille = family;*/
+           Family.Nom = Nom;
+           Family.Description = Description;
+           Family.ImageURL = ImageURL;
         }
 
         public void EndEdit()
         {
             UpdateProduit();
             DataProvider.InsertIfNotExists(Family);
+            if (IsImageLoaded == Visibility.Visible)
+                UploadFile();
         }
 
         public void CancelEdit()
         {
             Nom = _oldNom;
             Description = _oldDescription;
-            _imageURL = _oldImageURL;
+            ImageURL = _oldImageURL;
+            IsImageLoaded = Visibility.Collapsed;
+            IsPodImage = Visibility.Visible;
+        }
+
+        private void UploadFile()
+        {
+            var client = new WebClient();
+            var result = client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+            var s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
+            MessageBox.Show(s);
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Forms;
 using Denapoli.Modules.Data;
@@ -9,6 +11,7 @@ using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -19,22 +22,25 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static IEnumerable<Famille> Famileis { get; set; }
         public static IDataProvider DataProvider { get; set; }
         public static ILocalizationService LocalizationService { get; set; }
+        public static ISettingsService SettingsService { get; set; }
         public ObservableCollection<Traduction> Traductions { get; set; } 
 
         public ProduitVm()
         {
+            Prod = new Produit();
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             FamiliesNames = new ObservableCollection<string>(Famileis.Select(item => item.Nom));
             ReSetProperties();
         }
 
-        public ProduitVm(Produit p, IEnumerable<Famille> famileis,IDataProvider dataProvider,  ILocalizationService localizationService)
+        public ProduitVm(Produit p, IEnumerable<Famille> famileis, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
             Prod = p;
             Famileis = famileis;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             FamiliesNames = new ObservableCollection<string>(Famileis.Select(item => item.Nom));
@@ -45,10 +51,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             Nom = Prod.Nom;
             Description = Prod.Description;
-            Famille = Prod.Famille.Nom;
+            Famille = Prod.Famille != null ? Prod.Famille.Nom : "";
             Prix = Prod.Prix;
-            _imageURL = Prod.ImageURL;
-
+            ImageURL = Prod.ImageURL;
+            ImageLocalURL = Prod.ImageURL;
             Traductions.Clear();
             foreach (var language in LocalizationService.AvailableLangages)
             {
@@ -61,7 +67,17 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-       
+        public string ImageLocalURL
+        {
+            get {
+                return _imageLocalURL;
+            }
+            set {
+                _imageLocalURL = value;
+                NotifyChanged("ImageLocalURL");
+            }
+        }
+
 
         private string _oldNom;
         private string _nom;
@@ -121,8 +137,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             {
                 _imageURL = value;
                 NotifyChanged("ImageURL");
-                IsImageLoaded = Visibility.Visible;
-                IsPodImage = Visibility.Collapsed;
+             
             }
         }
 
@@ -139,6 +154,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         }
 
         private Visibility _isPodImage;
+        private string _imageLocalURL;
+
         public Visibility IsPodImage
         {
             get { return _isPodImage; }
@@ -160,7 +177,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             var res = chooser.ShowDialog();
             if (DialogResult.Cancel.Equals(res))
                 return;
-            ImageURL = chooser.FileName;
+            ImageLocalURL = chooser.FileName;
+            ImageURL = Path.GetFileName(ImageLocalURL);
+            IsImageLoaded = Visibility.Visible;
+            IsPodImage = Visibility.Collapsed;
         }
 
         public void BeginEdit()
@@ -174,18 +194,30 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UpdateProduit()
         {
-           /* Prod.Nom = Nom;
-            Prod.Description = Description;
-            Prod.Prix = Prix;
-            var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
-            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
-            Prod.Famille = family;*/
+           Prod.Nom = Nom;
+           Prod.Description = Description;
+           Prod.Prix = Prix;
+           var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
+           Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
+           Prod.Famille = family;
+           Prod.ImageURL = ImageURL;
         }
 
         public void EndEdit()
         {
             UpdateProduit();
             DataProvider.InsertIfNotExists(Prod);
+            if (IsImageLoaded == Visibility.Visible)
+                UploadFile();
+
+        }
+
+        private void UploadFile()
+        {
+            var  client = new WebClient();
+            var result =  client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+            var s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
+            MessageBox.Show(s);
         }
 
         public void CancelEdit()
@@ -194,7 +226,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Description = _oldDescription;
             Famille = _oldFamille;
             Prix = _oldPrix;
-            _imageURL = _oldImageURL;
+            ImageURL = _oldImageURL;
+            IsImageLoaded = Visibility.Collapsed;
+            IsPodImage = Visibility.Visible;
         }
     }
 }

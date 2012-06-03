@@ -24,6 +24,7 @@ namespace Denapoli.Modules.Data
         Produit InsertIfNotExists(Produit p);
         Famille InsertIfNotExists(Famille p);
         Livreur InsertIfNotExists(Livreur l);
+        Produit InsertMenuIfNotExists(Produit p);
         Borne InsertIfNotExists(Borne b);
 
     }

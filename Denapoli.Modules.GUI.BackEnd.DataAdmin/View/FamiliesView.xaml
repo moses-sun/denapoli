@@ -16,7 +16,7 @@
         </DockPanel >
         <WrapPanel HorizontalAlignment="Center">
           <Image Width="50" Visibility="{Binding IsPodImage}"     Height="50" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-          <Image Width="50" Visibility="{Binding IsImageLoaded}"  Height="50" Source="{Binding ImageURL, Mode=TwoWay}"/>
+          <Image Width="50" Visibility="{Binding IsImageLoaded}"  Height="50" Source="{Binding ImageLocalURL, Mode=TwoWay}"/>
         </WrapPanel>
         <TextBlock Text="Traduction :" />
         <telerik:RadGridView

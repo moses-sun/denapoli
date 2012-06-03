@@ -17,7 +17,7 @@
         </DockPanel >
         <WrapPanel HorizontalAlignment="Center">
           <Image Width="50" Visibility="{Binding IsPodImage}"     Height="50" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-          <Image Width="50" Visibility="{Binding IsImageLoaded}"  Height="50" Source="{Binding ImageURL, Mode=TwoWay}"/>
+          <Image Width="50" Visibility="{Binding IsImageLoaded}"  Height="50" Source="{Binding ImageLocalURL, Mode=TwoWay}"/>
         </WrapPanel>
 
         <TextBlock Text="Composition :" />
@@ -38,7 +38,7 @@
               </telerik:GridViewColumn.CellTemplate>
             </telerik:GridViewColumn>
 
-            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Famille.Nom}" Header="Famille" TextAlignment="Center" />
+            <telerik:GridViewComboBoxColumn  ItemsSource="{Binding FamiliesNames}" DataMemberBinding="{Binding FamilyName}" Header="Famille" TextAlignment="Center" />
             <telerik:GridViewDataColumn  DataMemberBinding="{Binding Quantite}" Header="Quantité" TextAlignment="Center" />
           </telerik:RadGridView.Columns>
         </telerik:RadGridView>

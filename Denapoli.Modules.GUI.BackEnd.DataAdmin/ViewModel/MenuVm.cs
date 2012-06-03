@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Forms;
 using Denapoli.Modules.Data;
@@ -20,26 +24,29 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public Produit Menu { get; set; }
         public static IDataProvider DataProvider { get; set; }
         public static ILocalizationService LocalizationService { get; set; }
+        public static ISettingsService SettingsService { get; set; }
         public ObservableCollection<Traduction> Traductions { get; set; }
-        public ObservableCollection<MenuComposition> MenuComposition { get; set; }
+       
 
         public MenuVm()
         {
+            Menu = new Produit();
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
-            MenuComposition = new ObservableCollection<MenuComposition>();
+            MenuComposition = new ObservableCollection<MenuCompositionn>();
             ReSetProperties();
         }
 
 
-        public MenuVm(Produit menu, IDataProvider dataProvider, ILocalizationService localizationService)
+        public MenuVm(Produit menu, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
             Menu = menu;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
-            MenuComposition = new ObservableCollection<MenuComposition>();
+            MenuComposition = new ObservableCollection<MenuCompositionn>();
             ReSetProperties();
         }
 
@@ -63,8 +70,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Nom = Menu.Nom;
             Description = Menu.Description;
             Prix = Menu.Prix;
-            _imageURL = Menu.ImageURL;
-
+            ImageURL = Menu.ImageURL;
+            FamiliesNames = new ObservableCollection<string>(DataProvider.GetAvailableFamilies().Select(item=>item.Nom));
             Traductions.Clear();
             foreach (var language in LocalizationService.AvailableLangages)
             {
@@ -76,9 +83,12 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 });
             }
              MenuComposition.Clear();
-             Menu.ProduitComposition.ForEach(comp => MenuComposition.Add(new MenuComposition{Famille = comp.Famille, Quantite = comp.Quantite ?? 1}));
+             Menu.ProduitComposition.ForEach(comp => MenuComposition.Add(new MenuCompositionn { Famille = comp.Famille, Quantite = comp.Quantite ?? 1, FamiliesNames = FamiliesNames }));
              MenuComposition.CollectionChanged += OnMenusChanged;
         }
+
+        private List<MenuCompositionn> _oldMenuComposition = new List<MenuCompositionn>();
+        public ObservableCollection<MenuCompositionn> MenuComposition { get; set; }
 
         private string _oldNom;
         private string _nom;
@@ -156,7 +166,21 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public ObservableCollection<string> FamiliesNames { get; set; }
 
         public ActionCommand BrowseImageCommand { get; set; }
-       
+
+        private string _imageLocalURL;
+        public string ImageLocalURL
+        {
+            get
+            {
+                return _imageLocalURL;
+            }
+            set
+            {
+                _imageLocalURL = value;
+                NotifyChanged("ImageLocalURL");
+            }
+        }
+
 
         private void BrowseImage()
         {
@@ -164,7 +188,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             var res = chooser.ShowDialog();
             if (DialogResult.Cancel.Equals(res))
                 return;
-            ImageURL = chooser.FileName;
+            ImageLocalURL = chooser.FileName;
+            ImageURL = Path.GetFileName(ImageLocalURL);
+            IsImageLoaded = Visibility.Visible;
+            IsPodImage = Visibility.Collapsed;
         }
 
         public void BeginEdit()
@@ -173,22 +200,39 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldDescription = Description;
             _oldPrix = Prix;
             _oldImageURL = ImageURL;
+            _oldMenuComposition = new List<MenuCompositionn>(MenuComposition);
         }
 
         private void UpdateProduit()
         {
-           /* Prod.Nom = Nom;
-            Prod.Description = Description;
-            Prod.Prix = Prix;
-            var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
-            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
-            Prod.Famille = family;*/
+            Menu.Nom = Nom;
+            Menu.Description = Description;
+            Menu.Prix = Prix;
+            Menu.ImageURL = ImageURL;           
+            Menu.ProduitComposition.Clear();
+            var families = DataProvider.GetAvailableFamilies();
+
+            MenuComposition.ForEach(item=>
+                                        {
+                                            var famille = families.FirstOrDefault(e => e.Nom == item.FamilyName);
+                                            if (famille == null) return;
+                                            Menu.ProduitComposition.Add(new ProduitComposition
+                                            {
+                                                IDProd = Menu.IDProd,
+                                                IDFaMil = famille.IDFaMil,
+                                                Quantite = item.Quantite
+                                            });
+                                        });
+
+           
         }
 
         public void EndEdit()
         {
             UpdateProduit();
-            DataProvider.InsertIfNotExists(Menu);
+            DataProvider.InsertMenuIfNotExists(Menu);
+            if (IsImageLoaded == Visibility.Visible)
+                UploadFile();
         }
 
         public void CancelEdit()
@@ -196,13 +240,46 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Nom = _oldNom;
             Description = _oldDescription;
             Prix = _oldPrix;
-            _imageURL = _oldImageURL;
+            ImageURL = _oldImageURL;
+            IsImageLoaded = Visibility.Collapsed;
+            IsPodImage = Visibility.Visible;
+            MenuComposition.Clear();
+            _oldMenuComposition.ForEach(item => MenuComposition.Add(item));
+        }
+
+        private void UploadFile()
+        {
+            var client = new WebClient();
+            var result = client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+            var s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
+            MessageBox.Show(s);
         }
     }
 
-    public class MenuComposition : NotifyPropertyChanged
+    public class MenuCompositionn : NotifyPropertyChanged
     {
-        public Famille Famille { get; set; }
+        private Famille _famille;
+        public Famille Famille
+        {
+            get { return _famille; }
+            set
+            {
+                _famille = value;
+                FamilyName = value.Nom;
+            }
+        }
+
+        private string _familyName;
+        public string FamilyName
+        {
+            get { return _familyName; }
+            set
+            {
+                _familyName = value;
+                NotifyChanged("FamilyName");
+            }
+        }
+
         private int _quantite;
         public int Quantite
         {
@@ -213,5 +290,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 NotifyChanged("Quantite");
             }
         }
+
+
+        public ObservableCollection<String> FamiliesNames { get; set; } 
     }
 }

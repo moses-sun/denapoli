@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Data.Linq;
 using System.Linq;
 using Denapoli.Modules.Data.Entities;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
@@ -132,7 +130,61 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Famille InsertIfNotExists(Famille p)
         {
-            throw new NotImplementedException();
+            Connect();
+            if (p.IDFaMil == 0)
+                DAO.Famille.InsertOnSubmit(p);
+            else
+            {
+                var famille = DAO.Famille.First(item => item.IDFaMil == p.IDFaMil);
+                famille.Nom = p.Nom;
+                famille.Description = p.Description;
+                famille.ImageURL = p.ImageURL;
+            }
+            DAO.SubmitChanges();
+            return p;
+        }
+
+        public Produit InsertMenuIfNotExists(Produit menu)
+        {
+            Connect();
+            
+            if (menu.IDProd == 0)
+            {
+                var menuFamille = DAO.Famille.First(item => item.Nom == "menus");
+                menu.Famille = menuFamille;
+                DAO.Produit.InsertOnSubmit(menu);
+            }
+            else
+            {
+                var produit = DAO.Produit.First(item => item.IDProd == menu.IDProd);
+                produit.Nom = menu.Nom;
+                produit.Prix = menu.Prix;
+                produit.Description = menu.Description;
+                produit.ImageURL = menu.ImageURL;
+
+                var toremove = new List<ProduitComposition>();
+                produit.ProduitComposition.ForEach(item =>
+                {
+                    var exists = menu.ProduitComposition.FirstOrDefault(e => e.IDFaMil == item.IDFaMil);
+                    if (exists == null) toremove.Add(item);
+                    else item.Quantite = exists.Quantite;
+                });
+                toremove.ForEach(e =>
+                                     {
+                                        
+                                         var r =DAO.ProduitComposition.FirstOrDefault(i => i.IDFaMil == e.IDFaMil && i.IDProd == e.IDProd);
+                                         DAO.ProduitComposition.DeleteOnSubmit(r);
+                                     });
+                menu.ProduitComposition.Where(item => produit.ProduitComposition.FirstOrDefault(e => e.IDFaMil == item.IDFaMil) == null)
+                    .ForEach(toadd => produit.ProduitComposition.Add(new ProduitComposition
+                                                                         {
+                                                                             IDProd = produit.IDProd,
+                                                                             IDFaMil = toadd.IDFaMil,
+                                                                             Quantite = toadd.Quantite
+                                                                         }));
+            }
+            DAO.SubmitChanges();
+            return menu;
         }
 
         public Livreur InsertIfNotExists(Livreur l)
@@ -186,8 +238,11 @@ namespace Denapoli.Modules.Data.DataProvider
                 produit.Prix = p.Prix;
                 produit.Description = p.Description;
                 produit.IDFaMil = p.IDFaMil;
+                produit.Famille = DAO.Famille.FirstOrDefault(item => item.IDFaMil == p.IDFaMil);
+                produit.ImageURL = p.ImageURL;
             }
             DAO.SubmitChanges();
+            p.Famille = DAO.Famille.FirstOrDefault(item => item.IDFaMil == p.IDFaMil);
             return p;
         }
     }
