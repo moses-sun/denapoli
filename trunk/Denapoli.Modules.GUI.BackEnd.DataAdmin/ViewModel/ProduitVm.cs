@@ -11,7 +11,6 @@ using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
-using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -215,9 +214,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         private void UploadFile()
         {
             var  client = new WebClient();
-            var result =  client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
-            var s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
-            MessageBox.Show(s);
+            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
         }
 
         public void CancelEdit()

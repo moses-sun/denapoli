@@ -20,6 +20,7 @@ namespace Denapoli.Modules.Data
         void AddCommande(Commande com);
 
         Client InsertIfNotExists(Client client);
+        Langue InsertIfNotExists(Langue client);
         Adresse InsertIfNotExists(Adresse addAdresse);
         Produit InsertIfNotExists(Produit p);
         Famille InsertIfNotExists(Famille p);
