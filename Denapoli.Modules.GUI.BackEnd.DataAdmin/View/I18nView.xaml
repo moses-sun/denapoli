@@ -28,41 +28,81 @@
           NewItemTemplate="{StaticResource DiplayLangue}"
           />
     </DataTemplate>
+    <DataTemplate x:Key="Form">
+      <DockPanel Margin="10 10 10 10">
+        <telerik:DataFormDataField Width="0" Height="0" x:Name="Parent"  />
+        <telerik:RadGridView Width="400" 
+            IsReadOnly="{Binding ElementName=Parent, Path=IsReadOnly}"
+            DockPanel.Dock="Right"
+            ItemsSource="{Binding Langues}"
+            SelectedItem="{Binding SelectedLangue, Mode=TwoWay}"
+            AutoGenerateColumns="False"
+            CanUserReorderColumns="False"
+            ShowInsertRow="True"
+            RowDetailsVisibilityMode="Collapsed"
+            RowDetailsTemplate="{StaticResource LangueDetail}"
+       >
+          <telerik:RadGridView.Columns>
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Nom}" Header="Nom" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Code}" Header="Code" TextAlignment="Center" />
+            <telerik:GridViewColumn>
+              <telerik:GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <WrapPanel HorizontalAlignment="Center">
+                    <Image Width="50" Visibility="{Binding IsPodImage}"     Height="50" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
+                    <Image Width="50" Visibility="{Binding IsImageLoaded}"  Height="50" Source="{Binding ImageLocalURL, Mode=TwoWay}"/>
+                  </WrapPanel>
+                </DataTemplate>
+              </telerik:GridViewColumn.CellTemplate>
+            </telerik:GridViewColumn>
+            <telerik:GridViewColumn >
+              <telerik:GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <DockPanel >
+                    <telerik:RadButton  Width="0" Height="0" x:Name="enable2" Command="telerik:RadGridViewCommands.Delete" CommandParameter="{Binding}" />
+                    <telerik:RadButton Content="Parcourir" Command="{Binding BrowseImageCommand}" IsEnabled="{Binding ElementName=enable2, Path=IsEnabled}" CommandParameter="{Binding}" />
+                  </DockPanel>
+                </DataTemplate>
+              </telerik:GridViewColumn.CellTemplate>
+            </telerik:GridViewColumn>
+            <telerik:GridViewColumn>
+              <telerik:GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <telerik:RadButton Content="Supprimer" x:Name="tototo" Command="telerik:RadGridViewCommands.Delete" CommandParameter="{Binding}" />
+                </DataTemplate>
+              </telerik:GridViewColumn.CellTemplate>
+            </telerik:GridViewColumn>
+          </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+        <telerik:RadGridView
+          IsReadOnly="{Binding ElementName=Parent, Path=IsReadOnly}"
+          ItemsSource="{Binding SelectedDico, Mode=TwoWay}"
+          AutoGenerateColumns="False"
+          CanUserReorderColumns="False"
+                >
+          <telerik:RadGridView.Columns>
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Key}" Header="clé" TextAlignment="Left" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Value}" Header="Traduction" TextAlignment="Left" />
+          </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+      </DockPanel>
+
+    </DataTemplate>
 
   </UserControl.Resources>
-  <DockPanel Margin="10 10 10 10">
-    <telerik:RadGridView Width="400"
-        DockPanel.Dock="Right"
-        ItemsSource="{Binding Langues}"
-        SelectedItem="{Binding SelectedLangue, Mode=TwoWay}"
-        AutoGenerateColumns="False"
-        CanUserReorderColumns="False"
-        ShowInsertRow="True"
-        RowDetailsVisibilityMode="Collapsed"
-        RowDetailsTemplate="{StaticResource LangueDetail}"
-       >
-      <telerik:RadGridView.Columns>
-        <telerik:GridViewDataColumn  DataMemberBinding="{Binding Nom}" Header="Nom" TextAlignment="Center" />
-        <telerik:GridViewDataColumn  DataMemberBinding="{Binding Code}" Header="Code" TextAlignment="Center" />
-        <telerik:GridViewColumn>
-          <telerik:GridViewColumn.CellTemplate>
-            <DataTemplate>
-              <telerik:RadButton Content="Supprimer" Command="telerik:RadGridViewCommands.Delete" CommandParameter="{Binding}" />
-            </DataTemplate>
-          </telerik:GridViewColumn.CellTemplate>
-        </telerik:GridViewColumn>
-      </telerik:RadGridView.Columns>
-    </telerik:RadGridView>
-
-    <telerik:RadGridView
-     ItemsSource="{Binding SelectedDico}"
-     AutoGenerateColumns="False"
-     CanUserReorderColumns="False"
-                >
-      <telerik:RadGridView.Columns>
-        <telerik:GridViewDataColumn  DataMemberBinding="{Binding Key}" Header="clé" TextAlignment="Left" />
-        <telerik:GridViewDataColumn  DataMemberBinding="{Binding Value}" Header="Traduction" TextAlignment="Left" />
-      </telerik:RadGridView.Columns>
-    </telerik:RadGridView>
+  <DockPanel >
+    <telerik:RadDataForm
+     
+      DockPanel.Dock="Right"
+      Header="Langues"
+      AutoGenerateFields="False"
+      CurrentItem="{Binding}"
+      ReadOnlyTemplate="{StaticResource Form}"
+      EditTemplate="{StaticResource Form}"
+      NewItemTemplate="{StaticResource Form}" />
   </DockPanel>
+    
+  
+ 
 </UserControl>

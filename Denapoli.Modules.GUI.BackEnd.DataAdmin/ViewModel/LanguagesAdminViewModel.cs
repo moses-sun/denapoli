@@ -6,53 +6,43 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using Denapoli.Modules.Data;
-using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
     [Export]
-    public class LanguagesAdminViewModel : NotifyPropertyChanged
+    public class LanguagesAdminViewModel : NotifyPropertyChanged, IEditableObject
     {
         public IDataProvider DataProvider { get; set; }
         public ILocalizationService LocalizationService { get; set; }
+        public ISettingsService SettingsService { get; set; }
         public ObservableCollection<LangageVm> Langues { get; set; }
         public ObservableCollection<DicoEntry> SelectedDico { get; set; }
 
         [ImportingConstructor]
-        public LanguagesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService)
+        public LanguagesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
             DataProvider = dataProvider;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             Langues = new ObservableCollection<LangageVm>();
             SelectedDico = new ObservableCollection<DicoEntry>();
             UpdateLangues();
         }
 
-        private void OnLangueschanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    MessageBox.Show("add Langage");
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    MessageBox.Show("Remove Langage");
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
 
         private void UpdateLangues()
         {
-            Langues.CollectionChanged -= OnLangueschanged;
             Langues.Clear();
-            foreach (var l in LocalizationService.AvailableLangages) Langues.Add(new LangageVm(l));
+            foreach (var l in LocalizationService.AvailableLangages)
+            {
+                var langageVm = new LangageVm(l, DataProvider, SettingsService);
+                LocalizationService.Keys.ForEach(key => langageVm.Dico.Add(new DicoEntry { Key = key, Value = LocalizationService.Localize(key, langageVm.Langage) }));
+                Langues.Add(langageVm);
+            }
             SelectedLangue = Langues.FirstOrDefault();
-            Langues.CollectionChanged += OnLangueschanged;
         }
 
         private LangageVm _selectedLangue;
@@ -62,55 +52,23 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             set
             {
                 _selectedLangue = value;
-                UpdateDico();
-            }
-        }
-
-        private void UpdateDico()
-        {
-            SelectedDico.Clear();
-            LocalizationService.Keys.ForEach(key => SelectedDico.Add(new DicoEntry{Key = key, Value = LocalizationService.Localize(key,SelectedLangue.Langage)}));
-        }
-    }
-
-    public class DicoEntry : NotifyPropertyChanged,  IEditableObject
-    {
-        private string _key;
-        public string Key
-        {
-            get { return _key; }
-            set
-            {
-                _key = value;
-                NotifyChanged("Key");
-            }
-        }
-
-        private string _oldValue;
-        private string _value;
-        public string Value
-        {
-            get { return _value; }
-            set
-            {
-                _value = value;
-                NotifyChanged("Value");
+                SelectedDico = value.Dico;
             }
         }
 
         public void BeginEdit()
         {
-            _oldValue = Value;
+            Langues.ForEach(item => item.BeginEdit());
         }
 
         public void EndEdit()
         {
-           //TODO
+            Langues.ForEach(item => item.EndEdit());
         }
 
         public void CancelEdit()
         {
-            Value = _oldValue;
+            Langues.ForEach(item => item.CancelEdit());
         }
     }
 }

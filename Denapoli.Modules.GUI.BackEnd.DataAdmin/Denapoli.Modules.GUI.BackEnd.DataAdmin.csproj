@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\BornesAdminViewModel.cs" />
     <Compile Include="ViewModel\BorneVm.cs" />
+    <Compile Include="ViewModel\DicoEntry.cs" />
     <Compile Include="ViewModel\FamillesAdminViewModel.cs" />
     <Compile Include="ViewModel\FamilleVm.cs" />
     <Compile Include="ViewModel\LangageVm.cs" />

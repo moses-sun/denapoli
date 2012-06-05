@@ -192,9 +192,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         private void UploadFile()
         {
             var client = new WebClient();
-            var result = client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
-            var s = System.Text.Encoding.UTF8.GetString(result, 0, result.Length);
-            MessageBox.Show(s);
+            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
         }
     }
 }

@@ -1,9 +1,16 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Forms;
+using Denapoli.Modules.Data;
+using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -11,6 +18,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
     public class LangageVm : NotifyPropertyChanged, IEditableObject
     {
         public Langage Langage { get; set; }
+        public static IDataProvider DataProvider { get; set; }
+        public static ISettingsService SettingsService { get; set; }
         public ActionCommand BrowseImageCommand { get; set; }
 
         public LangageVm()
@@ -18,13 +27,32 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Langage = new Langage();
             ReSetProperties();
             BrowseImageCommand = new ActionCommand(BrowseImage);
-        }
-
-        public LangageVm(Langage l)
-        {
-            Langage = l;
             ReSetProperties();
         }
+
+        public LangageVm(Langage l,IDataProvider dataProvider, ISettingsService settingsService)
+        {
+            Langage = l;
+            DataProvider = dataProvider;
+            BrowseImageCommand = new ActionCommand(BrowseImage);
+            SettingsService = settingsService;
+            ReSetProperties();
+        }
+
+        private string _imageLocalURL;
+        public string ImageLocalURL
+        {
+            get
+            {
+                return _imageLocalURL;
+            }
+            set
+            {
+                _imageLocalURL = value;
+                NotifyChanged("ImageLocalURL");
+            }
+        }
+
 
         private void BrowseImage()
         {
@@ -32,7 +60,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             var res = chooser.ShowDialog();
             if (DialogResult.Cancel.Equals(res))
                 return;
-            ImageURL = chooser.FileName;
+            ImageLocalURL = chooser.FileName;
+            IsImageLoaded = Visibility.Visible;
+            IsPodImage = Visibility.Collapsed;
         }
 
         private void ReSetProperties()
@@ -40,10 +70,21 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Nom = Langage.Name;
             Code = Langage.Code;
             ImageURL = Langage.ImageURL;
+            Dico = new ObservableCollection<DicoEntry>();
+            Langue = DataProvider.GetAvailableLanguages().First(item => item.Code==Langage.Code) ??
+                     new Langue{Code = "oo", NoM = "oo"};
         }
 
-
-
+        private Langue _langue;
+        public Langue Langue
+        {
+            get { return _langue; }
+            set
+            {
+                _langue = value;
+                NotifyChanged("Langue");
+            }
+        }
 
         private string _oldNom;
         private string _nom;
@@ -57,7 +98,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-        private string _oldPrenom;
+        private string _oldCode;
         private string _code;
 
         public string Code
@@ -79,8 +120,6 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             {
                 _imageURL = value;
                 NotifyChanged("ImageURL");
-                IsImageLoaded = Visibility.Visible;
-                IsPodImage = Visibility.Collapsed;
             }
         }
 
@@ -107,29 +146,64 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-
+        public ObservableCollection<DicoEntry> Dico { get; set; }
 
         public void BeginEdit()
         {
             _oldNom = Nom;
-            _oldPrenom = Code;
-
+            _oldCode = Code;
+            _oldImageURL = ImageURL;
+            Dico.ForEach(item => item.BeginEdit());
         }
 
-        private void UpdateProduit()
+        private void UpdateLangue()
         {
-           
+            Langage.Name = Nom;
+            Langage.Code = Code;
+            Langue.Code = Code;
+            Langue.NoM = Nom;
         }
 
         public void EndEdit()
         {
-            UpdateProduit();
+            UpdateLangue();
+            Langue = DataProvider.InsertIfNotExists(Langue);
+            if (IsImageLoaded == Visibility.Visible && ImageLocalURL != null)
+                UploadFile();
+            SendDico();
+        }
+
+        private void UploadFile()
+        {
+            var client = new WebClient();
+            File.Copy(ImageLocalURL, ImageURL, true);
+            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageURL);
+        }
+
+        private void SendDico()
+        {
+            DumpFile(Code+".txt");
+            var client = new WebClient();
+            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", "POST",Code+".txt" );
+        }
+
+        private void DumpFile(string s)
+        {
+            var lines = new string[Dico.Count];
+            var i = 0;
+            foreach (var entry in Dico)
+                lines[i++] = entry.Key + "=" + entry.Value;
+            File.WriteAllLines(s, lines);
         }
 
         public void CancelEdit()
         {
             Nom = _oldNom;
-            Code = _oldPrenom;
+            Code = _oldCode;
+            ImageURL = _oldImageURL;
+            IsImageLoaded = Visibility.Collapsed;
+            IsPodImage = Visibility.Visible;
+            Dico.ForEach(item => item.CancelEdit());
         }
     }
 }

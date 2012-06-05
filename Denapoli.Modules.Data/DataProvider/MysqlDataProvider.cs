@@ -109,6 +109,21 @@ namespace Denapoli.Modules.Data.DataProvider
             return c;
         }
 
+        public Langue InsertIfNotExists(Langue l)
+        {
+            Connect();
+            if (l.IDLang == 0)
+                DAO.Langue.InsertOnSubmit(l);
+            else
+            {
+                var langue = DAO.Langue.First(item => item.IDLang == l.IDLang);
+                langue.NoM = l.NoM;
+                langue.Code = l.Code;
+            }
+            DAO.SubmitChanges();
+            return l;
+        }
+
         public Adresse InsertIfNotExists(Adresse addr)
         {
             Connect();
