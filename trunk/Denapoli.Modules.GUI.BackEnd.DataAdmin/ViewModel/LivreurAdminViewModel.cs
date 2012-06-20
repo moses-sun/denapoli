@@ -31,11 +31,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Add:
-                    MessageBox.Show("add livreur");
-                    break;
+               
                 case NotifyCollectionChangedAction.Remove:
-                    MessageBox.Show("Remove livreur");
+                  var deletedLivreur = (LivreurVm)e.OldItems[0];
+                    DataProvider.Delete(deletedLivreur.Livreur);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

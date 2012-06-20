@@ -36,7 +36,37 @@ namespace Denapoli.Modules.I18n
         public IEnumerable<Langage> AvailableLangages { get; private set; }
 
         private Langage _currentLangage;
-       
+
+
+        public void ModifyLocaLization(string key, string traduction, Langage langage)
+        {
+            Load(langage);
+            var dict = _loadedDicts[langage.Name];
+            if (string.IsNullOrEmpty(key)) return ;
+
+            dict[key] = traduction;
+        }
+
+        public void SendDocs()
+        {
+            foreach (var langage in AvailableLangages)
+            {
+                var fileName = langage.Code + ".txt";
+                DumpFile(_loadedDicts[langage.Name], fileName);
+                var client = new WebClient();
+                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", "POST", fileName);
+                File.Delete(fileName);
+            }
+        }
+
+        private void DumpFile(Dictionary<string, string> dico, string fileName)
+        {
+            var lines = new string[dico.Count];
+            var i = 0;
+            foreach (var entry in dico)
+                lines[i++] = entry.Key + "=" + entry.Value;
+            File.WriteAllLines(fileName, lines);
+        }
 
         public Langage CurrentLangage
         {

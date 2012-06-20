@@ -11,6 +11,7 @@ using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -60,6 +61,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 Traductions.Add(new Traduction
                 {
                     Langue = language.Name,
+                    Langage = language,
                     Nom = LocalizationService.Localize(Prod.Nom, language),
                     Description = LocalizationService.Localize(Prod.Description, language)
                 });
@@ -189,6 +191,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldFamille = Famille;
             _oldPrix = Prix;
             _oldImageURL = ImageURL;
+            Traductions.ForEach(item=>item.BeginEdit());
         }
 
         private void UpdateProduit()
@@ -200,12 +203,18 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
            Prod.Famille = family;
            Prod.ImageURL = ImageURL;
+           Traductions.ForEach(item=>
+                                   {
+                                       LocalizationService.ModifyLocaLization(Prod.Nom, item.Nom, item.Langage);
+                                       LocalizationService.ModifyLocaLization(Prod.Description, item.Description, item.Langage);
+                                   });
         }
 
         public void EndEdit()
         {
             UpdateProduit();
             DataProvider.InsertIfNotExists(Prod);
+            LocalizationService.SendDocs();
             if (IsImageLoaded == Visibility.Visible)
                 UploadFile();
 
@@ -226,6 +235,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             ImageURL = _oldImageURL;
             IsImageLoaded = Visibility.Collapsed;
             IsPodImage = Visibility.Visible;
+            Traductions.ForEach(item => item.CancelEdit());
         }
     }
 }

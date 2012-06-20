@@ -35,11 +35,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Add:
-                    MessageBox.Show("add product");
-                    break;
                 case NotifyCollectionChangedAction.Remove:
-                    MessageBox.Show("Remove product");
+                    var deletedProd = (ProduitVm)e.OldItems[0];
+                    DataProvider.Delete(deletedProd.Prod);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

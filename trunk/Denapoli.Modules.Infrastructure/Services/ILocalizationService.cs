@@ -7,9 +7,13 @@ namespace Denapoli.Modules.Infrastructure.Services
         IEnumerable<Langage> AvailableLangages { get; }
         string Localize(string key);
         string Localize(string key, Langage langage);
+        void ModifyLocaLization(string key, string traduction, Langage language);
+        void SendDocs();
         Langage CurrentLangage { get; set; }
         Dico Dico { get; }
         List<string> Keys { get; } 
+
+        
     }
 
     public class Langage

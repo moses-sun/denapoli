@@ -90,7 +90,15 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public void AddCommande(Commande com)
         {
-            DAO.Commande.InsertOnSubmit(com);
+            Connect();
+            if (com.Num == 0)
+                DAO.Commande.InsertOnSubmit(com);
+            else
+            {
+                var command = DAO.Commande.First(item => item.Num == com.Num);
+                command.Statut = com.Statut;
+                command.IDLiVReUR = com.IDLiVReUR;
+            }
             DAO.SubmitChanges();
         }
 
@@ -233,6 +241,87 @@ namespace Denapoli.Modules.Data.DataProvider
             }
             DAO.SubmitChanges();
             return b;
+        }
+
+        public void Delete(Client client)
+        {
+            Connect();
+            var c = DAO.Client.FirstOrDefault(item => item.IDCLien == client.IDCLien);
+            if (c == null) return;
+            DAO.Client.DeleteOnSubmit(c);
+            DAO.SubmitChanges();
+        }
+
+        public void Delete(Langue langue)
+        {
+            Connect();
+            var l = DAO.Langue.FirstOrDefault(item => item.IDLang == langue.IDLang);
+            if (l == null) return;
+            DAO.Langue.DeleteOnSubmit(l);
+            DAO.SubmitChanges();
+        }
+
+        public void Delete(Adresse addr)
+        {
+            Connect();
+            var a = DAO.Adresse.FirstOrDefault(item => item.IdaDr == addr.IdaDr);
+            if (a == null) return;
+            DAO.Adresse.DeleteOnSubmit(a);
+            DAO.SubmitChanges();
+        }
+
+        public void Delete(Produit p)
+        {
+            Connect();
+            var prod = DAO.Produit.FirstOrDefault(item => item.IDProd == p.IDProd);
+            if (prod == null) return;
+            DAO.Produit.DeleteOnSubmit(prod);
+            DAO.SubmitChanges();
+        }
+
+        public void Delete(Famille famille)
+        {
+            Connect();
+            var f = DAO.Famille.FirstOrDefault(item => item.IDFaMil == famille.IDFaMil);
+            if (f == null) return;
+            DAO.Famille.DeleteOnSubmit(f);
+            DAO.SubmitChanges();
+        }
+
+        public void Delete(Livreur l)
+        {
+            Connect();
+            var c = DAO.Livreur.FirstOrDefault(item => item.IDLiVReUR == l.IDLiVReUR);
+            if (c == null) return;
+            DAO.Livreur.DeleteOnSubmit(c);
+            DAO.SubmitChanges();
+        }
+
+        public void DeleteMenu(Produit p)
+        {
+            Connect();
+           
+            var prod = DAO.Produit.FirstOrDefault(item => item.IDProd == p.IDProd);
+            if (prod == null) return;
+            prod.ProduitsMenu.Clear();
+            prod.ProduitComposition.Clear();
+            prod.ProduitsMenu.Clear();
+            DAO.Produit.DeleteOnSubmit(prod);
+            DAO.SubmitChanges();
+        }
+
+        public void Delete(Borne borne)
+        {
+            Connect();
+            var b = DAO.Borne.FirstOrDefault(item => item.IDBorn == borne.IDBorn);
+            if (b == null) return;
+            DAO.Borne.DeleteOnSubmit(b);
+            DAO.SubmitChanges();
+        }
+
+        public Livreur GetLivreurById(int idliVreUr)
+        {
+            return  DAO.Livreur.FirstOrDefault(item => item.IDLiVReUR == idliVreUr);
         }
 
         public Borne GetBorne(int id)

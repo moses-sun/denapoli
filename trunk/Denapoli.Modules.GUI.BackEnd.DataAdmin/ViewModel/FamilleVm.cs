@@ -58,6 +58,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 Traductions.Add(new Traduction
                 {
                     Langue = language.Name,
+                    Langage = language,
                     Nom = LocalizationService.Localize(Family.Nom, language),
                     Description = LocalizationService.Localize(Family.Description, language)
                 });
@@ -163,6 +164,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldNom = Nom;
             _oldDescription = Description;
             _oldImageURL = ImageURL;
+            Traductions.ForEach(item => item.BeginEdit());
         }
 
         private void UpdateProduit()
@@ -170,12 +172,18 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
            Family.Nom = Nom;
            Family.Description = Description;
            Family.ImageURL = ImageURL;
+           Traductions.ForEach(item =>
+           {
+               LocalizationService.ModifyLocaLization(Family.Nom, item.Nom, item.Langage);
+               LocalizationService.ModifyLocaLization(Family.Description, item.Description, item.Langage);
+           });
         }
 
         public void EndEdit()
         {
             UpdateProduit();
             DataProvider.InsertIfNotExists(Family);
+            LocalizationService.SendDocs();
             if (IsImageLoaded == Visibility.Visible)
                 UploadFile();
         }
@@ -187,6 +195,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             ImageURL = _oldImageURL;
             IsImageLoaded = Visibility.Collapsed;
             IsPodImage = Visibility.Visible;
+            Traductions.ForEach(item => item.CancelEdit());
         }
 
         private void UploadFile()
