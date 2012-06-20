@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -40,6 +41,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
+
+        public Langage Langage { get; set; }
+        
         public void BeginEdit()
         {
             _oldNom = Nom;

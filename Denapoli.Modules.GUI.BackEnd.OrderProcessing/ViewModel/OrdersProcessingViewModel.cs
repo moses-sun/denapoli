@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Timers;
-using System.Windows;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.GUI.BackEnd.OrderProcessing.View;
 using Denapoli.Modules.GUI.CommandScreen.ViewModel;
+using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
@@ -26,6 +26,9 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             Orders = new ObservableCollection<Commande>();
            
             Products = new ObservableCollection<ProductViewModel>();
+            Livreurs = new ObservableCollection<Livreur>();
+            SubmitButtonCommand = new ActionCommand(Submit);
+
            var timer = new Timer {Interval = 6000};
             timer.Elapsed += (sender, args) => View.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                                                                            new System.Windows.Threading.DispatcherOperationCallback(delegate
@@ -33,10 +36,71 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                                                                                                                                             Orders.ForEach(item => item.Chrono--);
                                                                                                                                             UpdateCommandes();
                                                                                                                                             return null;
-                                                                                                                      }), null);
-            UpdateCommandes();   
+                                                                                                                    }), null);
+            UpdateLivreurs();
+            UpdateCommandes();
             timer.Start();
         }
+
+        private Livreur _selectedLivreur;
+        public Livreur SelectedLivreur
+        {
+            get { return _selectedLivreur; }
+            set
+            {
+                _selectedLivreur = value;
+                NotifyChanged("SelectedLivreur");
+                if(value != null )
+                {
+                    SelectedCommand.IDLiVReUR = value.IDLiVReUR;
+                    SelectedCommand.Livreur = value;
+                } 
+            }
+        }
+
+        public ObservableCollection<Livreur> Livreurs { get; set; }
+
+        private void UpdateLivreurs ()
+        {
+           var livreurs =  DataProvider.GetAllLivreurs();
+            Livreurs.Clear();
+            livreurs.ForEach(item => Livreurs.Add(item));
+        }
+
+        private void Submit()
+        {
+            switch (SelectedCommand.Statut)
+            {
+                case Attente:   SelectedCommand.Statut = Preperee; break;
+                case Preperee:  SelectedCommand.Statut = Prete; break;
+                case Prete:     SelectedCommand.Statut = Livree; break;
+                case Livree: SelectedCommand.Statut = Livree; break;
+            }
+            SetSubmitButtonText();
+            DataProvider.AddCommande(SelectedCommand);
+        }
+
+        private string _preparer = "Préparer";
+        private string _prete = "Prête";
+        private string _livrer = "Livrer";
+
+        private const string Preperee = "PREPAREE";
+        private const string Prete = "PRETE";
+        private const string Livree = "LIVREE";
+        private const string Attente = "ATTENTE";
+        
+        private string _submitButtonText;
+        public string SubmitButtonText
+        {
+            get { return _submitButtonText; }
+            set
+            {
+                _submitButtonText = value;
+                NotifyChanged("SubmitButtonText");
+            }
+        }
+
+        public ActionCommand SubmitButtonCommand { get; set; }
 
         public ObservableCollection<ProductViewModel> Products { get; set; } 
 
@@ -48,8 +112,9 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             Orders.Clear();
             DataProvider.GetMenuAllCommandes().ForEach(item =>
                                                            {
+                                                               if (item.Statut == Livree) return;
                                                                var diff = DateTime.Now - item.Date;
-                                                               item.Chrono = diff!=null ? 45-diff.Value.Minutes : 0;
+                                                               item.Chrono = diff != null ? 45 - diff.Value.Minutes : 0;
                                                                Orders.Add(item);
                                                            });
             SelectedCommand = Orders.FirstOrDefault(item => item.Num == old);
@@ -65,6 +130,9 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                 _selectedCommand = value;
                 NotifyChanged("SelectedCommand");
                 Updateproducts();
+                if (value == null) return;
+                SelectedLivreur = DataProvider.GetLivreurById(value.IDLiVReUR ?? 0);
+                SetSubmitButtonText();
             }
         }
 
@@ -81,8 +149,22 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                 }
                 Products.Add(new ProductViewModel(produit.Produit) { Quantite = produit .Quantite});
             }
+            
+        }
+
+        private void SetSubmitButtonText()
+        {
+            switch (SelectedCommand.Statut)
+            {
+                case Attente: SubmitButtonText = _preparer; break;
+                case Preperee: SubmitButtonText = _prete; break;
+                case Prete: SubmitButtonText = _livrer; break;
+                case Livree: SubmitButtonText = _livrer; break;
+            }
         }
     }
+
+  
 
     public class MenuVM : ProductViewModel
     {

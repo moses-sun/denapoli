@@ -78,6 +78,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 Traductions.Add(new Traduction
                 {
                     Langue = language.Name,
+                    Langage = language,
                     Nom = LocalizationService.Localize(Menu.Nom, language),
                     Description = LocalizationService.Localize(Menu.Description, language)
                 });
@@ -201,6 +202,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldPrix = Prix;
             _oldImageURL = ImageURL;
             _oldMenuComposition = new List<MenuCompositionn>(MenuComposition);
+            Traductions.ForEach(item => item.BeginEdit());
         }
 
         private void UpdateProduit()
@@ -211,6 +213,12 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Menu.ImageURL = ImageURL;           
             Menu.ProduitComposition.Clear();
             var families = DataProvider.GetAvailableFamilies();
+
+            Traductions.ForEach(item =>
+            {
+                LocalizationService.ModifyLocaLization(Menu.Nom, item.Nom, item.Langage);
+                LocalizationService.ModifyLocaLization(Menu.Description, item.Description, item.Langage);
+            });
 
             MenuComposition.ForEach(item=>
                                         {
@@ -223,15 +231,14 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                                                 Quantite = item.Quantite
                                             });
                                         });
-
-           
         }
 
         public void EndEdit()
         {
             UpdateProduit();
             DataProvider.InsertMenuIfNotExists(Menu);
-            if (IsImageLoaded == Visibility.Visible)
+            LocalizationService.SendDocs();
+            if (IsImageLoaded == Visibility.Visible && !string.IsNullOrEmpty(ImageLocalURL))
                 UploadFile();
         }
 
@@ -245,6 +252,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             IsPodImage = Visibility.Visible;
             MenuComposition.Clear();
             _oldMenuComposition.ForEach(item => MenuComposition.Add(item));
+            Traductions.ForEach(item => item.CancelEdit());
         }
 
         private void UploadFile()

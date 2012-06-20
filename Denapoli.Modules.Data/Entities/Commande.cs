@@ -147,8 +147,8 @@ namespace Denapoli.Modules.Data.Entities
                 SendPropertyChanged("Num");
             }
         }
-		
-        [Column(Storage="_statUt", Name="STATUT", DbType="varchar(20)", AutoSync=AutoSync.Never, CanBeNull=false)]
+
+        [Column(Storage = "_statut", Name = "STATUT", DbType = "varchar(20)", AutoSync = AutoSync.Never, CanBeNull = false)]
         [DebuggerNonUserCode]
         public string Statut
         {
@@ -161,7 +161,7 @@ namespace Denapoli.Modules.Data.Entities
                 if ((_statut == value)) return;
                 SendPropertyChanging();
                 _statut = value;
-                SendPropertyChanged("StatUt");
+                SendPropertyChanged("Statut");
             }
         }
 		

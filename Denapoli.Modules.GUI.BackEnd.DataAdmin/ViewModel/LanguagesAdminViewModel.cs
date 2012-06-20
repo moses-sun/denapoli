@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
@@ -28,13 +27,29 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             LocalizationService = localizationService;
             SettingsService = settingsService;
             Langues = new ObservableCollection<LangageVm>();
+            Langues.CollectionChanged += OnLangueschanged;
             SelectedDico = new ObservableCollection<DicoEntry>();
             UpdateLangues();
+        }
+
+        private void OnLangueschanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+
+                case NotifyCollectionChangedAction.Remove:
+                    var deletedLangue = (LangageVm)e.OldItems[0];
+                    DataProvider.Delete(deletedLangue.Langue);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
 
         private void UpdateLangues()
         {
+            Langues.CollectionChanged -= OnLangueschanged;
             Langues.Clear();
             foreach (var l in LocalizationService.AvailableLangages)
             {
@@ -43,6 +58,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 Langues.Add(langageVm);
             }
             SelectedLangue = Langues.FirstOrDefault();
+            Langues.CollectionChanged += OnLangueschanged;
         }
 
         private LangageVm _selectedLangue;

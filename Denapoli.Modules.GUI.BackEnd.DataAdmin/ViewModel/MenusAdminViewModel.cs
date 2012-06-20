@@ -36,11 +36,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Add:
-                    MessageBox.Show("add menu");
-                    break;
+               
                 case NotifyCollectionChangedAction.Remove:
-                    MessageBox.Show("Remove menu");
+                   var deletedMenu = (MenuVm)e.OldItems[0];
+                    DataProvider.DeleteMenu(deletedMenu.Menu);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
