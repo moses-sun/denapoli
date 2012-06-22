@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le : Dim 06 Mai 2012 à 23:24
+-- Généré le : Sam 23 Juin 2012 à 01:05
 -- Version du serveur: 5.5.16
 -- Version de PHP: 5.3.8
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `adresse` (
   `VILLE` varchar(100) DEFAULT NULL,
   `NUM_CHAMBRE` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`ID_ADR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Contenu de la table `adresse`
@@ -47,11 +47,12 @@ INSERT INTO `adresse` (`ID_ADR`, `NUM`, `VOIE`, `COMPLEMENT`, `CP`, `VILLE`, `NU
 (3, 5, 'boulevard aussman', NULL, '75017', 'Paris', ''),
 (4, 34, 'Rue toto', NULL, '75001', 'Paris', ''),
 (5, 7, 'rue magique', NULL, '77420', 'Champs-Sur-Marne', ''),
-(6, 8, 'rue toto', NULL, '78001', 'Montesson', ''),
-(7, 9, 'rue de paris', NULL, '93720', 'Montreuil', ''),
+(6, 8, 'rue toto', 'xwxwxcxw', '78001', 'Montesson', ''),
+(7, 9, 'rue de paris', '', '93720', 'Montreuil', '1'),
 (8, 9, 'rue de paris', NULL, NULL, 'Montreuil', ''),
 (9, 9, 'rue de paris', NULL, NULL, 'Montreuil', '1'),
-(10, 9, 'rue de paris', NULL, NULL, 'Montreuil', '1');
+(10, 9, 'rue de paris', NULL, NULL, 'Montreuil', '1'),
+(12, 8, 'rue toto', NULL, NULL, 'Montesson', '');
 
 -- --------------------------------------------------------
 
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `borne` (
   `ID_ADR` int(11) NOT NULL,
   PRIMARY KEY (`ID_BORN`),
   KEY `adresse_de_borne` (`ID_ADR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `borne`
@@ -72,7 +73,8 @@ CREATE TABLE IF NOT EXISTS `borne` (
 
 INSERT INTO `borne` (`ID_BORN`, `ID_ADR`) VALUES
 (2, 6),
-(1, 7);
+(1, 7),
+(3, 10);
 
 -- --------------------------------------------------------
 
@@ -120,17 +122,17 @@ CREATE TABLE IF NOT EXISTS `commande` (
   KEY `client_qui_commande` (`ID_CLIEN`),
   KEY `borne_qui_commande` (`ID_BORN`),
   KEY `livreur_de_commande` (`ID_LIVREUR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
 
 --
 -- Contenu de la table `commande`
 --
 
 INSERT INTO `commande` (`NUM`, `TOTAL`, `ID_ADR`, `ID_CLIEN`, `ID_BORN`, `STATUT`, `DATE`, `ID_LIVREUR`) VALUES
-(1, 0, 1, 1, 1, 'ATTENTE', '2012-04-22 22:55:56', 1),
+(1, 0, 1, 1, 1, 'LIVREE', '2012-04-22 22:55:56', 2),
 (2, 0, 2, 2, 2, 'ATTENTE', '2012-04-22 22:55:56', 2),
-(3, 0, 3, 3, 1, 'ATTENTE', '2012-04-22 22:55:56', NULL),
-(4, 0, 4, 2, 2, 'ATTENTE', '2012-04-22 22:55:56', 1),
+(3, 0, 3, 3, 1, 'LIVREE', '2012-04-22 22:55:56', 1),
+(4, 0, 4, 2, 2, 'PREPAREE', '2012-04-22 22:55:56', 1),
 (7, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 1),
 (8, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 2),
 (9, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 1),
@@ -147,7 +149,39 @@ INSERT INTO `commande` (`NUM`, `TOTAL`, `ID_ADR`, `ID_CLIEN`, `ID_BORN`, `STATUT
 (25, 0, 7, 6, 1, 'ATTENTE', '2012-04-24 22:52:44', NULL),
 (27, 0, 7, 6, 1, 'ATTENTE', '2012-04-24 23:00:44', NULL),
 (29, 0, 1, 1, 2, 'ATTENTE', NULL, NULL),
-(30, 0, 1, 1, 2, 'ATTENTE', NULL, NULL);
+(30, 0, 1, 1, 2, 'ATTENTE', NULL, NULL),
+(31, 0, 7, 6, 1, 'ATTENTE', '2012-06-21 23:22:34', NULL),
+(32, 0, 7, 6, 1, 'ATTENTE', '2012-06-21 23:27:37', NULL),
+(33, 21.5, 7, 6, 1, 'ATTENTE', '2012-06-21 23:27:37', NULL),
+(34, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 22:11:08', NULL),
+(35, 14, 7, 6, 1, 'ATTENTE', '2012-06-22 22:11:08', NULL),
+(36, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 22:53:02', NULL),
+(37, 11, 7, 6, 1, 'PREPAREE', '2012-06-22 22:53:03', NULL),
+(38, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 22:56:54', NULL),
+(39, 6, 7, 6, 1, 'PREPAREE', '2012-06-22 22:56:57', NULL),
+(40, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 22:59:38', NULL),
+(41, 17.5, 7, 6, 1, 'PREPAREE', '2012-06-22 22:59:53', NULL),
+(42, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 23:01:48', NULL),
+(43, 39.5, 7, 6, 1, 'PREPAREE', '2012-06-22 23:01:56', NULL),
+(44, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:07:29', NULL),
+(45, 1.5, 7, 6, 1, 'ATTENTE', '2012-06-22 23:07:31', NULL),
+(46, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:33:22', NULL),
+(47, 2, 7, 6, 1, 'ATTENTE', '2012-06-22 23:33:22', NULL),
+(48, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:35:58', NULL),
+(49, 13, 7, 6, 1, 'ATTENTE', '2012-06-22 23:36:16', NULL),
+(50, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:49:53', NULL),
+(51, 29.5, 7, 6, 1, 'ATTENTE', '2012-06-22 23:49:59', NULL),
+(52, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:54:14', NULL),
+(54, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:58:00', NULL),
+(55, 10, 7, 6, 1, 'ATTENTE', '2012-06-22 23:58:06', NULL),
+(56, 0, 7, 6, 1, 'ATTENTE', '2012-06-23 00:01:10', NULL),
+(57, 39.5, 7, 6, 1, 'ATTENTE', '2012-06-23 00:01:13', NULL),
+(58, 0, 7, 6, 1, 'ATTENTE', '2012-06-23 00:05:51', NULL),
+(59, 29.5, 7, 6, 1, 'ATTENTE', '2012-06-23 00:05:53', NULL),
+(61, 4.5, 7, 6, 1, 'ATTENTE', '2012-06-23 00:38:19', NULL),
+(63, 22, 7, 6, 1, 'ATTENTE', '2012-06-23 00:46:35', NULL),
+(64, 25, 7, 6, 1, 'ATTENTE', '2012-06-23 00:50:23', NULL),
+(65, 14, 7, 6, 1, 'ATTENTE', '2012-06-23 00:54:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -168,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `famille` (
 --
 
 INSERT INTO `famille` (`ID_FAMIL`, `NOM`, `IMAGE_URL`, `DESCRIPTION`) VALUES
-(1, 'boissons', 'boissons.png', ''),
+(1, 'boissons', 'pirates.png', 'sdsqdqsqdqsdqs'),
 (2, 'pizzas', 'pizzas.png', ''),
 (3, 'tex-mexs', 'tex-mexs.png', ''),
 (4, 'menus', 'menus.png', ''),
@@ -193,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `langue` (
 --
 
 INSERT INTO `langue` (`ID_LANG`, `NOM`, `CODE`) VALUES
-(1, 'Français', 'FR'),
+(1, 'Françaisss', 'FR'),
 (2, 'English', 'EN'),
 (3, 'Español', 'SP');
 
@@ -215,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `livreur` (
 --
 
 INSERT INTO `livreur` (`ID_LIVREUR`, `NOM`, `PRENOM`) VALUES
-(1, 'nom livreur 1 ', 'prénom livreur 1 '),
+(1, 'holaxxxxxxxxxxxxxxxxxxxx', 'prénom livreur 1 '),
 (2, 'nom livreur 2 ', 'prénom nom livreur 2');
 
 -- --------------------------------------------------------
@@ -231,7 +265,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
   PRIMARY KEY (`ID_MENU`),
   KEY `menu` (`ID_PROD`),
   KEY `commande_du_menu` (`NUM_COM`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Contenu de la table `menu`
@@ -245,7 +279,9 @@ INSERT INTO `menu` (`ID_MENU`, `ID_PROD`, `NUM_COM`) VALUES
 (5, 9, 11),
 (6, 9, 14),
 (7, 9, 29),
-(8, 9, 30);
+(8, 9, 30),
+(9, 10, 33),
+(10, 10, 65);
 
 -- --------------------------------------------------------
 
@@ -262,24 +298,25 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `ID_FAMIL` int(11) NOT NULL,
   PRIMARY KEY (`ID_PROD`),
   KEY `famille_de_produit` (`ID_FAMIL`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 --
 -- Contenu de la table `produit`
 --
 
 INSERT INTO `produit` (`ID_PROD`, `NOM`, `IMAGE_URL`, `DESCRIPTION`, `PRIX`, `ID_FAMIL`) VALUES
-(3, '05/01/2012 20:58:04', 'cocacola.png', 'zero 33cl', 1.5, 1),
+(3, 'cocacola', 'algeria.jpg', 'zero 33cl', 1.5, 1),
 (4, 'orangina', 'orangina.jpg', '33cl', 1.5, 1),
 (5, 'oasis', 'oasis.png', '33 cl', 2, 1),
 (6, 'pizza margarita', 'margarita.png', NULL, 10, 2),
 (7, 'pizza 4 fromages', 'pizza_4_fromages.png', NULL, 12, 2),
 (8, 'pizza végétarienne', 'vegetarienne.png', NULL, 13, 2),
-(9, 'menu 1', 'menu1.png', NULL, 15, 4),
+(9, 'menu 1', 'zorro.jpg', 'menu1_description', 15, 4),
 (10, 'menu 2', 'menu2.png', NULL, 14, 4),
 (11, 'chiken 1', 'chiken1.png', NULL, 5, 3),
 (12, 'chiken 2', 'chiken2.png', NULL, 6, 3),
-(13, 'toto', NULL, 'Description', 4.5, 2);
+(13, 'toto', NULL, 'Description', 4.5, 2),
+(15, 'TestProd', 'URL', 'Desc1', 0, 6);
 
 -- --------------------------------------------------------
 
@@ -320,7 +357,41 @@ INSERT INTO `produits_commande` (`NUM_COM`, `ID_PROD`, `QUANTITE`) VALUES
 (29, 3, 0),
 (29, 12, 0),
 (30, 3, 0),
-(30, 13, 0);
+(30, 13, 0),
+(33, 3, 0),
+(33, 12, 0),
+(35, 5, 0),
+(35, 7, 0),
+(37, 11, 0),
+(37, 12, 0),
+(39, 12, 0),
+(39, 15, 0),
+(41, 8, 0),
+(41, 13, 0),
+(43, 6, 0),
+(43, 7, 0),
+(43, 8, 0),
+(43, 13, 0),
+(45, 3, 0),
+(47, 5, 0),
+(49, 8, 0),
+(51, 7, 0),
+(51, 8, 0),
+(51, 13, 0),
+(51, 15, 0),
+(55, 6, 0),
+(57, 6, 0),
+(57, 7, 0),
+(57, 8, 0),
+(57, 13, 0),
+(59, 7, 0),
+(59, 8, 0),
+(59, 13, 0),
+(61, 13, 0),
+(63, 6, 0),
+(63, 7, 0),
+(64, 7, 0),
+(64, 8, 0);
 
 -- --------------------------------------------------------
 
@@ -346,11 +417,15 @@ INSERT INTO `produits_menu` (`ID_MENU`, `ID_PROD`, `QUANTITE`) VALUES
 (2, 4, 1),
 (3, 5, 1),
 (5, 5, 0),
+(9, 5, 0),
+(10, 5, 0),
 (1, 6, 1),
 (2, 6, 1),
 (2, 7, 1),
 (3, 8, 2),
 (5, 8, 0),
+(9, 8, 0),
+(10, 8, 0),
 (4, 12, 0),
 (6, 12, 0),
 (7, 12, 0),
@@ -379,7 +454,9 @@ INSERT INTO `produit_composition` (`ID_FAMIL`, `ID_PROD`, `QUANTITE`) VALUES
 (1, 9, 1),
 (1, 10, 1),
 (2, 9, 1),
-(2, 10, 2);
+(2, 10, 2),
+(3, 9, 1),
+(5, 9, 5);
 
 --
 -- Contraintes pour les tables exportées
