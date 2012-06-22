@@ -114,7 +114,8 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                                                            {
                                                                if (item.Statut == Livree) return;
                                                                var diff = DateTime.Now - item.Date;
-                                                               item.Chrono = diff != null ? 45 - diff.Value.Minutes : 0;
+                                                               var minDiff = diff != null ? diff.Value.Minutes + diff.Value.Hours*60 + diff.Value.Days*24*60 : 45;
+                                                               item.Chrono =  45 - minDiff;
                                                                Orders.Add(item);
                                                            });
             SelectedCommand = Orders.FirstOrDefault(item => item.Num == old);

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Timers;
+using System.Windows;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
@@ -16,9 +18,10 @@ namespace Denapoli.Modules.Payment
         {
             Message = "inserer Carte";
             var wait = 5000;
-            var timer = new Timer(wait) { Enabled = true };
-
-            timer.Elapsed += (sender, args) =>
+           // var timer = new Timer(wait) { Enabled = true };
+            State = true;
+            OnFinishEvent(new PropertyChangedEventArgs(""));
+           /* timer.Elapsed += (sender, args) =>
                                  {
                                      Message = "Tapez votre code";
                                      timer.Stop();
@@ -33,13 +36,14 @@ namespace Denapoli.Modules.Payment
                                                                            {
                                                                                Message = "Paiement eccpté, retirez votre carte";
                                                                                t2.Stop();
-                                                                               State = true;
+                                                                              
+                                                                               NotifyChanged("State");
                                                                            };
                                                           t2.Start();
                                                       };
                                      t.Start();
                                  };
-            timer.Start();
+            timer.Start();*/
             return true;
         }
 
@@ -60,6 +64,14 @@ namespace Denapoli.Modules.Payment
                 _state = value;
                 NotifyChanged("State");
             }
+        }
+
+         public event PropertyChangedEventHandler FinishEvent;
+
+        public void OnFinishEvent(PropertyChangedEventArgs e)
+        {
+            var handler = FinishEvent;
+            if (handler != null) handler(this, e);
         }
     }
 }

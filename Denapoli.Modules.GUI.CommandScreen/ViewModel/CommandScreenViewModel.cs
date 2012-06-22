@@ -17,6 +17,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
     public class CommandScreenViewModel : AbstractScreenViewModel, ICommandView
     {
 
+        private static int idGen = 1;
+        private int id = idGen++;
         public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService, ILocalizationService localizationService)
         {
             EventAggregator = eventAggregator;
@@ -32,40 +34,54 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Borne = DataProvider.GetBorne(1);
             CustomerViewModel = new CustomerViewModel {Address = Borne.Adresse,IsVisible = false, LocalizationService = localizationService};
             CustomerViewModel.PropertyChanged += CustommerViewHandler;
-            PaymentService.PropertyChanged += PaiementViewHandler;
+            PaymentService.FinishEvent += PaiementViewHandler;
             PaiementView = new PaiementViewModel {IsVisible = false, LocalizationService = localizationService};
             ShowCustomerCommand = new ActionCommand(() =>
                                                         {
                                                             if(OrderedProdects.Count > 0)
                                                                 SelectedView = CustomerViewModel;
                                                         });
-            CancelCommand = new ActionCommand(() => EventAggregator.GetEvent<EndCommandEvent>().Publish(this));
+            CancelCommand = new ActionCommand(() =>
+                                                  {
+                                                      EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
+                                                      Cancel();
+                                                  });
             LeftScollImage = "scroll_left.png";
             Logo = "logo.jpg";
             SelectedView = this;
+
         }
 
+        public void Cancel()
+        {
+            PaymentService.FinishEvent -= PaiementViewHandler;
+        }
 
         private void PaiementViewHandler(object sender, PropertyChangedEventArgs e)
         {
+            var i = id;
+            PaymentService.FinishEvent -= PaiementViewHandler;
             PaiementView.ScreenMessage = PaymentService.Message;
             PaiementView.IsSuccesfull = PaymentService.State;
             if(PaiementView.IsSuccesfull)
             {
-                PaymentService.PropertyChanged -= PaiementViewHandler;
                 FinalizeOrder();
                 PaiementView.ScreenMessage = "Votre commande sera livrée dans 30 minutes\n au revoir";
                 EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
             } 
         }
 
+        private bool _finished = false;
         private void FinalizeOrder()
         {
+            if (_finished) return;
+            _finished = true;
             var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
             CustomerViewModel.Address.NumCHamBRe = "1";
             var addr = DataProvider.InsertIfNotExists(CustomerViewModel.Address);
             var command = new Commande
                               {
+                                  Num = 0,
                                   IDCLien = client.IDCLien,
                                   IDBorn = Borne.IDBorn,
                                   IdaDr = addr.IdaDr,
@@ -84,13 +100,17 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                 command.Menus.Add(menu);
                                             }
                                             else
-                                                command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd });
+                                            {
+                                                if (prod.Produit != null)
+                                                    command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd });
+                                            }
                                         });
-           DataProvider.AddCommande(command);
+          DataProvider.AddCommande(command);
         }
 
         private void CustommerViewHandler(object sender, PropertyChangedEventArgs e)
         {
+            
             switch (e.PropertyName)
             {
                 case "Validate":
