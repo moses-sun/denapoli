@@ -10,6 +10,7 @@
         <GroupBox Header="Commande"    FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
           <Grid>
             <Grid.RowDefinitions>
+              <RowDefinition Height="*"  />
               <RowDefinition Height="*" />
               <RowDefinition Height="*" />
               <RowDefinition Height="*" />
@@ -19,44 +20,44 @@
               <ColumnDefinition Width="Auto" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" />
-            <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" />
+            <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" Margin="7 3 7 3"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" />
-            <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date}" />
+            <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date, StringFormat={}{0:d-MMMM  HH:MM}}" Margin="7 3 7 3"  />
 
+            <TextBlock Grid.Column="0" Grid.Row="2"  Text="Statut :" Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Statut}" Margin="7 3 7 3" Background="{Binding Color}" Foreground="White"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="2"  Text="Livreur :" />
-            <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Livreur.PreNoM}" />
+            <TextBlock Grid.Column="0" Grid.Row="3"  Text="Livreur :" Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Livreur.PreNoM}"  Margin="7 3 7 3"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="3"  Text="Montant :" />
-            <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Total}" />
+            <TextBlock Grid.Column="0" Grid.Row="4"  Text="Montant :" Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding Total, StringFormat={}{0:C2}}" Margin="7 3 7 3" />
           </Grid>
         </GroupBox>
 
-        <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+        <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 20 0 0">
           <StackPanel >
             <StackPanel Orientation="Horizontal" DataContext="{Binding Client}" >
-              <TextBlock Text="{Binding Nom}" />
-              <TextBlock Text="  " />
-              <TextBlock Text="{Binding Prenom}"/>
+              <TextBlock Text="{Binding Nom}" Margin="7 3 7 3"/>
+              <TextBlock Text="{Binding Prenom}" Margin="7 3 7 3"/>
             </StackPanel>
-            <StackPanel  DataContext="{Binding Adresse}" >
-              <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Num}" />
-                <TextBlock Text="  " />
-                <TextBlock Text="{Binding Voie}"/>
+            <StackPanel  DataContext="{Binding Adresse}" Margin="7 3 7 3">
+              <StackPanel Orientation="Horizontal" Margin="7 3 7 3">
+                <TextBlock Text="{Binding Num}" Margin="7 3 7 3" />
+                <TextBlock Text="{Binding Voie}" Margin="7 3 7 3"/>
               </StackPanel>
-              <TextBlock Text="{Binding Complement}"/>
+              <TextBlock Text="{Binding Complement}" Margin="7 3 7 3"/>
               <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding CP}"/>
+                <TextBlock Text="{Binding CP}" Margin="7 3 7 3"/>
                 <TextBlock Text="  " />
-                <TextBlock Text="{Binding Ville}"/>
+                <TextBlock Text="{Binding Ville}" Margin="7 3 7 3"/>
               </StackPanel>
             </StackPanel>
           </StackPanel>
         </GroupBox>
-        <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+        <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 20 0 0">
           <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 2 2 2"
             ItemsSource="{Binding ElementName=myroot, Path=DataContext.Products}"
               >
@@ -68,13 +69,17 @@
                     <TextBlock Text=" X "/>
                     <TextBlock  Text="{Binding Produit.Nom}"/>
                   </StackPanel>
-                  <ListBox Margin="10 2 2 2" ItemsSource="{Binding Composition}"                                >
+                  <ListBox Margin="10 2 2 2" ItemsSource="{Binding Composition}"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                           >
                     <ListBox.ItemTemplate>
                       <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                          <TextBlock Text="{Binding Entities:Produit.Quantite}"/>
+                          <TextBlock Text="{Binding Produit.Quantite}"/>
                           <TextBlock Text=" X "/>
-                          <TextBlock  Text="{Binding Entities:Produit.Nom}"/>
+                          <TextBlock  Text="{Binding Produit.Nom}"/>
                         </StackPanel>
                       </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -92,28 +97,32 @@
           AutoGenerateColumns="False"
           CanUserReorderColumns="False"
           IsReadOnly="True"
+          AlternationCount="2"
           SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
                 >
+        <telerik:RadGridView.SortDescriptors>
+          <telerik:SortDescriptor Member="Statut" SortDirection="Ascending" />
+        </telerik:RadGridView.SortDescriptors>
         <telerik:RadGridView.Columns>
           <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}" Header="Heure" TextAlignment="Center" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Poit livraison" TextAlignment="Center" >
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}" Header="Heure" TextAlignment="Center"
+                                       Width="160"
+                                       DataFormatString="{}{0:d-MMMM  HH:MM}"/>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Point livraison" TextAlignment="Center" >
             <telerik:GridViewColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding Num}"/>
-                  <TextBlock Text="{Binding Voie}" />
-                  <TextBlock Text="{Binding CP}" />
-                  <TextBlock Text="{Binding Ville}" />
+                  <TextBlock Text="{Binding Adresse.Num}" Margin="3 1 1 1"/>
+                  <TextBlock Text="{Binding Adresse.Voie}" Margin="3 1 1 1"/>
+                  <TextBlock Text="{Binding Adresse.CP}" Margin="3 1 1 1"/>
+                  <TextBlock Text="{Binding Adresse.Ville}" Margin="3 1 1 1"/>
                 </StackPanel>
               </DataTemplate>
             </telerik:GridViewColumn.CellTemplate>
           </telerik:GridViewDataColumn>
           <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Chrono}" Header="Chrono" TextAlignment="Center"
-                                       Background="{Binding Color}"
-                                                 />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" />
         </telerik:RadGridView.Columns>
       </telerik:RadGridView>
     </DockPanel>

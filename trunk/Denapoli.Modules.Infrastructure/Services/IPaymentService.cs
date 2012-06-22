@@ -10,5 +10,7 @@ namespace Denapoli.Modules.Infrastructure.Services
 
         bool State { get; }
 
+        event PropertyChangedEventHandler FinishEvent;
+
     }
 }

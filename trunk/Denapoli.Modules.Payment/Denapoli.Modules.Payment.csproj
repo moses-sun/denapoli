@@ -37,6 +37,7 @@
     <Reference Include="Microsoft.Practices.Prism.MefExtensions">
       <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />

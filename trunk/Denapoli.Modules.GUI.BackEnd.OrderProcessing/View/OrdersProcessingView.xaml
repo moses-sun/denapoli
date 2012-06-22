@@ -126,6 +126,8 @@
                 SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
                 >
               <telerik:RadGridView.SortDescriptors>
+                <telerik:SortDescriptor Member="Chrono" SortDirection="Ascending" />
+                <telerik:SortDescriptor Member="Date" SortDirection="Ascending" />
                 <telerik:SortDescriptor Member="Statut" SortDirection="Ascending" />
               </telerik:RadGridView.SortDescriptors>
                 <telerik:RadGridView.Columns>

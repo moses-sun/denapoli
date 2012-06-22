@@ -37,6 +37,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denapoli.Modules.GUI.BackEn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Denapoli.Modules.GUI.BackEnd.Stats", "Denapoli.Modules.GUI.BackEnd.Stats\Denapoli.Modules.GUI.BackEnd.Stats.csproj", "{6D625513-9DA1-4414-848D-87317C882E32}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Install", "Install", "{2F0DA326-5694-4585-AD65-EDF092DAC37A}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ClientInstaller", "ClientInstaller\ClientInstaller.vdproj", "{B3E21887-885B-4000-8C5B-B3D3E75C7512}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "AdminInstaller", "AdminInstaller\AdminInstaller.vdproj", "{7D36A01B-C302-45B7-99E5-502A3B463CA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -167,6 +173,18 @@ Global
 		{6D625513-9DA1-4414-848D-87317C882E32}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6D625513-9DA1-4414-848D-87317C882E32}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6D625513-9DA1-4414-848D-87317C882E32}.Release|x86.ActiveCfg = Release|Any CPU
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512}.Debug|Any CPU.ActiveCfg = Debug
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512}.Debug|x86.ActiveCfg = Debug
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512}.Release|Any CPU.ActiveCfg = Release
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512}.Release|Mixed Platforms.ActiveCfg = Release
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512}.Release|x86.ActiveCfg = Release
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3}.Debug|Any CPU.ActiveCfg = Debug
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3}.Debug|x86.ActiveCfg = Debug
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3}.Release|Any CPU.ActiveCfg = Release
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3}.Release|Mixed Platforms.ActiveCfg = Release
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,5 +206,7 @@ Global
 		{82723946-92BF-48A3-A50B-7CE091396797} = {0713E216-EBA1-4387-AFDB-A8C62443F090}
 		{7921DD6D-C633-4252-8E8B-EF46AF3C5DB5} = {0713E216-EBA1-4387-AFDB-A8C62443F090}
 		{6D625513-9DA1-4414-848D-87317C882E32} = {0713E216-EBA1-4387-AFDB-A8C62443F090}
+		{B3E21887-885B-4000-8C5B-B3D3E75C7512} = {2F0DA326-5694-4585-AD65-EDF092DAC37A}
+		{7D36A01B-C302-45B7-99E5-502A3B463CA3} = {2F0DA326-5694-4585-AD65-EDF092DAC37A}
 	EndGlobalSection
 EndGlobal

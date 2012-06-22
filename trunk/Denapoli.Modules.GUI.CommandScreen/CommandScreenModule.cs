@@ -42,7 +42,8 @@ namespace Denapoli.Modules.GUI.CommandScreen
             set
             {
                 _view = value;
-                new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService) {View = value, IsVisible = false};
+                var t = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService) {View = value, IsVisible = false};
+                t.Cancel();
             }
         }
 
@@ -53,11 +54,8 @@ namespace Denapoli.Modules.GUI.CommandScreen
 
         private void NewCommandEventHandler(object obj)
         {
-            var d1 = DateTime.Now;
             var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService,LocalizationService) {View = View};
             _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(screen);
-            var d2 = DateTime.Now;
-            Console.WriteLine(d2 - d1);
         }
     }
 }
