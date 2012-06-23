@@ -79,6 +79,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Denapoli.Modules.Data\Denapoli.Modules.Data.csproj">
+      <Project>{4AFAF324-0120-45CC-985C-47F175A8BCEA}</Project>
+      <Name>Denapoli.Modules.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Denapoli.Modules.Infrastructure\Denapoli.Modules.Infrastructure.csproj">
       <Project>{B0719092-7564-4A45-B235-54DDBD628578}</Project>
       <Name>Denapoli.Modules.Infrastructure</Name>

@@ -72,17 +72,19 @@
         <DockPanel x:Name="left_panel" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
             <DockPanel.Resources>
                 <DataTemplate x:Key="ProductTemplate"  DataType="{x:Type ViewModel:ProductViewModel}">
-                    <TextBlock  Text="{Binding Produit.Nom}"  Margin="5 4 5 6" HorizontalAlignment="Center"  FontSize="15"
+                    <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"  Margin="1 1 1 1" HorizontalAlignment="Center"  FontSize="15"
                                      />
                 </DataTemplate>
 
                 <DataTemplate x:Key="MenusTemplate" DataType="{x:Type ViewModel:MenuViewModel}"     >
                     <StackPanel >
-                        <TextBlock Text="{Binding Produit.Nom}"  Margin="5 4 5 6"  FontSize="15" />
+                        <TextBlock Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter} }"   FontSize="15" />
                         <ListBox ItemsSource="{Binding MenuProducts}" ItemTemplate="{StaticResource ProductTemplate}"
-                                       Background="Transparent"
-                                       BorderBrush="Transparent"
-                                       BorderThickness="0"/>
+                                 Background="Transparent"
+                                 BorderBrush="Transparent"
+                                 BorderThickness="0"
+                                 Margin="10 0 0 0"
+                                 />
                     </StackPanel>
                 </DataTemplate>
             </DockPanel.Resources>
@@ -117,12 +119,13 @@
                         ShowColumnFooters="True"
                         IsReadOnly="True"
                         SelectedItem="{Binding SelectedOrder}"
-                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                        FooterRowStyle="{StaticResource footerStyle}"
                      >
+                  <!--  
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled" -->
                     <telerik:RadGridView.Columns>
-                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding }" Header="{Binding LocalizationService.Dico.Quantite, Converter={StaticResource localizationConverter}}" TextAlignment="Center" >
+                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding}" Header="{Binding LocalizationService.Dico.Quantite, Converter={StaticResource localizationConverter}}" TextAlignment="Center" >
                             <telerik:GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

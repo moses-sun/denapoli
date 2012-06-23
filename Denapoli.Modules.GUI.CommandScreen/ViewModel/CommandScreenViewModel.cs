@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Timers;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
@@ -28,7 +29,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             ScreenName = "Commande";
             IsVisible = true;
             Families = new ObservableCollection<Famille>();
-            dataProvider.GetAvailableFamilies().ForEach(item => Families.Add(item));
+            UpdateFamilles();
             Products = new ObservableCollection<Produit>();
             OrderedProdects = new ObservableCollection<ProductViewModel>();
             Borne = DataProvider.GetBorne(1);
@@ -49,7 +50,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             LeftScollImage = "scroll_left.png";
             Logo = "logo.jpg";
             SelectedView = this;
+        }
 
+        private void UpdateFamilles()
+        {
+            Families.Clear();
+            DataProvider.GetAvailableFamilies().ForEach(item => Families.Add(item));
         }
 
         public void Cancel()
@@ -92,17 +98,29 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
             OrderedProdects.ForEach(prod=>
                                         {
+                                            if (prod.Produit == null) return;
                                             if(prod.IsMenu)
                                             {
                                                 var menu = new Menu{IDProd = prod.Produit.IDProd};
                                                 var m = (MenuViewModel)prod;
-                                                m.MenuProducts.ForEach(item => menu.ProduitsMenu.Add(new ProduitsMenu{IDProd = item.Produit.IDProd}));
+                                                m.MenuProducts.ForEach(item =>
+                                                                           {
+                                                                               if (item.Produit == null) return;
+                                                                               var existingProd = menu.ProduitsMenu.FirstOrDefault(i => i.IDProd == item.Produit.IDProd);
+                                                                               if (existingProd == null)
+                                                                                    menu.ProduitsMenu.Add(new ProduitsMenu{IDProd = item.Produit.IDProd,Quantite = item.Quantite});
+                                                                               else
+                                                                                   existingProd.Quantite += item.Quantite;
+                                                                           });
                                                 command.Menus.Add(menu);
                                             }
                                             else
                                             {
-                                                if (prod.Produit != null)
-                                                    command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd });
+                                              var existingProd = command.ProduitsCommande.FirstOrDefault(item => item.IDProd == prod.Produit.IDProd);
+                                              if (existingProd == null)
+                                                   command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd, Quantite = prod.Quantite });
+                                              else
+                                                   existingProd.Quantite += prod.Quantite;
                                             }
                                         });
           DataProvider.AddCommande(command);

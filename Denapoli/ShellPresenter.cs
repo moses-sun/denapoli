@@ -1,4 +1,5 @@
 using System.ComponentModel.Composition;
+using System.Timers;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Infrastructure.Behavior;
 using Denapoli.Modules.Infrastructure.Services;
@@ -20,6 +21,14 @@ namespace Denapoli
             SettingsService = settingsService;
             ImageUriSourceConverter.SettingsService = SettingsService;
             LocalizationConverter.LocalizationService = LocalizationService;
+            var timer = new Timer { Interval = 6000 };
+            timer.Elapsed += (sender, args) =>
+                                 {
+                                     LocalizationService.Reset();
+                                     ImageUriSourceConverter.Reset();
+                                 };
+            timer.Enabled = true;
+            timer.Start();
         }
 
         public ISettingsService SettingsService { get; set; }

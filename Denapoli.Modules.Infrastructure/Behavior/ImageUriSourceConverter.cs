@@ -27,6 +27,11 @@ namespace Denapoli.Modules.Infrastructure.Behavior
             }
         }
 
+        public static void Reset()
+        {
+            Images.Clear();
+        }
+
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

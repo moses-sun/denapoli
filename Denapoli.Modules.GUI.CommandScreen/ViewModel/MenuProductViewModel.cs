@@ -9,17 +9,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
     public class MenuProductViewModel  : NotifyPropertyChanged, ICommandView
     {
-        public MenuProductViewModel(Famille famille, IEnumerable<Produit> produits)
+        public MenuProductViewModel(ProduitComposition comp)
         {
-            Family = famille;
-            Produits = new List<Produit>(produits);
-            produits.ForEach(item => Produits.Add(item));
-            produits.ForEach(item => Produits.Add(item));
-            produits.ForEach(item => Produits.Add(item));
-            produits.ForEach(item => Produits.Add(item));
-            produits.ForEach(item => Produits.Add(item));
-            produits.ForEach(item => Produits.Add(item));
-
+            Family = comp.Famille;
+            Produits = new List<Produit>(comp.Famille.Produits);
+            //produits.ForEach(item => Produits.Add(item));
+            Quantite = comp.Quantite ?? 1;
         }
 
         public ILocalizationService LocalizationService { get; set; }
@@ -51,6 +46,17 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         {
             get { return IsVisible ? Visibility.Visible : Visibility.Collapsed; }
 
+        }
+
+        private int _quantite;
+        public int Quantite
+        {
+            get { return _quantite; }
+            set
+            {
+                _quantite = value;
+                NotifyChanged("Quantite");
+            }
         }
     }
 }

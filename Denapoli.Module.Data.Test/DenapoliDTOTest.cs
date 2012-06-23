@@ -197,6 +197,35 @@ namespace Denapoli.Module.Data.Test
         }
 
         [Test]
+        public void DeleteCommandTest()
+        {
+            foreach (var v in _dto.Commande)
+            {
+                v.Borne = null;
+                v.IDBorn = 0;
+                v.Livreur = null;
+                v.IDLiVReUR = 0;
+                v.IdaDr = 0;
+                v.Adresse = null;
+                foreach(var pc in v.ProduitsCommande.ToList() )
+                {
+                    _dto.ProduitsCommande.DeleteOnSubmit(pc);
+                }
+                foreach (var m in v.Menus.ToList())
+                {
+                    foreach (var pm in m.ProduitsMenu.ToList())
+                    {
+                        _dto.ProduitsMenu.DeleteOnSubmit(pm);
+                    }
+                    _dto.Menu.DeleteOnSubmit(m);
+                }
+            }
+            _dto.Commande.DeleteAllOnSubmit(_dto.Commande);
+            _dto.SubmitChanges();
+            Console.WriteLine("count="+_dto.Commande.Count());
+        }
+
+        [Test]
         public void MenuTableTest()
         {
             Console.WriteLine("count=" + _dto.Menu.Count());
