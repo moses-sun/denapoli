@@ -39,8 +39,6 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                     var deletedProd = (ProduitVm)e.OldItems[0];
                     DataProvider.Delete(deletedProd.Prod);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 

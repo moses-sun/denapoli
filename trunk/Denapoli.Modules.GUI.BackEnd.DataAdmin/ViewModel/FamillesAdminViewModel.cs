@@ -41,8 +41,6 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                     var deletedFamily = (FamilleVm)e.OldItems[0];
                     DataProvider.Delete(deletedFamily.Family);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
