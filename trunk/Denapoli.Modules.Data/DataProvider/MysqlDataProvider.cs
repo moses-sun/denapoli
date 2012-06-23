@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Timers;
 using Denapoli.Modules.Data.Entities;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using MySql.Data.MySqlClient;
@@ -17,6 +18,10 @@ namespace Denapoli.Modules.Data.DataProvider
         {
             SettingsService = settingsService;
             Connect();
+            var timer = new Timer {Interval = 6000};
+            timer.Elapsed += (sender, args) => Connect();
+            timer.Enabled = true;
+            timer.Start();
         }
 
         private void Connect()
@@ -44,10 +49,10 @@ namespace Denapoli.Modules.Data.DataProvider
             return new List<Produit>(famille.Produits);
         }
 
-        public List<Famille> GetMenuComposition(Produit menu)
+        public List<ProduitComposition> GetMenuComposition(Produit menu)
         {
-            var list = new List<Famille>();
-            menu.ProduitComposition.Select(item => item.Famille).ForEach(list.Add);
+            var list = new List<ProduitComposition>();
+            menu.ProduitComposition.ForEach(list.Add);
             return list;
         }
 

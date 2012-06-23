@@ -1,9 +1,7 @@
 ﻿<Window x:Class="Denapoli.Modules.GUI.BackEnd.Stats.View.StatisticsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                   xmlns:Entities="clr-namespace:Denapoli.Modules.Data.Entities;assembly=Denapoli.Modules.Data"
-                   WindowState="Maximized" >
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" WindowState="Maximized" >
   <DockPanel x:Name="myroot">
     <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}" Margin="20 20 20 20">
       <StackPanel Width="400">

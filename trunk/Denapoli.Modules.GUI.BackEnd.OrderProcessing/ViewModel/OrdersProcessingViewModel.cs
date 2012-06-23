@@ -30,13 +30,22 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             SubmitButtonCommand = new ActionCommand(Submit);
 
            var timer = new Timer {Interval = 6000};
-            timer.Elapsed += (sender, args) => View.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-                                                                           new System.Windows.Threading.DispatcherOperationCallback(delegate
-                                                                                                                                        {
-                                                                                                                                            Orders.ForEach(item => item.Chrono--);
-                                                                                                                                            UpdateCommandes();
-                                                                                                                                            return null;
-                                                                                                                    }), null);
+            timer.Elapsed += (sender, args) =>
+                                 {
+                                     if (View == null) return; 
+                                     View.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                                                                 new System.Windows.Threading.
+                                                                     DispatcherOperationCallback(delegate
+                                                                                                     {
+                                                                                                         Orders.ForEach(
+                                                                                                             item =>
+                                                                                                             item.Chrono
+                                                                                                                 --);
+                                                                                                         UpdateCommandes
+                                                                                                             ();
+                                                                                                         return null;
+                                                                                                     }), null);
+                                 };
             UpdateLivreurs();
             UpdateCommandes();
             timer.Start();
@@ -50,7 +59,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             {
                 _selectedLivreur = value;
                 NotifyChanged("SelectedLivreur");
-                if(value != null )
+                if (value != null && SelectedCommand != null)
                 {
                     SelectedCommand.IDLiVReUR = value.IDLiVReUR;
                     SelectedCommand.Livreur = value;
@@ -109,14 +118,23 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
         private void UpdateCommandes()
         {
             var old = SelectedCommand == null ? -1  : SelectedCommand.Num;
-            Orders.Clear();
+            //Orders.Clear();
             DataProvider.GetMenuAllCommandes().ForEach(item =>
                                                            {
-                                                               if (item.Statut == Livree) return;
+                                                               var exist = Orders.FirstOrDefault(e => e.Num == item.Num);
                                                                var diff = DateTime.Now - item.Date;
-                                                               var minDiff = diff != null ? diff.Value.Minutes + diff.Value.Hours*60 + diff.Value.Days*24*60 : 45;
-                                                               item.Chrono =  45 - minDiff;
-                                                               Orders.Add(item);
+                                                               var minDiff = diff != null ? diff.Value.Minutes + diff.Value.Hours * 60 + diff.Value.Days * 24 * 60 : 45;
+                                                               item.Chrono = 45 - minDiff;
+                                                               if(exist != null)
+                                                               {
+                                                                   exist.Chrono = item.Chrono;
+                                                                   exist.Livreur = item.Livreur;
+                                                                   exist.IDLiVReUR = item.IDLiVReUR;
+                                                                   exist.Statut = item.Statut;
+                                                                   if (item.Statut == Livree) Orders.Remove(exist);
+                                                               }
+                                                               else if(item.Statut != Livree)
+                                                                    Orders.Add(item);
                                                            });
             SelectedCommand = Orders.FirstOrDefault(item => item.Num == old);
             SelectedCommand = SelectedCommand ?? Orders.FirstOrDefault();
@@ -150,7 +168,15 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                 }
                 Products.Add(new ProductViewModel(produit.Produit) { Quantite = produit .Quantite});
             }
-            
+            foreach (var menu in SelectedCommand.Menus)
+            {
+                var m = new MenuVM(menu.Produit) { Quantite = 1 };
+                foreach (var comp in menu.ProduitsMenu)
+                {
+                    m.Composition.Add(new ProductViewModel(comp.Produit){Quantite = comp.Quantite});
+                }
+                Products.Add(m);
+            }
         }
 
         private void SetSubmitButtonText()

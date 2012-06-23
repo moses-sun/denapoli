@@ -8,7 +8,7 @@ namespace Denapoli.Modules.Data
         List<Famille> GetAvailableFamilies();
         List<Produit> GetAllProducts();
         List<Produit> GetFamilyProducts(Famille famille);
-        List<Famille> GetMenuComposition(Produit menu);
+        List<ProduitComposition> GetMenuComposition(Produit menu);
         List<Commande> GetMenuAllCommandes();
         List<Livreur> GetAllLivreurs();
         List<Borne> GetAllBornes();

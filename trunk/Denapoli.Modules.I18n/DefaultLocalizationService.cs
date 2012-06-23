@@ -33,6 +33,11 @@ namespace Denapoli.Modules.I18n
             CurrentLangage = AvailableLangages.First();
         }
 
+        public void Reset()
+        {
+            _loadedDicts.Clear();
+        }
+
         public IEnumerable<Langage> AvailableLangages { get; private set; }
 
         private Langage _currentLangage;
@@ -91,7 +96,7 @@ namespace Denapoli.Modules.I18n
         public string Localize(string key)
         {
             if (string.IsNullOrEmpty(key)) return "";
-            var r = _currentdict.ContainsKey(key) ? _currentdict[key] : _currentLangage.Code;
+            var r = _currentdict.ContainsKey(key) ? _currentdict[key] : key;// _currentLangage.Code;
             if(string.IsNullOrEmpty(r))
                 Console.WriteLine("--------------------to traduce----------- :"+_currentLangage.Code+" : "+key);
             return r;
@@ -102,7 +107,7 @@ namespace Denapoli.Modules.I18n
             Load(langage);
             var dict = _loadedDicts[langage.Name];
             if (string.IsNullOrEmpty(key)) return "";
-            var r = dict.ContainsKey(key) ? dict[key] : langage.Code;
+            var r = dict.ContainsKey(key) ? dict[key] : key;// langage.Code;
             if (string.IsNullOrEmpty(r))
                 Console.WriteLine("--------------------to traduce----------- :" + langage.Code + " : " + key);
             return r;

@@ -7,12 +7,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
     public class MenuViewModel : ProductViewModel
     {
-        public MenuViewModel(Produit menu, List<Famille> menuCompostion) : base(menu)
+        public MenuViewModel(Produit menu, List<ProduitComposition> menuCompostion) : base(menu)
         {
             MenuProducts = new List<MenuProductViewModel>();
             menuCompostion.ForEach(item =>
                                        {
-                                           var menuProduct = new MenuProductViewModel(item, item.Produits);
+                                           var menuProduct = new MenuProductViewModel(item);
                                            MenuProducts.Add(menuProduct);
                                        });
             ValidateCommand = new ActionCommand(() => NotifyChanged("Validate"));

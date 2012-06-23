@@ -11,9 +11,10 @@ namespace Denapoli.Modules.Infrastructure.Services
         void SendDocs();
         Langage CurrentLangage { get; set; }
         Dico Dico { get; }
-        List<string> Keys { get; } 
+        List<string> Keys { get; }
+        void Reset();
 
-        
+
     }
 
     public class Langage
