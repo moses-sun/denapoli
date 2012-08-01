@@ -20,6 +20,7 @@ namespace Denapoli
             LocalizationConverter.LocalizationService = LocalizationService;
             SettingsService = settingsService;
             ImageUriSourceConverter.SettingsService = SettingsService;
+           
             LocalizationConverter.LocalizationService = LocalizationService;
             var timer = new Timer { Interval = 6000 };
             timer.Elapsed += (sender, args) =>

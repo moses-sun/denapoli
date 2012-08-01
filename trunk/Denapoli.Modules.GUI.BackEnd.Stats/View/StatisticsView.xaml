@@ -1,14 +1,24 @@
 ﻿<Window x:Class="Denapoli.Modules.GUI.BackEnd.Stats.View.StatisticsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" WindowState="Maximized" >
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+             mc:Ignorable="d" 
+             WindowState="Maximized" 
+             Title="Statistiques">
+  <Window.Resources>
+    <Behavior:LocalizationConverter x:Key="localizationConverter" />
+  </Window.Resources>
   <DockPanel x:Name="myroot">
-    <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}" Margin="20 20 20 20">
-      <StackPanel Width="400">
-        <GroupBox Header="Commande"    FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+    <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}"  MinWidth="300">
+      <StackPanel >
+        <GroupBox Header="Commande"    FontSize="14" FontFamily="fonts/#Arial Narrow Bold" >
           <Grid>
             <Grid.RowDefinitions>
               <RowDefinition Height="*"  />
+              <RowDefinition Height="*" />
               <RowDefinition Height="*" />
               <RowDefinition Height="*" />
               <RowDefinition Height="*" />
@@ -18,56 +28,60 @@
               <ColumnDefinition Width="Auto" />
               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" Margin="7 3 7 3"/>
-            <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" Margin="7 0 7 0"/>
+            <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" Margin="7 0 7 0"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" Margin="7 3 7 3"/>
-            <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date, StringFormat={}{0:d-MMMM  HH:MM}}" Margin="7 3 7 3"  />
+            <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" Margin="7 0 7 0"/>
+            <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date, StringFormat={}{0:d-MMMM  HH:mm}}" Margin="7 0 7 0"  />
 
-            <TextBlock Grid.Column="0" Grid.Row="2"  Text="Statut :" Margin="7 3 7 3"/>
-            <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Statut}" Margin="7 3 7 3" Background="{Binding Color}" Foreground="White"/>
+            <TextBlock Grid.Column="0" Grid.Row="2"  Text="Statut :" Margin="7 0 7 0"/>
+            <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Statut}" Margin="7 0 7 0" Background="{Binding Color}" Foreground="White" TextAlignment="Center"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="3"  Text="Livreur :" Margin="7 3 7 3"/>
-            <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Livreur.PreNoM}"  Margin="7 3 7 3"/>
+            <TextBlock Grid.Column="0" Grid.Row="3"  Text="Livreur :" Margin="7 0 7 0"/>
+            <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Livreur.Nom}" Margin="7 0 7 0" TextAlignment="Center"/>
 
-            <TextBlock Grid.Column="0" Grid.Row="4"  Text="Montant :" Margin="7 3 7 3"/>
-            <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding Total, StringFormat={}{0:C2}}" Margin="7 3 7 3" />
+            <TextBlock Grid.Column="0" Grid.Row="4"  Text="Montant :" Margin="7 0 7 0"/>
+            <TextBlock Grid.Column="1" Grid.Row="4"  Text="{Binding Total, StringFormat={}{0:c}}" Margin="7 0 7 0" />
           </Grid>
         </GroupBox>
 
-        <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 20 0 0">
+        <GroupBox Header="Client"  FontSize="14" FontFamily="fonts/#Arial Narrow Bold" Margin="0 5 0 0">
           <StackPanel >
             <StackPanel Orientation="Horizontal" DataContext="{Binding Client}" >
-              <TextBlock Text="{Binding Nom}" Margin="7 3 7 3"/>
-              <TextBlock Text="{Binding Prenom}" Margin="7 3 7 3"/>
+              <TextBlock Text="{Binding Nom}" Margin="7 0 7 0"/>
+              <TextBlock Text="{Binding Prenom}" Margin="7 0 7 0"/>
             </StackPanel>
-            <StackPanel  DataContext="{Binding Adresse}" Margin="7 3 7 3">
-              <StackPanel Orientation="Horizontal" Margin="7 3 7 3">
-                <TextBlock Text="{Binding Num}" Margin="7 3 7 3" />
-                <TextBlock Text="{Binding Voie}" Margin="7 3 7 3"/>
+            <StackPanel  DataContext="{Binding Adresse}" >
+              <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="Chambre" Margin="7 0 0 0" />
+                <TextBlock Text="{Binding NumCHamBRe}" Margin="4 0 0 0" />
+                <TextBlock Text=", " Margin="0 0 0 0" />
+                <TextBlock Text="{Binding Num}" Margin="7 0 7 0" />
+                <TextBlock Text="{Binding Voie}" Margin="7 0 7 0"/>
               </StackPanel>
-              <TextBlock Text="{Binding Complement}" Margin="7 3 7 3"/>
+              <TextBlock Text="{Binding Complement}" Margin="7 0 7 0"/>
               <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding CP}" Margin="7 3 7 3"/>
-                <TextBlock Text="  " />
-                <TextBlock Text="{Binding Ville}" Margin="7 3 7 3"/>
+                <TextBlock Text="{Binding CP}" Margin="7 0 7 0"/>
+                <TextBlock Text="  "  Margin="0 0 0 0"/>
+                <TextBlock Text="{Binding Ville}" Margin="7 0 7 0"/>
               </StackPanel>
             </StackPanel>
           </StackPanel>
         </GroupBox>
-        <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 20 0 0">
-          <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 2 2 2"
+        <GroupBox Header="Produits"   FontSize="14" FontFamily="fonts/#Arial Narrow Bold" Margin="0 5 0 0">
+          <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 1 2 1"
             ItemsSource="{Binding ElementName=myroot, Path=DataContext.Products}"
+                   ScrollViewer.VerticalScrollBarVisibility="Visible"
               >
             <ListBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Quantite}"/>
-                    <TextBlock Text=" X "/>
-                    <TextBlock  Text="{Binding Produit.Nom}"/>
+                    <TextBlock Text="{Binding Quantite}" Margin="2 0 2 0"/>
+                    <TextBlock Text=" X "  Margin="2 0 2 0"/>
+                    <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"  Margin="2 0 2 0"/>
                   </StackPanel>
-                  <ListBox Margin="10 2 2 2" ItemsSource="{Binding Composition}"
+                  <ListBox Margin="20 0 2 0" ItemsSource="{Binding Composition}"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             BorderThickness="0"
@@ -75,9 +89,9 @@
                     <ListBox.ItemTemplate>
                       <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                          <TextBlock Text="{Binding Produit.Quantite}"/>
-                          <TextBlock Text=" X "/>
-                          <TextBlock  Text="{Binding Produit.Nom}"/>
+                          <TextBlock Text="{Binding Quantite}"  Margin="2 0 2 0"/>
+                          <TextBlock Text=" X "  Margin="2 0 2 0"/>
+                          <TextBlock  Margin="2 0 2 0" Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"/>
                         </StackPanel>
                       </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -96,17 +110,54 @@
           CanUserReorderColumns="False"
           IsReadOnly="True"
           AlternationCount="2"
+          ShowColumnFooters="True"
+				  ShowGroupFooters="True"
           SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
                 >
+        <telerik:RadGridView.GroupHeaderTemplate>
+          <DataTemplate>
+            <TextBlock Foreground="#FFFF6900"
+                   Text="{Binding Group.Key}" />
+          </DataTemplate>
+        </telerik:RadGridView.GroupHeaderTemplate>
+        
         <telerik:RadGridView.SortDescriptors>
-          <telerik:SortDescriptor Member="Statut" SortDirection="Ascending" />
+          <telerik:SortDescriptor Member="Date" SortDirection="Ascending" />
         </telerik:RadGridView.SortDescriptors>
         <telerik:RadGridView.Columns>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}" Header="Heure" TextAlignment="Center"
-                                       Width="160"
-                                       DataFormatString="{}{0:d-MMMM  HH:MM}"/>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Point livraison" TextAlignment="Center" >
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" Width="*">
+            <telerik:GridViewDataColumn.AggregateFunctions>
+              <telerik:CountFunction Caption="Nombre : " />
+            </telerik:GridViewDataColumn.AggregateFunctions>
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Jour}" Header="Jour" TextAlignment="Center"
+                                     Width="*"
+                                     DataFormatString="{}{0:dddd dd}">
+            <telerik:GridViewDataColumn.GroupHeaderTemplate>
+              <DataTemplate>
+                <TextBlock Foreground="#FF16ABA9" Text="{Binding Group.Key, StringFormat={}{0:dddd dd}}" />
+              </DataTemplate>
+            </telerik:GridViewDataColumn.GroupHeaderTemplate>
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Mois}" Header="Mois" TextAlignment="Center"
+                                      Width="*"
+                                      DataFormatString="{}{0:MMMM}">
+            <telerik:GridViewDataColumn.GroupHeaderTemplate>
+              <DataTemplate>
+                <TextBlock Foreground="#FF16ABA9" Text="{Binding Group.Key, StringFormat={}{0:MMMM}}" />
+              </DataTemplate>
+            </telerik:GridViewDataColumn.GroupHeaderTemplate>
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Heure}" Header="Heure" TextAlignment="Center"
+                                       Width="*"
+                                       DataFormatString="{}{0:HH:mm}">
+            <telerik:GridViewDataColumn.GroupHeaderTemplate>
+              <DataTemplate>
+                <TextBlock Foreground="#FF16ABA9" Text="{Binding Group.Key, StringFormat={}{0:HH:mm}}" />
+              </DataTemplate>
+            </telerik:GridViewDataColumn.GroupHeaderTemplate>
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Point livraison" TextAlignment="Center"  >
             <telerik:GridViewColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
@@ -117,12 +168,89 @@
                 </StackPanel>
               </DataTemplate>
             </telerik:GridViewColumn.CellTemplate>
+
+            <telerik:GridViewDataColumn.AggregateFunctions>
+              <telerik:MinFunction Caption="De: " ResultFormatString="{}{0:dd-MMMM HH:mm}" SourceField="Date" />
+              <telerik:MaxFunction Caption="A  : " ResultFormatString="{}{0:dd-MMMM HH:mm}" SourceField="Date" />
+            </telerik:GridViewDataColumn.AggregateFunctions>
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" Width="*" />
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" Width="*">
+            <telerik:GridViewDataColumn.GroupHeaderTemplate>
+              <DataTemplate>
+                <TextBlock Foreground="#FF16ABA9" Text="{Binding Group.Key}" />
+              </DataTemplate>
+            </telerik:GridViewDataColumn.GroupHeaderTemplate>
+            <telerik:GridViewDataColumn.AggregateFunctions>
+              <telerik:SumFunction Caption="Somme: " ResultFormatString="{}{0:c}"  SourceField="Total" />
+              <telerik:AverageFunction Caption="Moyenne: "  ResultFormatString="{}{0:c}" SourceField="Total" />
+            </telerik:GridViewDataColumn.AggregateFunctions>
+            <telerik:GridViewDataColumn.Footer>
+              <StackPanel Orientation="Vertical"  Margin="0,10">
+                <TextBlock Text="Statistiques:"  Margin="0,0,0,2" />
+                <telerik:AggregateResultsList ItemsSource="{Binding}"  VerticalAlignment="Center"  Grid.Column="4">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <StackPanel Orientation="Horizontal"     VerticalAlignment="Center">
+                        <TextBlock VerticalAlignment="Center" Text="{Binding Caption}" />
+                        <TextBlock VerticalAlignment="Center" Text="{Binding FormattedValue}" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </telerik:AggregateResultsList>
+              </StackPanel>
+            </telerik:GridViewDataColumn.Footer>
+            <telerik:GridViewDataColumn.GroupFooterTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Vertical" Margin="0,10">
+                  <TextBlock Text="Statistiques :" Margin="0,0,0,2" />
+                  <telerik:AggregateResultsList ItemsSource="{Binding}" VerticalAlignment="Center" Grid.Column="4">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                          <TextBlock VerticalAlignment="Center" Text="{Binding Caption}" />
+                          <TextBlock VerticalAlignment="Center" Text="{Binding FormattedValue}" />
+                        </StackPanel>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                  </telerik:AggregateResultsList>
+                </StackPanel>
+              </DataTemplate>
+            </telerik:GridViewDataColumn.GroupFooterTemplate>
+
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" Width="*">
+            <telerik:GridViewDataColumn.GroupHeaderTemplate>
+              <DataTemplate>
+                <TextBlock Foreground="#FFED1691" Text="{Binding Group.Key}" />
+              </DataTemplate>
+            </telerik:GridViewDataColumn.GroupHeaderTemplate>
+            <telerik:GridViewDataColumn.AggregateFunctions>
+              <telerik:MinFunction Caption="Min: " ResultFormatString="{}{0:c}" SourceField="Total" />
+              <telerik:MaxFunction Caption="Max: " ResultFormatString="{}{0:c}" SourceField="Total" />
+            </telerik:GridViewDataColumn.AggregateFunctions>
+
+          </telerik:GridViewDataColumn>
+          <telerik:GridViewDataColumn  TextAlignment="Center" Width="*">
+            <telerik:GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <telerik:RadButton   Command="telerik:RadGridViewCommands.Delete" CommandParameter="{Binding}" Content="Supprimer"/>
+              </DataTemplate>
+            </telerik:GridViewColumn.CellTemplate>
+          </telerik:GridViewDataColumn>
         </telerik:RadGridView.Columns>
       </telerik:RadGridView>
+    
     </DockPanel>
   </DockPanel>
 </Window>

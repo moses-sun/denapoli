@@ -16,5 +16,9 @@
         <ContentControl  
              Visibility="{Binding CommandVisibility,Mode=TwoWay}"
             Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.CommandRegion}"/>
+      <ContentControl  
+             Visibility="{Binding DisabledVisibility,Mode=TwoWay}"
+            Regions:RegionManager.RegionName="{x:Static Behavior:RegionNames.DisabledRegion}"/>
+      
     </DockPanel>
 </UserControl>

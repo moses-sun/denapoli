@@ -13,11 +13,13 @@ namespace Denapoli.Modules.Data.Entities
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");
         private DateTime? _date;
         private int _idaDr;
-        private int _idbOrn;
-        private int _idclIen;
+        private int? _idbOrn;
+        private int? _idclIen;
         private int _num;
         private string _statut;
         private float _total;
+        private float _tva;
+        private string _source;
         private EntitySet<Menu> _menus;
         private EntitySet<ProduitsCommande> _prodUiTsCommandE;
         private EntityRef<Adresse> _adRessE;
@@ -38,15 +40,15 @@ namespace Denapoli.Modules.Data.Entities
         {
             get
             {
-                return this._idlIVrEUr;
+                return _idlIVrEUr;
             }
             set
             {
                 if ((_idlIVrEUr != value))
                 {
-                    this.SendPropertyChanging();
-                    this._idlIVrEUr = value;
-                    this.SendPropertyChanged("IDLiVReUR");
+                    SendPropertyChanging();
+                    _idlIVrEUr = value;
+                    SendPropertyChanged("IDLiVReUR");
                 }
             }
         }
@@ -65,6 +67,35 @@ namespace Denapoli.Modules.Data.Entities
                 SendPropertyChanging();
                 _date = value;
                 SendPropertyChanged("Date");
+                SendPropertyChanged("Jour");
+                SendPropertyChanged("Heure");
+            }
+        }
+
+        public DateTime Jour
+        {
+            get
+            {
+                var j = _date.GetValueOrDefault();
+                return new DateTime(j.Year, j.Month, j.Day, 0, 0, 0);
+            }
+        }
+
+        public DateTime Heure
+        {
+            get
+            {
+                var j = _date.GetValueOrDefault();
+                return new DateTime(2000, 1, 1, j.Hour, j.Minute, 0);
+            }
+        }
+
+        public DateTime Mois
+        {
+            get
+            {
+                var j = _date.GetValueOrDefault();
+                return new DateTime(2000, j.Month, 1, 0, 0, 0);
             }
         }
 
@@ -99,7 +130,7 @@ namespace Denapoli.Modules.Data.Entities
 		
         [Column(Storage="_idbOrn", Name="ID_BORN", DbType="int", AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]
-        public int IDBorn
+        public int? IDBorn
         {
             get
             {
@@ -116,7 +147,7 @@ namespace Denapoli.Modules.Data.Entities
 		
         [Column(Storage="_idclIen", Name="ID_CLIEN", DbType="int", AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]
-        public int IDCLien
+        public int? IDCLien
         {
             get
             {
@@ -181,6 +212,40 @@ namespace Denapoli.Modules.Data.Entities
             }
         }
 		
+        [Column(Storage="_tva", Name="TVA", DbType="float", AutoSync=AutoSync.Never, CanBeNull=false)]
+		[DebuggerNonUserCode]
+		public float Tva
+		{
+			get
+			{
+				return _tva;
+			}
+			set
+			{
+					SendPropertyChanging();
+					_tva = value;
+					SendPropertyChanged("Tva");
+			}
+		}
+
+        [Column(Storage = "_source", Name = "SOURCE", DbType = "varchar(15)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public string Source
+        {
+            get
+            {
+                return this._source;
+            }
+            set
+            {
+                if ((_source == value)) return;
+                SendPropertyChanging();
+                _source = value;
+                SendPropertyChanged("Source");
+            }
+        }
+		
+
         #region Children
         [Association(Storage="_menu", OtherKey="NumCom", ThisKey="Num", Name="commande_du_menu")]
         [DebuggerNonUserCode]
@@ -329,6 +394,7 @@ namespace Denapoli.Modules.Data.Entities
                 {
                     _idlIVrEUr = null;
                 }
+                SendPropertyChanged("Livreur");
             }
         }
 

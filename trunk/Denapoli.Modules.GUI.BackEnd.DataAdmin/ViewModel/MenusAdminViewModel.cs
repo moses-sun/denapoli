@@ -26,6 +26,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            MenuVm.DataProvider = DataProvider;
+            MenuVm.LocalizationService = LocalizationService;
+            MenuVm.SettingsService = SettingsService;
             Menus = new ObservableCollection<MenuVm>();
             Updatemenus();
             Menus.CollectionChanged += OnMenuschanged;
@@ -41,18 +44,18 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                    var deletedMenu = (MenuVm)e.OldItems[0];
                     DataProvider.DeleteMenu(deletedMenu.Menu);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
         private void Updatemenus()
         {
+            var old = SelectedMenu == null ? -1 : SelectedMenu.Menu.IDProd;
             Menus.CollectionChanged -= OnMenuschanged;
             Menus.Clear();
             var menus = DataProvider.GetAllProducts().Where(item=>item.IsMenu);
             menus.ForEach(item => Menus.Add(new MenuVm(item, DataProvider, LocalizationService, SettingsService)));
-            SelectedMenu = Menus.FirstOrDefault();
+            SelectedMenu = Menus.FirstOrDefault(item => item.Menu.IDProd == old);
+            SelectedMenu = SelectedMenu ?? Menus.FirstOrDefault();
             Menus.CollectionChanged += OnMenuschanged;
         }
 
@@ -65,6 +68,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 _selectedMenu = value;
                 NotifyChanged("SelectedMenu");
             }
+        }
+
+        public void Update()
+        {
+            Updatemenus();
         }
     }
 }

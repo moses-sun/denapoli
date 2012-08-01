@@ -5,7 +5,7 @@
   <UserControl.Resources>
     <DataTemplate x:Key="DisplayLivreur">
       <StackPanel>
-        <telerik:DataFormDataField Label="ID" DataMemberBinding="{Binding Livreur.IDLiVReUR}" />
+        <telerik:DataFormDataField IsReadOnly="True" Label="ID" DataMemberBinding="{Binding Livreur.IDLiVReUR}" />
         <telerik:DataFormDataField Label="Nom" x:Name="enable" DataMemberBinding="{Binding Nom}" />
         <telerik:DataFormDataField Label="Prenom" DataMemberBinding="{Binding Prenom}" />
       </StackPanel>

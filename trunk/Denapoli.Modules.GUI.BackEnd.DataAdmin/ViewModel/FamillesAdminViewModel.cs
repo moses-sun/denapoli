@@ -1,11 +1,8 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using Denapoli.Modules.Data;
-using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
@@ -26,6 +23,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            FamilleVm.DataProvider = DataProvider;
+            FamilleVm.LocalizationService = LocalizationService;
+            FamilleVm.SettingsService = SettingsService;
             Familles = new ObservableCollection<FamilleVm>();
             UpdateFamilles();
             Familles.CollectionChanged += OnFamilleschanged;
@@ -46,11 +46,13 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UpdateFamilles()
         {
+            var old = SelectedFamille == null ? -1 : SelectedFamille.Family.IDFaMil;
             Familles.CollectionChanged -= OnFamilleschanged;
             Familles.Clear();
             var familles = DataProvider.GetAvailableFamilies();
             familles.ForEach(item => Familles.Add(new FamilleVm(item, DataProvider, LocalizationService, SettingsService)));
-            SelectedFamille = Familles.FirstOrDefault();
+            SelectedFamille = Familles.FirstOrDefault(item => item.Family.IDFaMil == old);
+            SelectedFamille = SelectedFamille ?? Familles.FirstOrDefault();
             Familles.CollectionChanged += OnFamilleschanged;
         }
 
@@ -63,6 +65,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 _selectedFamille = value;
                 NotifyChanged("SelectedFamille");
             }
+        }
+
+        public void Update()
+        {
+            UpdateFamilles();
         }
     }
 }

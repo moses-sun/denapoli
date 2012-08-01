@@ -26,17 +26,16 @@ namespace Denapoli.Modules.Infrastructure.Controls
             TopScrollCommand = new ActionCommand(() =>
             {
                 var scroller = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(this, 0), 0) as ScrollViewer;
-                scroller.ScrollToVerticalOffset(scroller.VerticalOffset - 10);
+                scroller.ScrollToVerticalOffset(scroller.VerticalOffset - 100);
             });
 
             BottomScrollCommand = new ActionCommand(() =>
             {
                 var scroller = VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(this, 0), 0) as ScrollViewer;
-                scroller.ScrollToVerticalOffset(scroller.VerticalOffset + 10);
+                scroller.ScrollToVerticalOffset(scroller.VerticalOffset + 100);
             });
+
         }
-
-
 
         public ICommand LeftScrollCommand
         {
@@ -77,6 +76,7 @@ namespace Denapoli.Modules.Infrastructure.Controls
         }
         public static readonly DependencyProperty BottomScrollCommandProperty = DependencyProperty.Register(
           "BottomScrollCommand", typeof(ICommand), typeof(ListViewEx), new PropertyMetadata(null));
-       
+
+        
     }
 }

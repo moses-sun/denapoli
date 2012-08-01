@@ -18,5 +18,6 @@ namespace Denapoli.Modules.Infrastructure.Behavior
         public const string AdminI18nRegion = "AdminI18nRegion";
         public const string AdminLivreursRegion = "AdminLivreursRegion";
         public const string AdminBornesRegion = "AdminBornesRegion";
+        public const string DisabledRegion = "DisabledRegion";
     }
 }

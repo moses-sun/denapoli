@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Diagnostics;
@@ -10,8 +11,16 @@ namespace Denapoli.Modules.Data.Entities
     {
 		
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");
-        private int _idaDr;
+        private int? _idaDr;
         private int _idbOrn;
+        private DateTime _hfERmEJoUr;
+        private DateTime _hfERmESoIr;
+        private DateTime _hoUvErtJoUr;
+        private DateTime _hoUvErtSoIr;
+        private sbyte _isaCtIf;
+        private sbyte _isoUvErt;
+        private string _message;
+        private string _messageInActIf;
         private EntitySet<Commande> _commandes;
         private EntityRef<Adresse> _adRessE;
 		
@@ -22,7 +31,7 @@ namespace Denapoli.Modules.Data.Entities
 		
         [Column(Storage="_idaDr", Name="ID_ADR", DbType="int", AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]
-        public int IdaDr
+        public int? IdaDr
         {
             get
             {
@@ -48,6 +57,165 @@ namespace Denapoli.Modules.Data.Entities
                 SendPropertyChanging();
                 _idbOrn = value;
                 SendPropertyChanged("IDBorn");
+            }
+        }
+
+
+        [Column(Storage = "_hfERmEJoUr", Name = "H_FERME_JOUR", DbType = "time", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public DateTime HeureFermetureJour
+        {
+            get
+            {
+                return _hfERmEJoUr;
+            }
+            set
+            {
+                if ((_hfERmEJoUr == value)) return;
+                SendPropertyChanging();
+                _hfERmEJoUr = value;
+                SendPropertyChanged("HeureFermetureJour");
+            }
+        }
+
+        [Column(Storage = "_hfERmESoIr", Name = "H_FERME_SOIR", DbType = "time", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public DateTime HeureFermetureSoir
+        {
+            get
+            {
+                return _hfERmESoIr;
+            }
+            set
+            {
+                if ((_hfERmESoIr != value))
+                {
+                    SendPropertyChanging();
+                    _hfERmESoIr = value;
+                    SendPropertyChanged("HeureFermetureSoir");
+                }
+            }
+        }
+
+        [Column(Storage = "_hoUvErtJoUr", Name = "H_OUVERT_JOUR", DbType = "time", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public DateTime HeureOuvertureJour
+        {
+            get
+            {
+                return _hoUvErtJoUr;
+            }
+            set
+            {
+                if ((_hoUvErtJoUr == value)) return;
+                SendPropertyChanging();
+                _hoUvErtJoUr = value;
+                SendPropertyChanged("HeureOuvertureJour");
+            }
+        }
+
+        [Column(Storage = "_hoUvErtSoIr", Name = "H_OUVERT_SOIR", DbType = "time", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public DateTime HeureOuvertureSoir
+        {
+            get
+            {
+                return _hoUvErtSoIr;
+            }
+            set
+            {
+                if ((_hoUvErtSoIr == value)) return;
+                SendPropertyChanging();
+                _hoUvErtSoIr = value;
+                SendPropertyChanged("HeureOuvertureSoir");
+            }
+        }
+
+        [Column(Storage = "_isaCtIf", Name = "IS_ACTIF", DbType = "tinyint(1)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public sbyte IsaCtIf
+        {
+            get
+            {
+                return _isaCtIf;
+            }
+            set
+            {
+                if ((_isaCtIf == value)) return;
+                SendPropertyChanging();
+                _isaCtIf = value;
+                SendPropertyChanged("IsaCtIf");
+                SendPropertyChanged("IsActif");
+            }
+        }
+
+        public bool IsActif
+        {
+            get { return IsaCtIf==1 ; }
+            set { IsaCtIf = (sbyte) (value ? 1 : 0); }
+        }
+
+        [Column(Storage = "_isoUvErt", Name = "IS_OUVERT", DbType = "tinyint(1)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode()]
+        public sbyte IsoUVert
+        {
+            get
+            {
+                return _isoUvErt;
+            }
+            set
+            {
+                if ((_isoUvErt == value)) return;
+                SendPropertyChanging();
+                _isoUvErt = value;
+                SendPropertyChanged("IsoUVert");
+                SendPropertyChanged("IsOuvert");
+            }
+        }
+
+        public bool IsOuvert
+        {
+            get { return IsoUVert == 1; }
+            set { IsoUVert = (sbyte)(value ? 1 : 0); }
+        }
+
+        [Column(Storage = "_message", Name = "MESSAGE", DbType = "varchar(500)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                if (((_message == value)
+                            == false))
+                {
+                    SendPropertyChanging();
+                    _message = value;
+                    SendPropertyChanged("Message");
+                }
+            }
+        }
+
+        [Column(Storage = "_messageInActIf", Name = "MESSAGE_INACTIF", DbType = "varchar(500)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public string MessageInActIf
+        {
+            get
+            {
+                return _messageInActIf;
+            }
+            set
+            {
+                if (((_messageInActIf == value)
+                            == false))
+                {
+                    SendPropertyChanging();
+                    _messageInActIf = value;
+                    SendPropertyChanged("MessageInActIf");
+                }
             }
         }
 		

@@ -2,6 +2,7 @@
 using System.Linq;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
+using Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel;
 using MySql.Data.MySqlClient;
 using NUnit.Framework;
 
@@ -41,18 +42,15 @@ namespace Denapoli.Module.Data.Test
         [Test]
         public void InsertProduitTest()
         {
-            var prod = _dto.Produit.FirstOrDefault();
-          
-            if(prod!=null)
-            {
-                //prod.Nom = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            }
+            
             var prod2 = new Produit {Nom = "toto", Description = "Description", IDFaMil = 2, Prix = 4.5f,};
-           // _dto.Produit.InsertOnSubmit(prod2);
+            _dto.Produit.InsertOnSubmit(prod2);
             _dto.SubmitChanges();
             var p = _dto.Produit.FirstOrDefault(item => item.Nom == "toto");
             Assert.IsNotNull(p);
             Assert.AreEqual(4.5f, p.Prix);
+            _dto.Produit.DeleteOnSubmit(p);
+            _dto.SubmitChanges();
         }
 
         [Test]
@@ -157,6 +155,7 @@ namespace Denapoli.Module.Data.Test
         public void UpdateLivreurTest()
         {
             var livreur = _dto.Livreur.FirstOrDefault();
+            if (livreur == null) return;
             livreur.NoM = "toto";
             _dto.SubmitChanges();
         }
@@ -196,7 +195,7 @@ namespace Denapoli.Module.Data.Test
             }
         }
 
-        [Test]
+        //[Test]
         public void DeleteCommandTest()
         {
             foreach (var v in _dto.Commande)
@@ -223,6 +222,25 @@ namespace Denapoli.Module.Data.Test
             _dto.Commande.DeleteAllOnSubmit(_dto.Commande);
             _dto.SubmitChanges();
             Console.WriteLine("count="+_dto.Commande.Count());
+        }
+
+        [Test]
+        public void Delete()
+        {
+            var c = _dto.Livreur.FirstOrDefault(item => item.IDLiVReUR == 2);
+            if (c == null) return;
+
+
+            foreach (var commande in _dto.Commande)
+            {
+                if(commande.IDLiVReUR != 2)
+                {
+                    commande.IDLiVReUR = 2;
+                }
+            }
+            c.Commandes = null;
+            //_dto.Livreur.DeleteOnSubmit(c);
+            _dto.SubmitChanges();
         }
 
         [Test]
@@ -289,6 +307,7 @@ namespace Denapoli.Module.Data.Test
                                   IdaDr = adresse.IdaDr,
                                   IDBorn = borne.IDBorn,
                                   IDCLien = client.IDCLien,
+                                  Source = "TEST",
                                   Statut = "ATTENTE"
                               };
             command.ProduitsCommande.Add(new ProduitsCommande{IDProd = product1.IDProd});
@@ -317,6 +336,14 @@ namespace Denapoli.Module.Data.Test
                     Console.WriteLine("                                  :" + p.Produit.Nom + "  = " + p.Quantite);
                 }
             }
+        }
+
+        [Test]
+        public void PrintTest()
+        {
+            var commande = _dto.Commande.FirstOrDefault(item => item.Num == 87);
+            var printer = new TicketPrinter();
+            printer.Print(commande);
         }
     }
 }

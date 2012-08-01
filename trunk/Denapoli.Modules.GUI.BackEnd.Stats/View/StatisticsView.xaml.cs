@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Windows;
 using Denapoli.Modules.GUI.BackEnd.Stats.ViewModel;
 using Denapoli.Modules.Infrastructure.Behavior;
 
@@ -22,8 +24,15 @@ namespace Denapoli.Modules.GUI.BackEnd.Stats.View
             set
             {
                 DataContext = value;
+                value.View = this;
                 value.Window = this;
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Visibility = Visibility.Hidden;
         }
     }
 }

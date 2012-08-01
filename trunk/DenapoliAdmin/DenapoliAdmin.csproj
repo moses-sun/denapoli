@@ -64,6 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.Charting">
+      <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.Data">
       <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
@@ -163,6 +166,11 @@
     <SplashScreen Include="Resources\pizza_splash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </SplashScreen>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pizza.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -70,7 +70,7 @@ namespace Denapoli.Modules.I18n
             var i = 0;
             foreach (var entry in dico)
                 lines[i++] = entry.Key + "=" + entry.Value;
-            File.WriteAllLines(fileName, lines);
+            File.WriteAllLines(fileName, lines, Encoding.UTF8);
         }
 
         public Langage CurrentLangage
@@ -140,7 +140,7 @@ namespace Denapoli.Modules.I18n
             }
             var dico = new Dictionary<string, string>();
 
-            var responseStream = new StreamReader(response.GetResponseStream(),Encoding.Default);
+            var responseStream = new StreamReader(response.GetResponseStream(),Encoding.UTF8);
             while (!responseStream.EndOfStream)
             {
                 var line = responseStream.ReadLine().Split(new[] { '=' });

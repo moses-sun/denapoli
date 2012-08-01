@@ -21,6 +21,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public LivreurAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService)
         {
             DataProvider = dataProvider;
+            LivreurVm.DataProvider = DataProvider;
             LocalizationService = localizationService;
             Livreurs = new ObservableCollection<LivreurVm>();
             UpdateLivreurs();
@@ -36,18 +37,18 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                   var deletedLivreur = (LivreurVm)e.OldItems[0];
                     DataProvider.Delete(deletedLivreur.Livreur);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
         private void UpdateLivreurs()
         {
+            var old = SelectedLivreur == null ? -1 : SelectedLivreur.Livreur.IDLiVReUR;
             Livreurs.CollectionChanged -= OnLivreurschanged;
             Livreurs.Clear();
             var livreurs = DataProvider.GetAllLivreurs();
             livreurs.ForEach(item => Livreurs.Add(new LivreurVm(item, DataProvider)));
-            SelectedLivreur = Livreurs.FirstOrDefault();
+            SelectedLivreur = Livreurs.FirstOrDefault(item => item.Livreur.IDLiVReUR == old);
+            SelectedLivreur = SelectedLivreur ?? Livreurs.FirstOrDefault();
             Livreurs.CollectionChanged += OnLivreurschanged;
         }
 
@@ -60,6 +61,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 _selectedLivreur = value;
                 NotifyChanged("SelectedLivreur");
             }
+        }
+
+        public void Update()
+        {
+            UpdateLivreurs();
         }
     }
 }

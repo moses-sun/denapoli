@@ -5,19 +5,68 @@
   <UserControl.Resources>
     <DataTemplate x:Key="DisplayBorne">
       <StackPanel>
-        <telerik:DataFormDataField Label="ID" DataMemberBinding="{Binding Borne.IDBorn}" />
+       
+        <telerik:DataFormDataField IsReadOnly="True" Label="Borne N°"  DataMemberBinding="{Binding Borne.IDBorn}" />
+        <telerik:DataFormDataField  Label="Active"  >
+          <telerik:DataFormCheckBoxField  DataMemberBinding="{Binding IsActif}" />
+        </telerik:DataFormDataField>
         <telerik:DataFormDataField Label="N°" x:Name="enable" DataMemberBinding="{Binding Num}" />
         <telerik:DataFormDataField Label="Voie" DataMemberBinding="{Binding Voie}" />
         <telerik:DataFormDataField Label="Complement" DataMemberBinding="{Binding Complement}" />
         <telerik:DataFormDataField Label="CP" DataMemberBinding="{Binding CP}" />
         <telerik:DataFormDataField Label="Ville" DataMemberBinding="{Binding Ville}" />
+        <telerik:DataFormDataField Label="Message si inactive" DataMemberBinding="{Binding MessageInactif}" />
       </StackPanel>
+    </DataTemplate>
+    
+    <DataTemplate  x:Key="DisplayTop">
+       
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"  />
+          <RowDefinition Height="*"  />
+          <RowDefinition Height="*"  />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <telerik:DataFormDataField  Grid.Column="0" Grid.Row="0" Label="Bornes ouvertes ?"  >
+          <telerik:DataFormCheckBoxField  DataMemberBinding="{Binding IsOuvert}"   x:Name="Field" />
+        </telerik:DataFormDataField>
+        <telerik:DataFormDataField  Grid.Column="1" Grid.Row="0" Label="Message" DataMemberBinding="{Binding Message}" />
+        <telerik:DataFormDataField  Grid.Column="0" Grid.Row="1" Label="Heure d'ouverture jour"  >
+          <telerik:RadDateTimePicker IsReadOnly="{Binding ElementName=Field, Path=IsReadOnly}" SelectedValue="{Binding HeureOuvertureJour, Mode=TwoWay}" InputMode="TimePicker" TimeInterval="0:30" Culture="fr"/>
+        </telerik:DataFormDataField>
+        <telerik:DataFormDataField  Grid.Column="0" Grid.Row="2" Label="Heure de fermeture jour"  >
+          <telerik:RadDateTimePicker IsReadOnly="{Binding ElementName=Field, Path=IsReadOnly}" SelectedValue="{Binding HeureFermetureJour, Mode=TwoWay}" InputMode="TimePicker" TimeInterval="0:30" Culture="fr"/>
+        </telerik:DataFormDataField>
+        <telerik:DataFormDataField  Grid.Column="1" Grid.Row="1" Label="Heure d'ouverture soir"   >
+          <telerik:RadDateTimePicker IsReadOnly="{Binding ElementName=Field, Path=IsReadOnly}" SelectedValue="{Binding HeureOuvertureSoir, Mode=TwoWay}" InputMode="TimePicker" TimeInterval="0:30" Culture="fr"/>
+        </telerik:DataFormDataField>
+        <telerik:DataFormDataField  Grid.Column="1" Grid.Row="2" Label="Heure de fermeture soir"  >
+          <telerik:RadDateTimePicker IsReadOnly="{Binding ElementName=Field, Path=IsReadOnly}" SelectedValue="{Binding HeureFermetureSoir, Mode=TwoWay}" InputMode="TimePicker" TimeInterval="0:30" Culture="fr"/>
+        </telerik:DataFormDataField>
+      
+    </Grid>
+      
     </DataTemplate>
   </UserControl.Resources>
   <DockPanel Margin="10 10 10 10">
+
+    <telerik:RadDataForm
+      DockPanel.Dock="Top"
+      Header="Etat des bornes"
+      AutoGenerateFields="False"
+      CurrentItem="{Binding }"
+      ReadOnlyTemplate="{StaticResource DisplayTop}"
+      EditTemplate="{StaticResource DisplayTop}"
+      NewItemTemplate="{StaticResource DisplayTop}" />
+    
     <telerik:RadDataForm
       DockPanel.Dock="Right"
-      Header="Produit"
+      Header="Borne selectionnée"
       Width="400"
       AutoGenerateFields="False"
       ItemsSource="{Binding Bornes}"
@@ -27,12 +76,12 @@
       NewItemTemplate="{StaticResource DisplayBorne}" />
 
     <telerik:RadGridView
+      ShowGroupPanel="False"
      ItemsSource="{Binding Bornes}"
      SelectedItem="{Binding SelectedBorne, Mode=TwoWay}"
      AutoGenerateColumns="False"
      CanUserReorderColumns="False"
      IsReadOnly="True"
-         
                 >
       <telerik:RadGridView.Columns>
         <telerik:GridViewDataColumn Header="ID" DataMemberBinding="{Binding Borne.IDBorn}"  TextAlignment="Center" />
@@ -41,6 +90,7 @@
         <telerik:GridViewDataColumn Header="Complement" DataMemberBinding="{Binding Complement}"  TextAlignment="Center" />
         <telerik:GridViewDataColumn Header="CP" DataMemberBinding="{Binding CP}"  TextAlignment="Center" />
         <telerik:GridViewDataColumn Header="Ville" DataMemberBinding="{Binding Ville}"  TextAlignment="Center" />
+        <telerik:GridViewDataColumn Header="Active" DataMemberBinding="{Binding IsActif}"  TextAlignment="Center" />
       </telerik:RadGridView.Columns>
     </telerik:RadGridView>
   </DockPanel>

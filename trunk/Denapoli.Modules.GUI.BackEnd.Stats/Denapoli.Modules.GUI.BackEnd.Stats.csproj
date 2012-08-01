@@ -53,6 +53,9 @@
     <Reference Include="Telerik.Windows.Controls">
       <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.Charting">
+      <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.Data">
       <HintPath>..\dll\telerik\Binaries\WPF\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -93,7 +94,7 @@ namespace Denapoli.Modules.Data.DataProvider
             return list;
         }
 
-        public void AddCommande(Commande com)
+        public Commande AddCommande(Commande com)
         {
             Connect();
             if (com.Num == 0)
@@ -103,8 +104,10 @@ namespace Denapoli.Modules.Data.DataProvider
                 var command = DAO.Commande.First(item => item.Num == com.Num);
                 command.Statut = com.Statut;
                 command.IDLiVReUR = com.IDLiVReUR;
+                com = command;
             }
             DAO.SubmitChanges();
+            return com;
         }
 
         public Client InsertIfNotExists(Client client)
@@ -129,7 +132,7 @@ namespace Denapoli.Modules.Data.DataProvider
                 DAO.Langue.InsertOnSubmit(l);
             else
             {
-                var langue = DAO.Langue.First(item => item.IDLang == l.IDLang);
+                var langue = DAO.Langue.FirstOrDefault(item => item.IDLang == l.IDLang);
                 langue.NoM = l.NoM;
                 langue.Code = l.Code;
             }
@@ -145,31 +148,52 @@ namespace Denapoli.Modules.Data.DataProvider
                 DAO.Adresse.InsertOnSubmit(addr);
             else
             {
-                var add = DAO.Adresse.First(item=>item.IdaDr==addr.IdaDr);
-                add.Num = addr.Num;
-                add.Voie = addr.Voie;
-                add.Ville = addr.Ville;
-                add.Complement = addr.Complement;
-                add.NumCHamBRe = addr.NumCHamBRe;
+                var add = DAO.Adresse.FirstOrDefault(item => item.IdaDr == addr.IdaDr && item.NumCHamBRe == addr.NumCHamBRe);
+                if (add == null)
+                {
+                    var a = new Adresse{
+                         IdaDr = 0,
+                         Num = addr.Num,
+                         Voie = addr.Voie,
+                         Ville = addr.Ville,
+                         CP = addr.CP,
+                         Complement = addr.Complement,
+                         NumCHamBRe = addr.NumCHamBRe
+                    };
+                    DAO.Adresse.InsertOnSubmit(a);
+                }
+                else
+                {
+                    add.Num = addr.Num;
+                    add.Voie = addr.Voie;
+                    add.Ville = addr.Ville;
+                    add.CP = addr.CP;
+                    add.Complement = addr.Complement;
+                    add.NumCHamBRe = addr.NumCHamBRe;
+                }
             }
             DAO.SubmitChanges();
             return addr;
         }
 
-        public Famille InsertIfNotExists(Famille p)
+        public Famille InsertIfNotExists(Famille f)
         {
             Connect();
-            if (p.IDFaMil == 0)
-                DAO.Famille.InsertOnSubmit(p);
+            if (f.IDFaMil == 0)
+                DAO.Famille.InsertOnSubmit(f);
             else
             {
-                var famille = DAO.Famille.First(item => item.IDFaMil == p.IDFaMil);
-                famille.Nom = p.Nom;
-                famille.Description = p.Description;
-                famille.ImageURL = p.ImageURL;
+                var famille = DAO.Famille.First(item => item.IDFaMil == f.IDFaMil);
+                famille.Nom = f.Nom;
+                famille.Tva = f.Tva;
+                famille.IsaPp = f.IsaPp;
+                famille.IsWeb = f.IsWeb;
+                famille.IsaCtIf = f.IsaCtIf;
+                famille.Description = f.Description;
+                famille.ImageURL = f.ImageURL;
             }
             DAO.SubmitChanges();
-            return p;
+            return f;
         }
 
         public Produit InsertMenuIfNotExists(Produit menu)
@@ -187,6 +211,10 @@ namespace Denapoli.Modules.Data.DataProvider
                 var produit = DAO.Produit.First(item => item.IDProd == menu.IDProd);
                 produit.Nom = menu.Nom;
                 produit.Prix = menu.Prix;
+                produit.Tva = menu.Tva;
+                produit.IsaPp = menu.IsaPp;
+                produit.IsWeb = menu.IsWeb;
+                produit.IsaCtIf = menu.IsaCtIf;
                 produit.Description = menu.Description;
                 produit.ImageURL = menu.ImageURL;
 
@@ -243,16 +271,50 @@ namespace Denapoli.Modules.Data.DataProvider
                 var borne = DAO.Borne.First(item => item.IDBorn == b.IDBorn);
                 borne.Adresse = b.Adresse;
                 borne.IdaDr = b.IdaDr;
+                borne.HeureOuvertureJour = b.HeureOuvertureJour;
+                borne.HeureFermetureJour = b.HeureFermetureJour;
+                borne.HeureOuvertureSoir = b.HeureOuvertureSoir;
+                borne.HeureFermetureSoir = b.HeureFermetureSoir;
+                borne.IsaCtIf = b.IsaCtIf;
+                borne.IsoUVert = b.IsoUVert;
+                borne.Message = b.Message;
+                borne.MessageInActIf = b.MessageInActIf;
             }
             DAO.SubmitChanges();
             return b;
         }
+
+        public void UpdateBornes(List<Borne> bornes)
+        {
+            Connect();
+            foreach (var b in bornes)
+            {
+                var borne = DAO.Borne.First(item => item.IDBorn == b.IDBorn);
+                borne.Adresse = b.Adresse;
+                borne.IdaDr = b.IdaDr;
+                borne.HeureOuvertureJour = b.HeureOuvertureJour;
+                borne.HeureFermetureJour = b.HeureFermetureJour;
+                borne.HeureOuvertureSoir = b.HeureOuvertureSoir;
+                borne.HeureFermetureSoir = b.HeureFermetureSoir;
+                borne.IsaCtIf = b.IsaCtIf;
+                borne.IsoUVert = b.IsoUVert;
+                borne.Message = b.Message;
+                borne.MessageInActIf = b.MessageInActIf;
+            }
+            DAO.SubmitChanges();
+        }
+
 
         public void Delete(Client client)
         {
             Connect();
             var c = DAO.Client.FirstOrDefault(item => item.IDCLien == client.IDCLien);
             if (c == null) return;
+            foreach (var commande in c.Commandes)
+            {
+                commande.Client = null;
+                commande.IDCLien = 0;
+            }
             DAO.Client.DeleteOnSubmit(c);
             DAO.SubmitChanges();
         }
@@ -271,6 +333,19 @@ namespace Denapoli.Modules.Data.DataProvider
             Connect();
             var a = DAO.Adresse.FirstOrDefault(item => item.IdaDr == addr.IdaDr);
             if (a == null) return;
+
+            foreach (var borne in a.Borne)
+            {
+                borne.IdaDr = 0;
+                borne.Adresse = null;
+            }
+
+            foreach (var commande in a.Commandes)
+            {
+                commande.IdaDr = 0;
+                commande.Adresse = null;
+            }
+
             DAO.Adresse.DeleteOnSubmit(a);
             DAO.SubmitChanges();
         }
@@ -280,6 +355,20 @@ namespace Denapoli.Modules.Data.DataProvider
             Connect();
             var prod = DAO.Produit.FirstOrDefault(item => item.IDProd == p.IDProd);
             if (prod == null) return;
+            prod.IDFaMil = 0;
+
+            foreach (var pc in prod.ProduitComposition)
+                DAO.ProduitComposition.DeleteOnSubmit(pc);
+
+            foreach (var pc in prod.ProduitsCommande)
+                DAO.ProduitsCommande.DeleteOnSubmit(pc);
+
+            foreach (var m in prod.Menu)
+                DAO.Menu.DeleteOnSubmit(m);
+
+            foreach (var pm in prod.ProduitsMenu)
+                DAO.ProduitsMenu.DeleteOnSubmit(pm);
+
             DAO.Produit.DeleteOnSubmit(prod);
             DAO.SubmitChanges();
         }
@@ -289,6 +378,17 @@ namespace Denapoli.Modules.Data.DataProvider
             Connect();
             var f = DAO.Famille.FirstOrDefault(item => item.IDFaMil == famille.IDFaMil);
             if (f == null) return;
+
+            foreach (var p in f.Produits.ToList())
+            {
+                p.Famille = null;
+                p.IDFaMil = null;
+            }
+            DAO.SubmitChanges();
+
+            foreach (var pc in f.ProduitComposition)
+                DAO.ProduitComposition.DeleteOnSubmit(pc);
+
             DAO.Famille.DeleteOnSubmit(f);
             DAO.SubmitChanges();
         }
@@ -298,6 +398,15 @@ namespace Denapoli.Modules.Data.DataProvider
             Connect();
             var c = DAO.Livreur.FirstOrDefault(item => item.IDLiVReUR == l.IDLiVReUR);
             if (c == null) return;
+
+            foreach (var commande in DAO.Commande)
+            {
+                if (commande.IDLiVReUR == l.IDLiVReUR)
+                {
+                    commande.IDLiVReUR = null;
+                }
+            }
+            DAO.SubmitChanges();
             DAO.Livreur.DeleteOnSubmit(c);
             DAO.SubmitChanges();
         }
@@ -305,22 +414,72 @@ namespace Denapoli.Modules.Data.DataProvider
         public void DeleteMenu(Produit p)
         {
             Connect();
-           
             var prod = DAO.Produit.FirstOrDefault(item => item.IDProd == p.IDProd);
             if (prod == null) return;
-            prod.ProduitsMenu.Clear();
-            prod.ProduitComposition.Clear();
-            prod.ProduitsMenu.Clear();
+            prod.IDFaMil = 0;
+
+            foreach (var pc in prod.ProduitComposition)
+                DAO.ProduitComposition.DeleteOnSubmit(pc);
+
+            foreach (var pc in prod.ProduitsCommande)
+                DAO.ProduitsCommande.DeleteOnSubmit(pc);
+
+            foreach (var m in prod.Menu)
+                DAO.Menu.DeleteOnSubmit(m);
+
+            foreach (var pm in prod.ProduitsMenu)
+                DAO.ProduitsMenu.DeleteOnSubmit(pm);
+
             DAO.Produit.DeleteOnSubmit(prod);
             DAO.SubmitChanges();
         }
+
 
         public void Delete(Borne borne)
         {
             Connect();
             var b = DAO.Borne.FirstOrDefault(item => item.IDBorn == borne.IDBorn);
             if (b == null) return;
-            DAO.Borne.DeleteOnSubmit(b);
+            b.Adresse = null;
+            b.IdaDr = null; 
+             foreach (var commande in DAO.Commande)
+            {
+                if (commande.IDBorn == borne.IDBorn)
+                {
+                    commande.IDBorn = null;
+                }
+            }
+             DAO.SubmitChanges();
+             b = DAO.Borne.FirstOrDefault(item => item.IDBorn == borne.IDBorn);
+             DAO.Borne.DeleteOnSubmit(b);
+             DAO.SubmitChanges();
+        }
+
+        public void Delete(Commande commande)
+        {
+            Connect();
+            var c = DAO.Commande.FirstOrDefault(item => item.Num == commande.Num);
+            if (c == null) return;
+            c.Borne = null;
+            c.IDBorn = 0;
+            c.Livreur = null;
+            c.IDLiVReUR = 0;
+            c.IdaDr = 0;
+            c.Adresse = null;
+            foreach(var pc in c.ProduitsCommande.ToList() )
+            {
+                DAO.ProduitsCommande.DeleteOnSubmit(pc);
+            }
+                
+            foreach (var m in c.Menus.ToList())
+            {
+                foreach (var pm in m.ProduitsMenu.ToList())
+                {
+                    DAO.ProduitsMenu.DeleteOnSubmit(pm);
+                }
+                DAO.Menu.DeleteOnSubmit(m);
+            }
+            DAO.Commande.DeleteOnSubmit(c);
             DAO.SubmitChanges();
         }
 
@@ -331,7 +490,6 @@ namespace Denapoli.Modules.Data.DataProvider
 
         public Borne GetBorne(int id)
         {
-          
             return DAO.Borne.FirstOrDefault(item => item.IDBorn == id);
         }
 
@@ -345,6 +503,10 @@ namespace Denapoli.Modules.Data.DataProvider
                 var produit = DAO.Produit.First(item => item.IDProd == p.IDProd);
                 produit.Nom = p.Nom;
                 produit.Prix = p.Prix;
+                produit.Tva = p.Tva;
+                produit.IsaPp = p.IsaPp;
+                produit.IsWeb = p.IsWeb;
+                produit.IsaCtIf = p.IsaCtIf;
                 produit.Description = p.Description;
                 produit.IDFaMil = p.IDFaMil;
                 produit.Famille = DAO.Famille.FirstOrDefault(item => item.IDFaMil == p.IDFaMil);

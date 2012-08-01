@@ -70,6 +70,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Nom = Menu.Nom;
             Description = Menu.Description;
             Prix = Menu.Prix;
+            Tva = Menu.Tva;
+            IsApp = Menu.IsApp;
+            IsWeb = Menu.IsWEB;
+            IsActif = Menu.IsActif;
             ImageURL = Menu.ImageURL;
             FamiliesNames = new ObservableCollection<string>(DataProvider.GetAvailableFamilies().Select(item=>item.Nom));
             Traductions.Clear();
@@ -141,6 +145,54 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
+        private float _oldTva;
+        private float _tva;
+        public float Tva
+        {
+            get { return _tva; }
+            set
+            {
+                _tva = value;
+                NotifyChanged("Tva");
+            }
+        }
+
+        private bool _oldIsApp;
+        private bool _isApp;
+        public bool IsApp
+        {
+            get { return _isApp; }
+            set
+            {
+                _isApp = value;
+                NotifyChanged("IsApp");
+            }
+        }
+
+        private bool _oldIsWeb;
+        private bool _isWeb;
+        public bool IsWeb
+        {
+            get { return _isWeb; }
+            set
+            {
+                _isWeb = value;
+                NotifyChanged("IsWeb");
+            }
+        }
+
+        private bool _oldIsActif;
+        private bool _isActif;
+        public bool IsActif
+        {
+            get { return _isActif; }
+            set
+            {
+                _isActif = value;
+                NotifyChanged("IsActif");
+            }
+        }
+
 
         private Visibility _isImageLoaded;
         public Visibility IsImageLoaded
@@ -200,6 +252,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldNom = Nom;
             _oldDescription = Description;
             _oldPrix = Prix;
+            _oldTva = Tva;
+            _oldIsApp = IsApp;
+            _oldIsWeb = IsWeb;
+            _oldIsActif = IsActif;
             _oldImageURL = ImageURL;
             _oldMenuComposition = new List<MenuCompositionn>(MenuComposition);
             Traductions.ForEach(item => item.BeginEdit());
@@ -210,6 +266,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Menu.Nom = Nom;
             Menu.Description = Description;
             Menu.Prix = Prix;
+            Menu.Tva = Tva;
+            Menu.IsWEB = IsWeb;
+            Menu.IsApp = IsApp;
+            Menu.IsActif = IsActif;
             Menu.ImageURL = ImageURL;           
             Menu.ProduitComposition.Clear();
             var families = DataProvider.GetAvailableFamilies();
@@ -247,6 +307,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Nom = _oldNom;
             Description = _oldDescription;
             Prix = _oldPrix;
+            Tva = _oldTva;
+            IsApp = _oldIsApp;
+            IsWeb = _oldIsWeb;
+            IsActif = _oldIsActif;
             ImageURL = _oldImageURL;
             IsImageLoaded = Visibility.Collapsed;
             IsPodImage = Visibility.Visible;
@@ -257,6 +321,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UploadFile()
         {
+            if (!File.Exists(ImageLocalURL)) return;
             var client = new WebClient();
             client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
         }

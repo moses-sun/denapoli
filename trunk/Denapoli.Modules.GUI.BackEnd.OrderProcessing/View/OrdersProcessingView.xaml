@@ -7,7 +7,7 @@
     <Behavior:LocalizationConverter x:Key="localizationConverter" />
   </UserControl.Resources>
     <DockPanel x:Name="myroot">
-        <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}" Margin="10 5 5 10">
+        <DockPanel DockPanel.Dock="Right" DataContext="{Binding SelectedCommand}"  MinWidth="300">
           <Grid  DockPanel.Dock="Bottom" DataContext="{Binding ElementName=myroot, Path=DataContext}">
               <Grid.RowDefinitions>
                 <RowDefinition Height="*"  />
@@ -18,22 +18,22 @@
               </Grid.ColumnDefinitions>
             <telerik:RadButton  DockPanel.Dock="Left"
                        Content="{Binding SubmitButtonText}" Command="{Binding SubmitButtonCommand}"
-                       Margin="5 5 5 5"
-                       FontSize="30"
+                       Margin="5 0 5 5"
+                       FontSize="15"
                        Grid.Column="0" Grid.Row="0"
                        FontFamily="fonts/#Arial Narrow Bold"
                               />
             <telerik:RadButton
                         Content="Imprimer" Command="{Binding PrintCommand}"
-                        Margin="5 5 5 5"
+                         Margin="5 0 5 5"
                         Grid.Column="1" Grid.Row="0"
-                        FontSize="30"
+                        FontSize="15"
                         FontFamily="fonts/#Arial Narrow Bold"
                               />
           </Grid>
          
           <StackPanel >
-          <GroupBox Header="Commande"    FontSize="15" FontFamily="fonts/#Arial Narrow Bold" >
+          <GroupBox Header="Commande"    FontSize="14" FontFamily="fonts/#Arial Narrow Bold" >
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="*"  />
@@ -47,66 +47,69 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
               </Grid.ColumnDefinitions>
-              <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" Margin="7 1 7 1"/>
-              <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" Margin="7 1 7 1"/>
+              <TextBlock Grid.Column="0" Grid.Row="0"  Text="Commande N° :" Margin="7 0 7 0"/>
+              <TextBlock Grid.Column="1" Grid.Row="0"  Text="{Binding Num}" Margin="7 0 7 0"/>
               
               <TextBlock Grid.Column="0" Grid.Row="1"  Text="Heure :" Margin="7 0 7 0"/>
-              <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date, StringFormat={}{0:d-MMMM  HH:MM}}" Margin="7 1 7 1"  />
+              <TextBlock Grid.Column="1" Grid.Row="1"  Text="{Binding Date, StringFormat={}{0:d-MMMM  HH:mm}}" Margin="7 0 7 0"  />
               
-              <TextBlock Grid.Column="0" Grid.Row="2"  Text="Statut :" Margin="7 1 7 1"/>
-              <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Statut}" Margin="7 1 7 1" Background="{Binding Color}" Foreground="White" TextAlignment="Center"/>
+              <TextBlock Grid.Column="0" Grid.Row="2"  Text="Statut :" Margin="7 0 7 0"/>
+              <TextBlock Grid.Column="1" Grid.Row="2"  Text="{Binding Statut}" Margin="7 0 7 0" Background="{Binding Color}" Foreground="White" TextAlignment="Center"/>
 
-              <TextBlock Grid.Column="0" Grid.Row="3"  Text="Chrono :" Margin="7 1 7 1"/>
-              <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Chrono}" Margin="7 1 7 1" Background="{Binding Color}" Foreground="White" TextAlignment="Center"/>
+              <TextBlock Grid.Column="0" Grid.Row="3"  Text="Chrono :" Margin="7 0 7 0"/>
+              <TextBlock Grid.Column="1" Grid.Row="3"  Text="{Binding Chrono}" Margin="7 0 7 0" Background="{Binding Color}" Foreground="White" TextAlignment="Center"/>
 
 
-              <TextBlock Grid.Column="0" Grid.Row="4"  Text="Livreur :" Margin="7 1 7 1"/>
+              <TextBlock Grid.Column="0" Grid.Row="4"  Text="Livreur :" Margin="7 0 7 0"/>
               <telerik:RadComboBox 
                                    DataContext="{Binding ElementName=myroot, Path=DataContext}"
                                    Grid.Column="1" Grid.Row="4"
-                                   ItemsSource="{Binding Livreurs}"
-                                   SelectedItem="{Binding SelectedLivreur, Mode=TwoWay}"
-                                   DisplayMemberPath="PreNoM"
-                                   Margin="7 1 7 1"/>
+                                   ItemsSource="{Binding Livreurss}"
+                                   SelectedItem="{Binding SelectedLivreurr, Mode=TwoWay}"
+                                   Margin="7 0 7 0"/>
 
-              <TextBlock Grid.Column="0" Grid.Row="5"  Text="Montant :" Margin="7 1 7 1"/>
-              <TextBlock Grid.Column="1" Grid.Row="5"  Text="{Binding Total, StringFormat={}{0:c}}" Margin="7 1 7 1" />
+              <TextBlock Grid.Column="0" Grid.Row="5"  Text="Montant :" Margin="7 0 7 0"/>
+              <TextBlock Grid.Column="1" Grid.Row="5"  Text="{Binding Total, StringFormat={}{0:c}}" Margin="7 0 7 0" />
             </Grid>
           </GroupBox>
           
-            <GroupBox Header="Client"  FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 5 0 0">
+            <GroupBox Header="Client"  FontSize="14" FontFamily="fonts/#Arial Narrow Bold" Margin="0 5 0 0">
                 <StackPanel >
                     <StackPanel Orientation="Horizontal" DataContext="{Binding Client}" >
-                        <TextBlock Text="{Binding Nom}" Margin="7 1 7 1"/>
-                        <TextBlock Text="{Binding Prenom}" Margin="7 1 7 1"/>
+                        <TextBlock Text="{Binding Nom}" Margin="7 0 7 0"/>
+                        <TextBlock Text="{Binding Prenom}" Margin="7 0 7 0"/>
                     </StackPanel>
                     <StackPanel  DataContext="{Binding Adresse}" >
                       <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding Num}" Margin="7 1 7 1" />
-                        <TextBlock Text="{Binding Voie}" Margin="7 1 7 1"/>
+                        <TextBlock Text="Chambre" Margin="7 0 0 0" />
+                        <TextBlock Text="{Binding NumCHamBRe}" Margin="4 0 0 0" />
+                        <TextBlock Text=", " Margin="0 0 0 0" />
+                        <TextBlock Text="{Binding Num}" Margin="7 0 7 0" />
+                        <TextBlock Text="{Binding Voie}" Margin="7 0 7 0"/>
                       </StackPanel>
-                      <TextBlock Text="{Binding Complement}" Margin="7 1 7 1"/>
+                      <TextBlock Text="{Binding Complement}" Margin="7 0 7 0"/>
                       <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding CP}" Margin="7 1 7 1"/>
-                        <TextBlock Text="  " />
-                        <TextBlock Text="{Binding Ville}" Margin="7 1 7 1"/>
+                        <TextBlock Text="{Binding CP}" Margin="7 0 7 0"/>
+                        <TextBlock Text="  "  Margin="0 0 0 0"/>
+                        <TextBlock Text="{Binding Ville}" Margin="7 0 7 0"/>
                       </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-          <GroupBox Header="Produits"   FontSize="15" FontFamily="fonts/#Arial Narrow Bold" Margin="0 5 0 0">
-            <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 2 2 2"
+          <GroupBox Header="Produits"   FontSize="14" FontFamily="fonts/#Arial Narrow Bold" Margin="0 5 0 0">
+            <ListBox DataContext="{Binding ElementName=myroot, Path=DataContext}" Margin="10 1 2 1"
               ItemsSource="{Binding ElementName=myroot, Path=DataContext.Products}"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"
               >
               <ListBox.ItemTemplate>
                 <DataTemplate>
                   <StackPanel>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Quantite}"/>
-                    <TextBlock Text=" X "/>
-                    <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"/>
+                    <TextBlock Text="{Binding Quantite}" Margin="2 0 2 0"/>
+                    <TextBlock Text=" X "  Margin="2 0 2 0"/>
+                    <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"  Margin="2 0 2 0"/>
                   </StackPanel>
-                  <ListBox Margin="20 2 2 2" ItemsSource="{Binding Composition}"   
+                  <ListBox Margin="20 0 2 0" ItemsSource="{Binding Composition}"   
                             Background="Transparent"
                             BorderBrush="Transparent"
                             BorderThickness="0"
@@ -114,9 +117,9 @@
                     <ListBox.ItemTemplate>
                       <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                          <TextBlock Text="{Binding Quantite}"/>
-                          <TextBlock Text=" X " />
-                          <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"/>
+                          <TextBlock Text="{Binding Quantite}"  Margin="2 0 2 0"/>
+                          <TextBlock Text=" X "  Margin="2 0 2 0"/>
+                          <TextBlock  Margin="2 0 2 0" Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"/>
                         </StackPanel>
                       </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -134,6 +137,7 @@
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
                 IsReadOnly="True"
+                ShowGroupPanel="False"
                 AlternationCount="2"
                 SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
                 >
@@ -143,10 +147,11 @@
                 <telerik:SortDescriptor Member="Statut" SortDirection="Ascending" />
               </telerik:RadGridView.SortDescriptors>
                 <telerik:RadGridView.Columns>
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" />
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}" Header="Heure" TextAlignment="Center" 
-                                                 DataFormatString="{}{0:d-MMMM  HH:MM}"/>
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Point livraison" TextAlignment="Center" >
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}"      Header="N°" TextAlignment="Center"/>
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Source}"      Header="Source" TextAlignment="Center" Width="*" />
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Date}"     Header="Heure" TextAlignment="Center" Width="*"
+                                                DataFormatString="{}{0:HH:mm}"/>
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}"  Header="Point livraison" TextAlignment="Center" >
                         <telerik:GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -158,11 +163,9 @@
                             </DataTemplate>
                         </telerik:GridViewColumn.CellTemplate>
                     </telerik:GridViewDataColumn>
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" />
-                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" />
-                  <telerik:GridViewDataColumn  DataMemberBinding="{Binding }" 
-                                               Header="Chrono" TextAlignment="Center"
-                                                 >
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" Width="*"/>
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}"          Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" Width="*"/>
+                    <telerik:GridViewDataColumn  DataMemberBinding="{Binding }"               Header="Chrono"  TextAlignment="Center" Width="*">
                     <telerik:GridViewColumn.CellTemplate>
                       <DataTemplate>
                           <TextBlock Text="{Binding Chrono}" 
@@ -174,7 +177,7 @@
                       </DataTemplate>
                     </telerik:GridViewColumn.CellTemplate>
                   </telerik:GridViewDataColumn>
-                  <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" />
+                  <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" Width="*"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </DockPanel>

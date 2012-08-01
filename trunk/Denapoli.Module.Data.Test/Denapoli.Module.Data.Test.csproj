@@ -61,6 +61,10 @@
       <Project>{4AFAF324-0120-45CC-985C-47F175A8BCEA}</Project>
       <Name>Denapoli.Modules.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.GUI.BackEnd.OrderProcessing\Denapoli.Modules.GUI.BackEnd.OrderProcessing.csproj">
+      <Project>{82723946-92BF-48A3-A50B-7CE091396797}</Project>
+      <Name>Denapoli.Modules.GUI.BackEnd.OrderProcessing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,6 +32,7 @@
       <DockPanel Margin="10 10 10 10">
         <telerik:DataFormDataField Width="0" Height="0" x:Name="Parent"  />
         <telerik:RadGridView Width="400" 
+            ShowGroupPanel="False"
             IsReadOnly="{Binding ElementName=Parent, Path=IsReadOnly}"
             DockPanel.Dock="Right"
             ItemsSource="{Binding Langues}"
@@ -76,13 +77,14 @@
         </telerik:RadGridView>
 
         <telerik:RadGridView
+          ShowGroupPanel="False"
           IsReadOnly="{Binding ElementName=Parent, Path=IsReadOnly}"
           ItemsSource="{Binding SelectedDico, Mode=TwoWay}"
           AutoGenerateColumns="False"
           CanUserReorderColumns="False"
                 >
           <telerik:RadGridView.Columns>
-            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Key}" Header="clé" TextAlignment="Left" />
+            <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Key}" Header="clé" TextAlignment="Left" />
             <telerik:GridViewDataColumn  DataMemberBinding="{Binding Value}" Header="Traduction" TextAlignment="Left" />
           </telerik:RadGridView.Columns>
         </telerik:RadGridView>

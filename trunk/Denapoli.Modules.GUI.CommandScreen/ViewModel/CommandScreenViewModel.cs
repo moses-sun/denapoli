@@ -12,6 +12,7 @@ using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using Microsoft.Practices.Prism.Events;
+using Menu = Denapoli.Modules.Data.Entities.Menu;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
@@ -20,19 +21,20 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 
         private static int idGen = 1;
         private int id = idGen++;
-        public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService, ILocalizationService localizationService)
+        public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService, ILocalizationService localizationService, ISettingsService settingsService)
         {
             EventAggregator = eventAggregator;
             DataProvider = dataProvider;
             PaymentService = paymentService;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             ScreenName = "Commande";
             IsVisible = true;
             Families = new ObservableCollection<Famille>();
             UpdateFamilles();
             Products = new ObservableCollection<Produit>();
             OrderedProdects = new ObservableCollection<ProductViewModel>();
-            Borne = DataProvider.GetBorne(1);
+            Borne = DataProvider.GetBorne(SettingsService.GetBorneId());
             CustomerViewModel = new CustomerViewModel {Address = Borne.Adresse,IsVisible = false, LocalizationService = localizationService};
             CustomerViewModel.PropertyChanged += CustommerViewHandler;
             PaymentService.FinishEvent += PaiementViewHandler;
@@ -55,7 +57,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void UpdateFamilles()
         {
             Families.Clear();
-            DataProvider.GetAvailableFamilies().ForEach(item => Families.Add(item));
+            DataProvider.GetAvailableFamilies().Where(f=>f.IsActif&&f.IsApp).ForEach(item => Families.Add(item));
         }
 
         public void Cancel()
@@ -77,13 +79,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             } 
         }
 
-        private bool _finished = false;
+        private bool _finished;
         private void FinalizeOrder()
         {
             if (_finished) return;
             _finished = true;
             var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
-            CustomerViewModel.Address.NumCHamBRe = "1";
             var addr = DataProvider.InsertIfNotExists(CustomerViewModel.Address);
             var command = new Commande
                               {
@@ -92,7 +93,9 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                   IDBorn = Borne.IDBorn,
                                   IdaDr = addr.IdaDr,
                                   Statut = "ATTENTE",
+                                  Source = "BORNE",
                                   Total = Total,
+                                  Tva = Tva,
                                   Date = DateTime.Now
                               };
 
@@ -123,7 +126,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                    existingProd.Quantite += prod.Quantite;
                                             }
                                         });
-          DataProvider.AddCommande(command);
+         new TicketPrinter().Print(DataProvider.AddCommande(command));
         }
 
         private void CustommerViewHandler(object sender, PropertyChangedEventArgs e)
@@ -197,6 +200,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private IDataProvider DataProvider { get; set; }
         public IPaymentService PaymentService { get; set; }
         public ILocalizationService LocalizationService { get; set; }
+        public ISettingsService SettingsService { get; set; }
         public ObservableCollection<Famille> Families { get; set; }
         public ObservableCollection<Produit> Products { get; set; }
 
@@ -246,6 +250,17 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             }
         }
 
+        private float _tva;
+        public float Tva
+        {
+            get { return _tva; }
+            set
+            {
+                _tva = value;
+                NotifyChanged("Tva");
+            }
+        }
+
         public ICommand ShowCustomerCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }
 
@@ -290,6 +305,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 OrderedProdects.Add(produitsCommande);
             }
             Total += produit.Prix;
+            Tva += produit.Famille.Tva * produit.Prix / 100;
         }
 
         private void EditHandler(object sender, PropertyChangedEventArgs e)
@@ -320,8 +336,14 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void UpdateTotal(object sender, PropertyChangedEventArgs e)
         {
             var total = 0.0f;
-            OrderedProdects.ForEach(item => total += item.PrixTotal);
+            var tva = 0.0f;
+            OrderedProdects.ForEach(item =>
+                                        {
+                                            total += item.PrixTotal;
+                                            tva += item.PrixTotal*item.Produit.Famille.Tva/100;
+                                        });
             Total = total;
+            Tva = tva;
         }
 
         private void OnMenuViewAction(object sender, PropertyChangedEventArgs e)
@@ -344,7 +366,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void UpdateProductsList()
        {
            Products.Clear();
-           DataProvider.GetFamilyProducts(SelectedFamily).ForEach(item=> Products.Add(item));
+           DataProvider.GetFamilyProducts(SelectedFamily).Where(p => p.IsActif && p.IsApp).ForEach(item => Products.Add(item));
        }
     }
 }
