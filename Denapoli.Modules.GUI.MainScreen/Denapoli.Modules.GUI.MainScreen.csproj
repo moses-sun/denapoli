@@ -58,7 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainScreenModule.cs" />
+    <Compile Include="ViewModel\DisabledScreenViewModel.cs" />
     <Compile Include="ViewModel\MainScreenViewModel.cs" />
+    <Compile Include="View\DisabledScreenView.xaml.cs">
+      <DependentUpon>DisabledScreenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\WellcomeScreenView.xaml.cs">
       <DependentUpon>WellcomeScreenView.xaml</DependentUpon>
     </Compile>
@@ -69,6 +73,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\DisabledScreenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

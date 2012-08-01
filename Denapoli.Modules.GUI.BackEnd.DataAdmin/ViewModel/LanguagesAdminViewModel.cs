@@ -26,6 +26,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            LangageVm.DataProvider = DataProvider;
+            LangageVm.SettingsService = SettingsService;
             Langues = new ObservableCollection<LangageVm>();
             Langues.CollectionChanged += OnLangueschanged;
             SelectedDico = new ObservableCollection<DicoEntry>();
@@ -41,14 +43,13 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                     var deletedLangue = (LangageVm)e.OldItems[0];
                     DataProvider.Delete(deletedLangue.Langue);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 
 
         private void UpdateLangues()
         {
+            var old = SelectedLangue == null ? -1 : SelectedLangue.Langue.IDLang;
             Langues.CollectionChanged -= OnLangueschanged;
             Langues.Clear();
             foreach (var l in LocalizationService.AvailableLangages)
@@ -57,7 +58,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 LocalizationService.Keys.ForEach(key => langageVm.Dico.Add(new DicoEntry { Key = key, Value = LocalizationService.Localize(key, langageVm.Langage) }));
                 Langues.Add(langageVm);
             }
-            SelectedLangue = Langues.FirstOrDefault();
+            SelectedLangue = Langues.FirstOrDefault(item => item.Langue.IDLang == old);
+            SelectedLangue = SelectedLangue ?? Langues.FirstOrDefault();
             Langues.CollectionChanged += OnLangueschanged;
         }
 
@@ -68,6 +70,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             set
             {
                 _selectedLangue = value;
+                if (value == null) return;
                 SelectedDico = value.Dico;
             }
         }
@@ -85,6 +88,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public void CancelEdit()
         {
             Langues.ForEach(item => item.CancelEdit());
+        }
+
+        public void Update()
+        {
+           // UpdateLangues();
         }
     }
 }

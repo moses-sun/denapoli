@@ -25,6 +25,12 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+
+            ProduitVm.DataProvider = DataProvider;
+            ProduitVm.Famileis = DataProvider.GetAvailableFamilies();
+            ProduitVm.LocalizationService = LocalizationService;
+            ProduitVm.SettingsService = SettingsService;
+
             Produits = new ObservableCollection<ProduitVm>();
             UpdatePrduits();
             Produits.CollectionChanged += OnProduitschanged;
@@ -44,11 +50,13 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UpdatePrduits()
         {
+            var old = SelectedProduit == null ? -1 : SelectedProduit.Prod.IDProd;
             Produits.CollectionChanged -= OnProduitschanged;
             Produits.Clear();
             var produits = DataProvider.GetAllProducts();
             produits.ForEach(item=>Produits.Add(new ProduitVm(item,DataProvider.GetAvailableFamilies(),DataProvider, LocalizationService, SettingsService)));
-            SelectedProduit = Produits.FirstOrDefault();
+            SelectedProduit = Produits.FirstOrDefault(item => item.Prod.IDProd == old);
+            SelectedProduit = SelectedProduit ?? Produits.FirstOrDefault();
             Produits.CollectionChanged += OnProduitschanged;
         }
 
@@ -61,6 +69,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 _selectedProduit = value;
                 NotifyChanged("SelectedProduit");
             }
+        }
+
+        public void Update()
+        {
+            UpdatePrduits();
         }
     }
 }

@@ -57,8 +57,8 @@
                                     x:Name="list1"
                                     ItemsSource="{Binding Families}" 
                                     SelectedItem="{Binding SelectedFamily}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                     ItemTemplate="{StaticResource DisplayFamilyImageWithText}"
                                     >
                 <ListBox.ItemsPanel>
@@ -69,7 +69,7 @@
 
             </Controls:ListViewEx>
         </DockPanel>
-        <DockPanel x:Name="left_panel" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
+        <DockPanel x:Name="left_panelo" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
             <DockPanel.Resources>
                 <DataTemplate x:Key="ProductTemplate"  DataType="{x:Type ViewModel:ProductViewModel}">
                     <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"  Margin="1 1 1 1" HorizontalAlignment="Center"  FontSize="15"
@@ -97,15 +97,17 @@
                 <telerik:RadButton Height="70" Content="{Binding LocalizationService.Dico.Valider, Converter={StaticResource localizationConverter}}"
                                    Command="{Binding ShowCustomerCommand}"
                                    Grid.Column="0"
+                                   Background="LightGreen"
                                    FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
                 <telerik:RadButton Height="70" Content="{Binding LocalizationService.Dico.Annuler, Converter={StaticResource localizationConverter}}"
                                    Command="{Binding CancelCommand}"
                                    Grid.Column="1"
+                                   Background="LightCoral"
                                    FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
             </Grid>
             <DockPanel  >
-                <telerik:RadGridView  Width="380" 
-                        x:Name="orderlist"
+                <telerik:RadGridView   Width="380"
+                        Background="LemonChiffon"              
                         ItemsSource="{Binding OrderedProdects}"  
                         IsFilteringAllowed="False"
                         CanUserSortColumns="False"
@@ -125,7 +127,7 @@
                   <!--  
                         ScrollViewer.VerticalScrollBarVisibility="Disabled" -->
                     <telerik:RadGridView.Columns>
-                        <telerik:GridViewDataColumn  DataMemberBinding="{Binding}" Header="{Binding LocalizationService.Dico.Quantite, Converter={StaticResource localizationConverter}}" TextAlignment="Center" >
+                        <telerik:GridViewDataColumn  Width="*" DataMemberBinding="{Binding}" Header="{Binding LocalizationService.Dico.Quantite, Converter={StaticResource localizationConverter}}" TextAlignment="Center" >
                             <telerik:GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -157,26 +159,43 @@
                                 CellTemplate="{StaticResource MenusTemplate}"
                                 TextAlignment="Left"
                                >
+                          <telerik:GridViewDataColumn.AggregateFunctions>
+                            <telerik:SumFunction SourceField="PrixTotal"/>
+                          </telerik:GridViewDataColumn.AggregateFunctions>
                             <telerik:GridViewDataColumn.Footer>
-                                <DockPanel HorizontalAlignment="Right" Background="Black">
-                                    <TextBlock Text="{Binding LocalizationService.Dico.Total, Converter={StaticResource localizationConverter}}" 
-                                               TextAlignment="Right" 
-                                               Foreground="White" Background="Transparent"
-                                           FontSize="35" FontFamily="fonts/#Arial Narrow Bold"/>
-                                </DockPanel>
+                                <telerik:AggregateResultsList ItemsSource="{Binding}"  VerticalAlignment="Center"  Grid.Column="4">
+                                  <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                      <DockPanel Background="Black" VerticalAlignment="Center">
+                                        <TextBlock Foreground="White" Background="Transparent" VerticalAlignment="Center"
+                                            Text="{Binding FormattedValue, StringFormat={}{0:c}}"
+                                            MinWidth="20"
+                                            FontSize="35" FontFamily="fonts/#Arial Narrow Bold"
+                                                   TextAlignment="Right"
+                                           />
+                                      
+                                      </DockPanel>
+                                    </DataTemplate>
+                                  </ItemsControl.ItemTemplate>
+                                  <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                      <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                  </ItemsControl.ItemsPanel>
+                                </telerik:AggregateResultsList>
+                                <!--{Binding LocalizationService.Dico.Total, Converter={StaticResource localizationConverter}} -->
                             </telerik:GridViewDataColumn.Footer>
                         </telerik:GridViewDataColumn>
-                        <telerik:GridViewDataColumn  Width="70" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" 
+                        <telerik:GridViewDataColumn  Width="*" TextAlignment="Center" DataMemberBinding="{Binding PrixTotal}" 
                                                      Header="{Binding LocalizationService.Dico.Prix, Converter={StaticResource localizationConverter}}"  
                                                      DataFormatString="{}{0:c}" 
                                                      >
-                            <telerik:GridViewDataColumn.Footer >
-                                <DockPanel Background="Black" VerticalAlignment="Center">
-                                    <TextBlock Foreground="White" Background="Transparent" VerticalAlignment="Center"
-                                        Text="{Binding ElementName=left_panel,Path=DataContext.Total}" 
-                                        FontSize="35" FontFamily="fonts/#Arial Narrow Bold"/>
-                                </DockPanel>
-                            </telerik:GridViewDataColumn.Footer>
+                          <telerik:GridViewDataColumn.Footer>
+                            <TextBlock Text=" TTC"
+                                                TextAlignment="Left"
+                                                Foreground="White" Background="Transparent"
+                                            FontSize="35" FontFamily="fonts/#Arial Narrow Bold"/>
+                          </telerik:GridViewDataColumn.Footer>
                         </telerik:GridViewDataColumn>
                         <telerik:GridViewDataColumn  TextAlignment="Center" >
                             <telerik:GridViewColumn.CellTemplate>
@@ -190,19 +209,14 @@
                                     </telerik:RadButton>
                                 </DataTemplate>
                             </telerik:GridViewColumn.CellTemplate>
-                            <telerik:GridViewDataColumn.Footer >
-                                <DockPanel Background="Black" VerticalAlignment="Center">
-                                    <TextBlock   Foreground="White" Background="Transparent" VerticalAlignment="Center"
-                                        Text="€"  FontSize="35" FontFamily="fonts/#Arial Narrow Bold"/>
-                                </DockPanel>
-                            </telerik:GridViewDataColumn.Footer>
+                           
                         </telerik:GridViewDataColumn>
                     </telerik:RadGridView.Columns>
                 </telerik:RadGridView>
             </DockPanel>
         </DockPanel>
         
-        <DockPanel x:Name="sub">
+        <DockPanel x:Name="sub" Background="LemonChiffon">
          
             
             <ContentControl 

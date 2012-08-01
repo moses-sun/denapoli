@@ -8,21 +8,23 @@
         <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
         <Behavior:LocalizationConverter x:Key="localizationConverter" />
         <DataTemplate  x:Key="DisplayProduct">
-            <Border BorderBrush="Black" BorderThickness="4"   CornerRadius="5" Margin="6" >
+            <Border BorderBrush="Black" BorderThickness="4"   CornerRadius="5" Margin="6" MaxWidth="250" >
                 <StackPanel >
-                    <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding Nom, Converter={StaticResource localizationConverter}}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
-                        <TextBlock DockPanel.Dock="Right" Text=" €" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
-                        <TextBlock DockPanel.Dock="Right" Text="{Binding Prix}" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
+                    <Image MaxWidth="130" MaxHeight="130" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
+                    <DockPanel Background="LemonChiffon">
+                        <TextBlock DockPanel.Dock="Left" Margin="5 1 5 1" Text="{Binding Nom, Converter={StaticResource localizationConverter}}" 
+                                   FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  TextWrapping="Wrap" />
+                        <TextBlock DockPanel.Dock="Right" Margin="5 1 5 1" Text="{Binding Prix, StringFormat={}{0:c}}" 
+                                   TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" />
                     </DockPanel>
-                    <TextBlock Text="{Binding Description, Converter={StaticResource localizationConverter}}"/>
+                    <TextBlock Margin="5 1 5 1" Text="{Binding Description, Converter={StaticResource localizationConverter}}" 
+                               TextWrapping="Wrap" FontSize="11" FontFamily="fonts/#Arial Narrow Bold" />
                 </StackPanel>
             </Border>
         </DataTemplate>
     </UserControl.Resources>
   <DockPanel x:Name="productsPanel">
-        <DockPanel x:Name="toto" Background="LightSalmon">
+        <DockPanel x:Name="toto" Background="LightSkyBlue">
             <Button 
                                     x:Name="topButton"
                                     DockPanel.Dock="Top" 
@@ -40,7 +42,7 @@
             </Button>
             <Button 
                                     DockPanel.Dock="Bottom" 
-                                    Command="{Binding ElementName=list2, Path=TopScrollCommand}"
+                                    Command="{Binding ElementName=list2, Path=BottomScrollCommand}"
                                     Background="{Binding ElementName=leftButton, Path=Background}" 
                                     BorderBrush="{Binding ElementName=leftButton, Path=BorderBrush}" 
                                     BorderThickness="{Binding ElementName=leftButton, Path=BorderThickness}"
@@ -56,8 +58,8 @@
                                     x:Name="list2"
                                     ItemsSource="{Binding Products}" 
                                     SelectedItem="{Binding SelectedProduct}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                     Behavior:WidthBehavior.HeightEx="{Binding  ElementName=toto, Path=ActualHeight}"
                                     Background="DarkOrchid"
                                     ItemTemplate="{StaticResource DisplayProduct}"
@@ -65,7 +67,7 @@
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel 
-                                                Background="DarkOrange"
+                                                Background="SandyBrown"
                                                 Width="{Binding ElementName=productsPanel, Path=ActualWidth}"
                                              />
                     </ItemsPanelTemplate>

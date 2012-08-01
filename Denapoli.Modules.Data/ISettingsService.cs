@@ -4,5 +4,6 @@ namespace Denapoli.Modules.Data
     {
         string GetDbConnextionParameters();
         string GetDataRepositoryRootPath();
+        int GetBorneId();
     }
 }

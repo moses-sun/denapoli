@@ -1,0 +1,6 @@
+server=localhost
+userId=root
+password=
+database=denapoli
+filesRepository=http://127.0.0.1:8080/
+borneId=1

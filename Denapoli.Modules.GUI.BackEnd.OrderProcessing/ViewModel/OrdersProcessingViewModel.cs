@@ -3,13 +3,16 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Timers;
+using System.Windows;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.GUI.BackEnd.OrderProcessing.View;
 using Denapoli.Modules.GUI.CommandScreen.ViewModel;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
+using Microsoft.Practices.Prism.Events;
 
 namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 {
@@ -17,17 +20,26 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
     public class OrdersProcessingViewModel : NotifyPropertyChanged
     {
         private IDataProvider DataProvider { get; set; }
+        public IEventAggregator EventAggregator { get; set; }
         public OrdersProcessingView View { get; set; }
 
         [ImportingConstructor]
-        public OrdersProcessingViewModel(IDataProvider dataProvider)
+        public OrdersProcessingViewModel(IDataProvider dataProvider, IEventAggregator eventAggregator)
         {
             DataProvider = dataProvider;
+            EventAggregator = eventAggregator;
             Orders = new ObservableCollection<Commande>();
            
             Products = new ObservableCollection<ProductViewModel>();
             Livreurs = new ObservableCollection<Livreur>();
+            Livreurss = new ObservableCollection<String>();
             SubmitButtonCommand = new ActionCommand(Submit);
+            PrintCommand = new ActionCommand(Print);
+
+            EventAggregator.GetEvent<ImprimerEvent>().Subscribe(model => Print());
+            EventAggregator.GetEvent<PreparerEvent>().Subscribe(model => Preparer());
+            EventAggregator.GetEvent<PreteEvent>().Subscribe(model => Pretes());
+            EventAggregator.GetEvent<LivrerEvent>().Subscribe(model => Livrer());
 
            var timer = new Timer {Interval = 6000};
             timer.Elapsed += (sender, args) =>
@@ -37,12 +49,9 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                                                                  new System.Windows.Threading.
                                                                      DispatcherOperationCallback(delegate
                                                                                                      {
-                                                                                                         Orders.ForEach(
-                                                                                                             item =>
-                                                                                                             item.Chrono
-                                                                                                                 --);
-                                                                                                         UpdateCommandes
-                                                                                                             ();
+                                                                                                         Orders.ForEach(item =>item.Chrono--);
+                                                                                                         UpdateLivreurs();
+                                                                                                         UpdateCommandes();
                                                                                                          return null;
                                                                                                      }), null);
                                  };
@@ -51,6 +60,8 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             timer.Start();
         }
 
+       
+
         private Livreur _selectedLivreur;
         public Livreur SelectedLivreur
         {
@@ -58,22 +69,77 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             set
             {
                 _selectedLivreur = value;
+                NotifyChanged("SelectedLivreurr");
+                if (value == null || SelectedCommand == null || SelectedCommand.IDLiVReUR == value.IDLiVReUR) return;
+                SelectedCommand.IDLiVReUR = value.IDLiVReUR;
+                SelectedCommand.Livreur = value;
+                DataProvider.AddCommande(SelectedCommand);
                 NotifyChanged("SelectedLivreur");
-                if (value != null && SelectedCommand != null)
-                {
-                    SelectedCommand.IDLiVReUR = value.IDLiVReUR;
-                    SelectedCommand.Livreur = value;
-                } 
+                
+            }
+        }
+
+        public string SelectedLivreurr
+        {
+            get { return SelectedLivreur==null ? "" : SelectedLivreur.NoM + " " + SelectedLivreur.PreNoM; }
+            set
+            {
+               
+                SelectedLivreur = Livreurs.FirstOrDefault(item => item.NoM+" " + item.PreNoM == value);
             }
         }
 
         public ObservableCollection<Livreur> Livreurs { get; set; }
+        public ObservableCollection<string> Livreurss { get; set; }
 
         private void UpdateLivreurs ()
         {
            var livreurs =  DataProvider.GetAllLivreurs();
-            Livreurs.Clear();
-            livreurs.ForEach(item => Livreurs.Add(item));
+            livreurs.ForEach(item =>
+                                 {
+                                     if (Livreurs.FirstOrDefault(e => e.IDLiVReUR == item.IDLiVReUR) != null) return;
+                                     Livreurs.Add(item);
+                                     Livreurss.Add(item.NoM + " "+item.PreNoM);
+                                 });
+            if(!Livreurss.Contains(""))
+                Livreurss.Add("");
+        }
+
+        private void Print()
+        {
+            var printer = new TicketPrinter();
+            printer.Print(SelectedCommand);
+        }
+
+        private void Livrer()
+        {
+            switch (SelectedCommand.Statut)
+            {
+                case Prete: SelectedCommand.Statut = Livree; break;
+                case Livree: SelectedCommand.Statut = Livree; break;
+            }
+            SetSubmitButtonText();
+            DataProvider.AddCommande(SelectedCommand);
+        }
+
+        private void Preparer()
+        {
+            switch (SelectedCommand.Statut)
+            {
+                case Attente: SelectedCommand.Statut = Preperee; break;
+            }
+            SetSubmitButtonText();
+            DataProvider.AddCommande(SelectedCommand);
+        }
+
+        private void Pretes()
+        {
+            switch (SelectedCommand.Statut)
+            {
+                case Preperee: SelectedCommand.Statut = Prete; break;
+            }
+            SetSubmitButtonText();
+            DataProvider.AddCommande(SelectedCommand);
         }
 
         private void Submit()
@@ -110,6 +176,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
         }
 
         public ActionCommand SubmitButtonCommand { get; set; }
+        public ActionCommand PrintCommand { get; set; }
 
         public ObservableCollection<ProductViewModel> Products { get; set; } 
 
@@ -150,7 +217,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                 NotifyChanged("SelectedCommand");
                 Updateproducts();
                 if (value == null) return;
-                SelectedLivreur = DataProvider.GetLivreurById(value.IDLiVReUR ?? 0);
+                SelectedLivreur = Livreurs.FirstOrDefault(item=>item.IDLiVReUR==value.IDLiVReUR);
                 SetSubmitButtonText();
             }
         }

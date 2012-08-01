@@ -10,7 +10,6 @@ using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
-using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -51,7 +50,12 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Nom = Family.Nom;
             Description = Family.Description;
             ImageURL = Family.ImageURL;
-
+            Tva = Family.Tva;
+            IsWeb = Family.IsWEB;
+            IsApp = Family.IsApp;
+            IsActif = Family.IsActif;
+            IsImageLoaded = Visibility.Collapsed;
+            IsPodImage = Visibility.Visible;
             Traductions.Clear();
             foreach (var language in LocalizationService.AvailableLangages)
             {
@@ -104,6 +108,54 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 NotifyChanged("ImageURL");
                 IsImageLoaded = Visibility.Visible;
                 IsPodImage = Visibility.Collapsed;
+            }
+        }
+
+        private float _oldTva;
+        private float _tva;
+        public float Tva
+        {
+            get { return _tva; }
+            set
+            {
+                _tva = value;
+                NotifyChanged("Tva");
+            }
+        }
+
+        private bool _oldIsApp;
+        private bool _isApp;
+        public bool IsApp
+        {
+            get { return _isApp; }
+            set
+            {
+                _isApp = value;
+                NotifyChanged("IsApp");
+            }
+        }
+
+        private bool _oldIsWeb;
+        private bool _isWeb;
+        public bool IsWeb
+        {
+            get { return _isWeb; }
+            set
+            {
+                _isWeb = value;
+                NotifyChanged("IsWeb");
+            }
+        }
+
+        private bool _oldIsActif;
+        private bool _isActif;
+        public bool IsActif
+        {
+            get { return _isActif; }
+            set
+            {
+                _isActif = value;
+                NotifyChanged("IsActif");
             }
         }
 
@@ -163,13 +215,21 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             _oldNom = Nom;
             _oldDescription = Description;
+            _oldTva = Tva;
+            _oldIsApp = IsApp;
+            _oldIsWeb = IsWeb;
             _oldImageURL = ImageURL;
+            _oldIsActif = IsActif;
             Traductions.ForEach(item => item.BeginEdit());
         }
 
         private void UpdateProduit()
         {
            Family.Nom = Nom;
+           Family.Tva = Tva;
+           Family.IsWEB = IsWeb;
+           Family.IsApp = IsApp;
+           Family.IsActif = IsActif;
            Family.Description = Description;
            Family.ImageURL = ImageURL;
            Traductions.ForEach(item =>
@@ -192,6 +252,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             Nom = _oldNom;
             Description = _oldDescription;
+            Tva = _oldTva;
+            IsApp = _oldIsApp;
+            IsWeb = _oldIsWeb;
+            IsActif = _oldIsActif;
             ImageURL = _oldImageURL;
             IsImageLoaded = Visibility.Collapsed;
             IsPodImage = Visibility.Visible;
@@ -200,6 +264,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UploadFile()
         {
+            if (!File.Exists(ImageLocalURL)) return;
             var client = new WebClient();
             client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
         }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
+using System.Windows.Markup;
 using Microsoft.Practices.EnterpriseLibrary.ExceptionHandling;
 
 namespace Denapoli
@@ -16,12 +19,13 @@ namespace Denapoli
         {
             base.OnStartup(e);
 
-            //var culture = ShellSettings.Default.DefaultCulture;
-            //if (culture != null)
-            //{
-            //    Thread.CurrentThread.CurrentCulture = culture;
-            //    Thread.CurrentThread.CurrentUICulture = culture;
-            //}
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-FR");
+
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+            typeof(FrameworkElement),
+            new FrameworkPropertyMetadata(
+                XmlLanguage.GetLanguage("fr-FR")));
             var dir = Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location);
             Directory.SetCurrentDirectory(dir);
             var splashScreen = new SplashScreen(Assembly.GetExecutingAssembly(), "Resources/pizza_splash.png");

@@ -3,13 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
         xmlns:Regions="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" Title="Di Napoli pizza (Admin)"
+        xmlns:DenapoliAdmin="clr-namespace:DenapoliAdmin" Title="Di Napoli pizza (Admin)"
         WindowState="Maximized"
-       
+        Icon="pack://application:,,,/Resources/pizza.ico"
         >
-    <!--  
-     WindowStyle="None"
-    Height="350" Width="525" -->
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,6 +16,10 @@
 
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.Close" Executed="ApplicationCommandsCloseExecuted" />
+    <CommandBinding Command="DenapoliAdmin:AdminShell.PreparerCommand" Executed="PreparerCommandExecuted"/>
+    <CommandBinding Command="DenapoliAdmin:AdminShell.PreteCommand" Executed="PreteCommandExecuted"/>
+    <CommandBinding Command="DenapoliAdmin:AdminShell.LivrerCommand" Executed="LivrerCommandExecuted"/>
+    <CommandBinding Command="DenapoliAdmin:AdminShell.ImprimerCommand" Executed="ImprimerCommandExecuted"/>
   </Window.CommandBindings>
   <DockPanel LastChildFill="True">
     <!-- Menu -->

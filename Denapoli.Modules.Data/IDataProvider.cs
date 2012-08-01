@@ -17,17 +17,17 @@ namespace Denapoli.Modules.Data
         List<Commande> GetMenuTodayCommandes();
         Borne GetBorne(int i);
 
-        void AddCommande(Commande com);
+        Commande AddCommande(Commande com);
 
         Client InsertIfNotExists(Client client);
         Langue InsertIfNotExists(Langue client);
         Adresse InsertIfNotExists(Adresse addAdresse);
         Produit InsertIfNotExists(Produit p);
-        Famille InsertIfNotExists(Famille p);
+        Famille InsertIfNotExists(Famille f);
         Livreur InsertIfNotExists(Livreur l);
         Produit InsertMenuIfNotExists(Produit p);
         Borne InsertIfNotExists(Borne b);
-
+        void UpdateBornes(List<Borne> bornes);
         void Delete(Client client);
         void Delete(Langue client);
         void Delete(Adresse addAdresse);
@@ -36,6 +36,7 @@ namespace Denapoli.Modules.Data
         void Delete(Livreur l);
         void DeleteMenu(Produit p);
         void Delete(Borne b);
+        void Delete(Commande commande);
 
 
         Livreur GetLivreurById(int idliVreUr);

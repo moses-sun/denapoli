@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -51,6 +52,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             Nom = Prod.Nom;
             Description = Prod.Description;
+            Tva = Prod.Tva;
+            IsApp = Prod.IsApp;
+            IsWeb = Prod.IsWEB;
+            IsActif = Prod.IsActif;
             Famille = Prod.Famille != null ? Prod.Famille.Nom : "";
             Prix = Prod.Prix;
             ImageURL = Prod.ImageURL;
@@ -167,6 +172,55 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
+
+        private float _oldTva;
+        private float _tva;
+        public float Tva
+        {
+            get { return _tva; }
+            set
+            {
+                _tva = value;
+                NotifyChanged("Tva");
+            }
+        }
+
+        private bool _oldIsApp;
+        private bool _isApp;
+        public bool IsApp
+        {
+            get { return _isApp; }
+            set
+            {
+                _isApp = value;
+                NotifyChanged("IsApp");
+            }
+        }
+
+        private bool _oldIsWeb;
+        private bool _isWeb;
+        public bool IsWeb
+        {
+            get { return _isWeb; }
+            set
+            {
+                _isWeb = value;
+                NotifyChanged("IsWeb");
+            }
+        }
+
+        private bool _oldIsActif;
+        private bool _isActif;
+        public bool IsActif
+        {
+            get { return _isActif; }
+            set
+            {
+                _isActif = value;
+                NotifyChanged("IsActif");
+            }
+        }
+
         public ObservableCollection<string> FamiliesNames { get; set; }
 
         public ActionCommand BrowseImageCommand { get; set; }
@@ -191,6 +245,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldFamille = Famille;
             _oldPrix = Prix;
             _oldImageURL = ImageURL;
+            _oldTva = Tva;
+            _oldIsApp = IsApp;
+            _oldIsWeb = IsWeb;
+            _oldIsActif = IsActif;
             Traductions.ForEach(item=>item.BeginEdit());
         }
 
@@ -199,6 +257,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
            Prod.Nom = Nom;
            Prod.Description = Description;
            Prod.Prix = Prix;
+           Prod.Tva = Tva;
+           Prod.IsWEB = IsWeb;
+           Prod.IsApp = IsApp;
+           Prod.IsActif = IsActif;
            var family = Famileis.FirstOrDefault(item => item.Nom == Famille);
            Prod.IDFaMil = family == null ? 1 : family.IDFaMil;
            Prod.Famille = family;
@@ -222,9 +284,19 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         private void UploadFile()
         {
-            var  client = new WebClient();
-            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
-        }
+            if (!File.Exists(ImageLocalURL)) return;
+            try
+            {
+                var client = new WebClient();
+                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+     
+            }
+            catch (Exception)
+            {
+                var client = new WebClient();
+                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+            }
+         }
 
         public void CancelEdit()
         {
@@ -232,6 +304,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Description = _oldDescription;
             Famille = _oldFamille;
             Prix = _oldPrix;
+            Tva = _oldTva;
+            IsApp = _oldIsApp;
+            IsWeb = _oldIsWeb;
+            IsActif = _oldIsActif;
             ImageURL = _oldImageURL;
             IsImageLoaded = Visibility.Collapsed;
             IsPodImage = Visibility.Visible;

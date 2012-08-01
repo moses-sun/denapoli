@@ -11,17 +11,32 @@
         <telerik:DataFormDataField Label="Description" DataMemberBinding="{Binding Description}" />
         <telerik:DataFormDataField Label="Prix" DataMemberBinding="{Binding Prix}" />
 
-        <DockPanel Margin="10 5 30 5">
-          <TextBlock Text="Famille " Margin="0 5 80 0" DockPanel.Dock="Left"/>
-          <telerik:DataFormComboBoxField Label="Famille"
-                                         DataMemberBinding="{Binding Famille, Mode=TwoWay}"
-                                         ItemsSource="{Binding FamiliesNames}"/>
+        <telerik:DataFormDataField Label="Actif" >
+          <telerik:DataFormCheckBoxField DataMemberBinding="{Binding IsActif}" />
+        </telerik:DataFormDataField>
 
-        </DockPanel>
-        <DockPanel Margin="0 5 30 5">
-          <telerik:RadButton DockPanel.Dock="Right" Command="{Binding BrowseImageCommand}" Content="Parcourir" IsEnabled="{Binding ElementName=PART_CommitButton, Path=IsEnabled}"/>
-          <telerik:DataFormDataField Label="Image" DataMemberBinding="{Binding ImageURL}" />
-        </DockPanel >
+        <telerik:DataFormDataField Label="Bornes" >
+          <telerik:DataFormCheckBoxField DataMemberBinding="{Binding IsApp}" />
+        </telerik:DataFormDataField>
+
+        <telerik:DataFormDataField Label="Site Web" >
+          <telerik:DataFormCheckBoxField DataMemberBinding="{Binding IsWeb}" />
+        </telerik:DataFormDataField>
+
+        <telerik:DataFormDataField Label="Famille" >
+          <telerik:DataFormComboBoxField Label="Famille"
+                                          DataMemberBinding="{Binding Famille, Mode=TwoWay}"
+                                          ItemsSource="{Binding FamiliesNames}"/>
+        </telerik:DataFormDataField>
+
+        <telerik:DataFormDataField Label="Image" >
+          <DockPanel>
+            <telerik:RadButton DockPanel.Dock="Right" Command="{Binding BrowseImageCommand}" Content="Parcourir" IsEnabled="{Binding ElementName=PART_CommitButton, Path=IsEnabled}"/>
+            <TextBox Text="{Binding ImageURL}" />
+          </DockPanel >
+        </telerik:DataFormDataField>
+
+       
         <WrapPanel HorizontalAlignment="Center">
           <Image Width="50" Visibility="{Binding IsPodImage}"     Height="50" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
           <Image Width="50" Visibility="{Binding IsImageLoaded}"  Height="50" Source="{Binding ImageLocalURL, Mode=TwoWay}"/>
@@ -33,9 +48,9 @@
           ShowGroupPanel="False"
           ItemsSource="{Binding Traductions}">
           <telerik:RadGridView.Columns>
-            <telerik:GridViewDataColumn IsEnabled="False" DataMemberBinding="{Binding Langue}" Header="Langue" TextAlignment="Center" />
+            <telerik:GridViewDataColumn IsReadOnly="True" IsEnabled="False" DataMemberBinding="{Binding Langue}" Header="Langue" TextAlignment="Center" />
             <telerik:GridViewDataColumn  DataMemberBinding="{Binding Nom}" Header="Nom" TextAlignment="Center" />
-            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Description}" Header="Description" TextAlignment="Center" />
+            <telerik:GridViewDataColumn  DataMemberBinding="{Binding Description}" Header="Description" TextAlignment="Center" MaxWidth="200"/>
           </telerik:RadGridView.Columns>
         </telerik:RadGridView>
       </StackPanel>
@@ -67,6 +82,9 @@
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Description}" Header="Description" TextAlignment="Center" />
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prix}" Header="Prix" TextAlignment="Center" />
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.Famille.Nom}" Header="Famille" TextAlignment="Center" />
+        <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsActif}" Header="Actif" TextAlignment="Center" />
+        <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsApp}" Header="Bornes" TextAlignment="Center" />
+        <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsWeb}" Header="Site Web" TextAlignment="Center" />
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding ImageURL}" Header="ImageURL" TextAlignment="Center" />
       </telerik:RadGridView.Columns>
     </telerik:RadGridView>

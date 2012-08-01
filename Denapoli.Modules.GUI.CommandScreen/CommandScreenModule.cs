@@ -20,15 +20,17 @@ namespace Denapoli.Modules.GUI.CommandScreen
         private ILoggerFacade Logger { get; set; }
         public IPaymentService PaymentService { get; set; }
         public ILocalizationService LocalizationService { get; set; }
+        public ISettingsService SettingsService { get; set; }
         private readonly IEventAggregator _eventAggregator;
         private readonly IDataProvider _dataProvider;
 
         [ImportingConstructor]
-        public CommandScreenModule(IEventAggregator eventAggregator, IDataProvider dataProvider, ILoggerFacade logger, IPaymentService paymentService, ILocalizationService localizationService)
+        public CommandScreenModule(IEventAggregator eventAggregator, IDataProvider dataProvider, ILoggerFacade logger, IPaymentService paymentService, ILocalizationService localizationService, ISettingsService settingsService)
         {
             Logger = logger;
             PaymentService = paymentService;
             LocalizationService = localizationService;
+            SettingsService = settingsService;
             _eventAggregator = eventAggregator;
             _dataProvider = dataProvider;
         }
@@ -42,7 +44,7 @@ namespace Denapoli.Modules.GUI.CommandScreen
             set
             {
                 _view = value;
-                var t = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService) {View = value, IsVisible = false};
+                var t = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService, SettingsService) {View = value, IsVisible = false};
                 t.Cancel();
             }
         }
@@ -54,7 +56,7 @@ namespace Denapoli.Modules.GUI.CommandScreen
 
         private void NewCommandEventHandler(object obj)
         {
-            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService,LocalizationService) {View = View};
+            var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService, SettingsService) { View = View };
             _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(screen);
         }
     }

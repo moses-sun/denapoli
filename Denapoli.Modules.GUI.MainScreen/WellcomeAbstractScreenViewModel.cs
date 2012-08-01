@@ -3,7 +3,6 @@ using System.ComponentModel.Composition;
 using System.Timers;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
-using Denapoli.Modules.Infrastructure.Behavior;
 using Denapoli.Modules.Infrastructure.Command;
 using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
