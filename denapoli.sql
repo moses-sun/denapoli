@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le : Sam 23 Juin 2012 à 01:05
+-- Généré le : Mer 01 Août 2012 à 21:55
 -- Version du serveur: 5.5.16
 -- Version de PHP: 5.3.8
 
@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS `adresse` (
   `VILLE` varchar(100) DEFAULT NULL,
   `NUM_CHAMBRE` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`ID_ADR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Contenu de la table `adresse`
 --
 
 INSERT INTO `adresse` (`ID_ADR`, `NUM`, `VOIE`, `COMPLEMENT`, `CP`, `VILLE`, `NUM_CHAMBRE`) VALUES
-(1, 26, 'Rue Bouquet', 'Logement 126', '77185', 'LOGNES', '25'),
+(1, 26, 'Rue Bouquet', 'Logement 126', '77185', 'LOGNES', '1'),
 (2, 1, 'Rue jean jaures', NULL, '75006', 'Paris', ''),
 (3, 5, 'boulevard aussman', NULL, '75017', 'Paris', ''),
 (4, 34, 'Rue toto', NULL, '75001', 'Paris', ''),
@@ -52,7 +52,8 @@ INSERT INTO `adresse` (`ID_ADR`, `NUM`, `VOIE`, `COMPLEMENT`, `CP`, `VILLE`, `NU
 (8, 9, 'rue de paris', NULL, NULL, 'Montreuil', ''),
 (9, 9, 'rue de paris', NULL, NULL, 'Montreuil', '1'),
 (10, 9, 'rue de paris', NULL, NULL, 'Montreuil', '1'),
-(12, 8, 'rue toto', NULL, NULL, 'Montesson', '');
+(12, 8, 'rue toto', NULL, NULL, 'Montesson', ''),
+(13, 26, 'Rue Bouquet', 'Logement 126', '77185', 'LOGNES', '14');
 
 -- --------------------------------------------------------
 
@@ -62,19 +63,31 @@ INSERT INTO `adresse` (`ID_ADR`, `NUM`, `VOIE`, `COMPLEMENT`, `CP`, `VILLE`, `NU
 
 CREATE TABLE IF NOT EXISTS `borne` (
   `ID_BORN` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_ADR` int(11) NOT NULL,
+  `ID_ADR` int(11) DEFAULT NULL,
+  `IS_ACTIF` tinyint(1) NOT NULL DEFAULT '1',
+  `IS_OUVERT` tinyint(1) NOT NULL DEFAULT '1',
+  `H_OUVERT_JOUR` datetime NOT NULL,
+  `H_FERME_JOUR` datetime NOT NULL,
+  `H_OUVERT_SOIR` datetime NOT NULL,
+  `H_FERME_SOIR` datetime NOT NULL,
+  `MESSAGE` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '',
+  `MESSAGE_INACTIF` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '',
   PRIMARY KEY (`ID_BORN`),
   KEY `adresse_de_borne` (`ID_ADR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Contenu de la table `borne`
 --
 
-INSERT INTO `borne` (`ID_BORN`, `ID_ADR`) VALUES
-(2, 6),
-(1, 7),
-(3, 10);
+INSERT INTO `borne` (`ID_BORN`, `ID_ADR`, `IS_ACTIF`, `IS_OUVERT`, `H_OUVERT_JOUR`, `H_FERME_JOUR`, `H_OUVERT_SOIR`, `H_FERME_SOIR`, `MESSAGE`, `MESSAGE_INACTIF`) VALUES
+(1, 1, 1, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', 'walo'),
+(3, 10, 1, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', ''),
+(4, 12, 1, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', ''),
+(5, 12, 1, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', ''),
+(6, 12, 1, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', ''),
+(7, 12, 1, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', ''),
+(10, 12, 0, 1, '2012-07-29 11:30:00', '2012-07-29 16:30:00', '2012-07-29 19:00:00', '2012-07-29 23:00:00', 'congé', NULL);
 
 -- --------------------------------------------------------
 
@@ -110,10 +123,12 @@ INSERT INTO `client` (`ID_CLIEN`, `NOM`, `PRENOM`, `TEL`, `EMAIL`) VALUES
 
 CREATE TABLE IF NOT EXISTS `commande` (
   `NUM` int(11) NOT NULL AUTO_INCREMENT,
+  `SOURCE` varchar(15) NOT NULL DEFAULT 'BORNE',
   `TOTAL` float NOT NULL DEFAULT '0',
-  `ID_ADR` int(11) NOT NULL,
-  `ID_CLIEN` int(11) NOT NULL,
-  `ID_BORN` int(11) NOT NULL,
+  `TVA` float NOT NULL DEFAULT '0',
+  `ID_ADR` int(11) DEFAULT NULL,
+  `ID_CLIEN` int(11) DEFAULT NULL,
+  `ID_BORN` int(11) DEFAULT NULL,
   `STATUT` varchar(20) NOT NULL DEFAULT 'ATTENTE',
   `DATE` datetime DEFAULT NULL,
   `ID_LIVREUR` int(11) DEFAULT NULL,
@@ -122,66 +137,27 @@ CREATE TABLE IF NOT EXISTS `commande` (
   KEY `client_qui_commande` (`ID_CLIEN`),
   KEY `borne_qui_commande` (`ID_BORN`),
   KEY `livreur_de_commande` (`ID_LIVREUR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
 
 --
 -- Contenu de la table `commande`
 --
 
-INSERT INTO `commande` (`NUM`, `TOTAL`, `ID_ADR`, `ID_CLIEN`, `ID_BORN`, `STATUT`, `DATE`, `ID_LIVREUR`) VALUES
-(1, 0, 1, 1, 1, 'LIVREE', '2012-04-22 22:55:56', 2),
-(2, 0, 2, 2, 2, 'ATTENTE', '2012-04-22 22:55:56', 2),
-(3, 0, 3, 3, 1, 'LIVREE', '2012-04-22 22:55:56', 1),
-(4, 0, 4, 2, 2, 'PREPAREE', '2012-04-22 22:55:56', 1),
-(7, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 1),
-(8, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 2),
-(9, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 1),
-(10, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 2),
-(11, 16.5, 1, 2, 1, 'ATTENTE', '2012-04-22 22:55:56', 2),
-(14, 0, 1, 1, 2, 'ATTENTE', '2012-04-22 22:55:56', 1),
-(15, 0, 7, 6, 1, 'ATTENTE', '2012-04-22 22:55:56', 1),
-(16, 1.5, 7, 6, 1, 'ATTENTE', '2012-04-22 22:55:56', 2),
-(17, 0, 7, 6, 1, 'ATTENTE', '2012-04-22 22:55:56', 1),
-(18, 0, 7, 6, 1, 'ATTENTE', '2012-04-22 23:14:14', NULL),
-(20, 0, 7, 6, 1, 'ATTENTE', '2012-04-22 23:16:21', NULL),
-(22, 0, 7, 6, 1, 'ATTENTE', '2012-04-22 23:21:40', NULL),
-(23, 0, 7, 6, 1, 'ATTENTE', '2012-04-24 22:46:06', NULL),
-(25, 0, 7, 6, 1, 'ATTENTE', '2012-04-24 22:52:44', NULL),
-(27, 0, 7, 6, 1, 'ATTENTE', '2012-04-24 23:00:44', NULL),
-(29, 0, 1, 1, 2, 'ATTENTE', NULL, NULL),
-(30, 0, 1, 1, 2, 'ATTENTE', NULL, NULL),
-(31, 0, 7, 6, 1, 'ATTENTE', '2012-06-21 23:22:34', NULL),
-(32, 0, 7, 6, 1, 'ATTENTE', '2012-06-21 23:27:37', NULL),
-(33, 21.5, 7, 6, 1, 'ATTENTE', '2012-06-21 23:27:37', NULL),
-(34, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 22:11:08', NULL),
-(35, 14, 7, 6, 1, 'ATTENTE', '2012-06-22 22:11:08', NULL),
-(36, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 22:53:02', NULL),
-(37, 11, 7, 6, 1, 'PREPAREE', '2012-06-22 22:53:03', NULL),
-(38, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 22:56:54', NULL),
-(39, 6, 7, 6, 1, 'PREPAREE', '2012-06-22 22:56:57', NULL),
-(40, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 22:59:38', NULL),
-(41, 17.5, 7, 6, 1, 'PREPAREE', '2012-06-22 22:59:53', NULL),
-(42, 0, 7, 6, 1, 'PREPAREE', '2012-06-22 23:01:48', NULL),
-(43, 39.5, 7, 6, 1, 'PREPAREE', '2012-06-22 23:01:56', NULL),
-(44, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:07:29', NULL),
-(45, 1.5, 7, 6, 1, 'ATTENTE', '2012-06-22 23:07:31', NULL),
-(46, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:33:22', NULL),
-(47, 2, 7, 6, 1, 'ATTENTE', '2012-06-22 23:33:22', NULL),
-(48, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:35:58', NULL),
-(49, 13, 7, 6, 1, 'ATTENTE', '2012-06-22 23:36:16', NULL),
-(50, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:49:53', NULL),
-(51, 29.5, 7, 6, 1, 'ATTENTE', '2012-06-22 23:49:59', NULL),
-(52, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:54:14', NULL),
-(54, 0, 7, 6, 1, 'ATTENTE', '2012-06-22 23:58:00', NULL),
-(55, 10, 7, 6, 1, 'ATTENTE', '2012-06-22 23:58:06', NULL),
-(56, 0, 7, 6, 1, 'ATTENTE', '2012-06-23 00:01:10', NULL),
-(57, 39.5, 7, 6, 1, 'ATTENTE', '2012-06-23 00:01:13', NULL),
-(58, 0, 7, 6, 1, 'ATTENTE', '2012-06-23 00:05:51', NULL),
-(59, 29.5, 7, 6, 1, 'ATTENTE', '2012-06-23 00:05:53', NULL),
-(61, 4.5, 7, 6, 1, 'ATTENTE', '2012-06-23 00:38:19', NULL),
-(63, 22, 7, 6, 1, 'ATTENTE', '2012-06-23 00:46:35', NULL),
-(64, 25, 7, 6, 1, 'ATTENTE', '2012-06-23 00:50:23', NULL),
-(65, 14, 7, 6, 1, 'ATTENTE', '2012-06-23 00:54:54', NULL);
+INSERT INTO `commande` (`NUM`, `SOURCE`, `TOTAL`, `TVA`, `ID_ADR`, `ID_CLIEN`, `ID_BORN`, `STATUT`, `DATE`, `ID_LIVREUR`) VALUES
+(87, 'TEST', 0, 0, 1, 1, 1, 'PREPAREE', NULL, 1),
+(88, 'BORNE', 20.5, 1.2475, 1, 6, 1, 'PREPAREE', '2012-07-30 14:40:11', NULL),
+(89, 'BORNE', 16, 1.44, 1, 6, 1, 'ATTENTE', '2012-07-30 14:53:20', 3),
+(90, 'BORNE', 23, 1.755, 1, 6, 1, 'PREPAREE', '2012-07-30 14:58:43', 2),
+(91, 'BORNE', 97.5, 7.2225, 1, 6, 1, 'LIVREE', '2012-07-30 17:50:41', NULL),
+(92, 'BORNE', 309, 21.61, 1, 6, 1, 'PREPAREE', '2012-07-30 20:04:18', 1),
+(93, 'BORNE', 10, 0.55, 1, 6, 1, 'ATTENTE', '2012-07-30 21:00:48', 1),
+(94, 'BORNE', 21.5, 1.5825, 1, 6, 1, 'ATTENTE', '2012-07-31 08:30:28', 3),
+(95, 'BORNE', 15, 1.525, 1, 6, 1, 'ATTENTE', '2012-07-31 08:37:27', 2),
+(96, 'BORNE', 381.5, 22.0325, 1, 6, 1, 'ATTENTE', '2012-07-31 15:21:15', 2),
+(97, 'BORNE', 55, 3.405, 1, 6, 1, 'ATTENTE', '2012-08-01 15:45:26', 1),
+(98, 'BORNE', 32.5, 1.7575, 1, 6, 1, 'ATTENTE', '2012-08-01 16:03:38', 2),
+(99, 'BORNE', 72, 4.24, 1, 6, 1, 'PREPAREE', '2012-08-01 16:28:27', 1),
+(100, 'BORNE', 130, 7.53, 1, 6, 1, 'ATTENTE', '2012-08-01 21:42:04', 2);
 
 -- --------------------------------------------------------
 
@@ -194,6 +170,10 @@ CREATE TABLE IF NOT EXISTS `famille` (
   `NOM` varchar(100) DEFAULT NULL,
   `IMAGE_URL` varchar(100) DEFAULT NULL,
   `DESCRIPTION` varchar(150) NOT NULL,
+  `TVA` float NOT NULL DEFAULT '0',
+  `IS_APP` tinyint(1) NOT NULL DEFAULT '1',
+  `IS_WEB` tinyint(1) NOT NULL DEFAULT '1',
+  `IS_ACTIF` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID_FAMIL`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
@@ -201,13 +181,13 @@ CREATE TABLE IF NOT EXISTS `famille` (
 -- Contenu de la table `famille`
 --
 
-INSERT INTO `famille` (`ID_FAMIL`, `NOM`, `IMAGE_URL`, `DESCRIPTION`) VALUES
-(1, 'boissons', 'pirates.png', 'sdsqdqsqdqsdqs'),
-(2, 'pizzas', 'pizzas.png', ''),
-(3, 'tex-mexs', 'tex-mexs.png', ''),
-(4, 'menus', 'menus.png', ''),
-(5, 'salades', 'salades.png', ''),
-(6, 'paninis', 'paninis.png', '');
+INSERT INTO `famille` (`ID_FAMIL`, `NOM`, `IMAGE_URL`, `DESCRIPTION`, `TVA`, `IS_APP`, `IS_WEB`, `IS_ACTIF`) VALUES
+(1, 'boissons', 'boissons.png', 'sdsqdqsqdqsdqs', 19.5, 1, 1, 1),
+(2, 'pizzas', 'pizzas.png', '', 5.5, 1, 1, 1),
+(3, 'tex-mexs', 'tex-mexs.png', '', 4, 1, 1, 1),
+(4, 'menus', 'menus.png', '', 7.5, 1, 1, 1),
+(5, 'salades', 'salades.png', '', 19.6, 1, 1, 1),
+(6, 'qsdqdqsdqsdqsdqsd', '1_11_31_couche_de_soleil_mini.jpg', 'qsdsqdqsdqsdqs', 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -242,15 +222,16 @@ CREATE TABLE IF NOT EXISTS `livreur` (
   `NOM` varchar(50) NOT NULL,
   `PRENOM` varchar(50) NOT NULL,
   PRIMARY KEY (`ID_LIVREUR`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `livreur`
 --
 
 INSERT INTO `livreur` (`ID_LIVREUR`, `NOM`, `PRENOM`) VALUES
-(1, 'holaxxxxxxxxxxxxxxxxxxxx', 'prénom livreur 1 '),
-(2, 'nom livreur 2 ', 'prénom nom livreur 2');
+(1, 'Livreur', 'ruerviL'),
+(2, 'lolo', 'lplp'),
+(3, 'kikikk', 'fsdfsdfsd');
 
 -- --------------------------------------------------------
 
@@ -265,23 +246,26 @@ CREATE TABLE IF NOT EXISTS `menu` (
   PRIMARY KEY (`ID_MENU`),
   KEY `menu` (`ID_PROD`),
   KEY `commande_du_menu` (`NUM_COM`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Contenu de la table `menu`
 --
 
 INSERT INTO `menu` (`ID_MENU`, `ID_PROD`, `NUM_COM`) VALUES
-(1, 9, 1),
-(2, 10, 3),
-(3, 10, 4),
-(4, 9, 10),
-(5, 9, 11),
-(6, 9, 14),
-(7, 9, 29),
-(8, 9, 30),
-(9, 10, 33),
-(10, 10, 65);
+(1, 9, 87),
+(2, 10, 89),
+(3, 9, 90),
+(4, 10, 91),
+(5, 9, 91),
+(6, 10, 92),
+(7, 9, 92),
+(8, 10, 94),
+(9, 10, 96),
+(10, 10, 96),
+(11, 10, 97),
+(12, 10, 99),
+(13, 10, 100);
 
 -- --------------------------------------------------------
 
@@ -291,11 +275,15 @@ INSERT INTO `menu` (`ID_MENU`, `ID_PROD`, `NUM_COM`) VALUES
 
 CREATE TABLE IF NOT EXISTS `produit` (
   `ID_PROD` int(11) NOT NULL AUTO_INCREMENT,
+  `TVA` float NOT NULL DEFAULT '0',
   `NOM` varchar(50) DEFAULT NULL,
   `IMAGE_URL` varchar(100) DEFAULT NULL,
   `DESCRIPTION` varchar(200) DEFAULT NULL,
   `PRIX` float NOT NULL DEFAULT '0',
-  `ID_FAMIL` int(11) NOT NULL,
+  `ID_FAMIL` int(11) DEFAULT NULL,
+  `IS_APP` tinyint(1) NOT NULL DEFAULT '1',
+  `IS_WEB` tinyint(1) NOT NULL DEFAULT '1',
+  `IS_ACTIF` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID_PROD`),
   KEY `famille_de_produit` (`ID_FAMIL`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
@@ -304,19 +292,18 @@ CREATE TABLE IF NOT EXISTS `produit` (
 -- Contenu de la table `produit`
 --
 
-INSERT INTO `produit` (`ID_PROD`, `NOM`, `IMAGE_URL`, `DESCRIPTION`, `PRIX`, `ID_FAMIL`) VALUES
-(3, 'cocacola', 'algeria.jpg', 'zero 33cl', 1.5, 1),
-(4, 'orangina', 'orangina.jpg', '33cl', 1.5, 1),
-(5, 'oasis', 'oasis.png', '33 cl', 2, 1),
-(6, 'pizza margarita', 'margarita.png', NULL, 10, 2),
-(7, 'pizza 4 fromages', 'pizza_4_fromages.png', NULL, 12, 2),
-(8, 'pizza végétarienne', 'vegetarienne.png', NULL, 13, 2),
-(9, 'menu 1', 'zorro.jpg', 'menu1_description', 15, 4),
-(10, 'menu 2', 'menu2.png', NULL, 14, 4),
-(11, 'chiken 1', 'chiken1.png', NULL, 5, 3),
-(12, 'chiken 2', 'chiken2.png', NULL, 6, 3),
-(13, 'toto', NULL, 'Description', 4.5, 2),
-(15, 'TestProd', 'URL', 'Desc1', 0, 6);
+INSERT INTO `produit` (`ID_PROD`, `TVA`, `NOM`, `IMAGE_URL`, `DESCRIPTION`, `PRIX`, `ID_FAMIL`, `IS_APP`, `IS_WEB`, `IS_ACTIF`) VALUES
+(3, 0, 'pizza match', '00014162.jpg', 'hoho', 15, 2, 1, 1, 1),
+(4, 0, 'orangina', 'orangina.jpg', '33cl', 1.5, 1, 1, 1, 1),
+(5, 0, 'oasis', 'oasis.png', '33 cl', 2, 1, 1, 1, 1),
+(6, 0, 'pizza margarita', 'margarita.png', NULL, 10, 2, 1, 1, 1),
+(7, 0, 'pizza 4 fromages', 'pizza_4_fromages.png', NULL, 12, 2, 1, 1, 1),
+(8, 0, 'pizza végétarienne', 'vegetarienne.png', NULL, 13, 2, 1, 1, 1),
+(9, 0, 'menu 1', 'zorro.jpg', 'menu1_description', 15, 4, 1, 1, 1),
+(10, 0, 'menu 2', 'menu2.png', NULL, 14, 4, 1, 1, 1),
+(11, 0, 'chiken 1', 'chiken1.png', NULL, 5, 3, 1, 1, 1),
+(12, 0, 'chiken 2', 'chiken2.png', NULL, 6, 3, 1, 1, 1),
+(15, 0, 'TestProd', 'URL', 'Desc1', 0, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -338,60 +325,62 @@ CREATE TABLE IF NOT EXISTS `produits_commande` (
 --
 
 INSERT INTO `produits_commande` (`NUM_COM`, `ID_PROD`, `QUANTITE`) VALUES
-(1, 3, 1),
-(1, 9, 1),
-(2, 3, 1),
-(2, 6, 1),
-(3, 10, 1),
-(4, 10, 2),
-(7, 3, 0),
-(8, 3, 0),
-(9, 3, 0),
-(9, 12, 0),
-(10, 3, 0),
-(10, 12, 0),
-(11, 4, 0),
-(14, 3, 0),
-(14, 12, 0),
-(16, 3, 0),
-(29, 3, 0),
-(29, 12, 0),
-(30, 3, 0),
-(30, 13, 0),
-(33, 3, 0),
-(33, 12, 0),
-(35, 5, 0),
-(35, 7, 0),
-(37, 11, 0),
-(37, 12, 0),
-(39, 12, 0),
-(39, 15, 0),
-(41, 8, 0),
-(41, 13, 0),
-(43, 6, 0),
-(43, 7, 0),
-(43, 8, 0),
-(43, 13, 0),
-(45, 3, 0),
-(47, 5, 0),
-(49, 8, 0),
-(51, 7, 0),
-(51, 8, 0),
-(51, 13, 0),
-(51, 15, 0),
-(55, 6, 0),
-(57, 6, 0),
-(57, 7, 0),
-(57, 8, 0),
-(57, 13, 0),
-(59, 7, 0),
-(59, 8, 0),
-(59, 13, 0),
-(61, 13, 0),
-(63, 6, 0),
-(63, 7, 0),
-(64, 7, 0),
-(64, 8, 0);
+(87, 3, 0),
+(87, 15, 0),
+(88, 4, 1),
+(88, 8, 1),
+(88, 12, 1),
+(89, 5, 1),
+(90, 5, 1),
+(90, 12, 1),
+(91, 3, 3),
+(91, 4, 2),
+(91, 5, 2),
+(91, 6, 1),
+(91, 7, 1),
+(91, 8, 1),
+(91, 11, 2),
+(91, 12, 2),
+(91, 15, 2),
+(92, 3, 2),
+(92, 4, 2),
+(92, 5, 12),
+(92, 6, 3),
+(92, 7, 12),
+(92, 8, 5),
+(92, 11, 1),
+(92, 12, 1),
+(92, 15, 7),
+(93, 6, 1),
+(94, 4, 1),
+(94, 12, 1),
+(95, 3, 1),
+(95, 4, 1),
+(95, 5, 1),
+(95, 6, 1),
+(95, 15, 1),
+(96, 3, 21),
+(96, 4, 1),
+(96, 5, 1),
+(96, 6, 1),
+(96, 7, 1),
+(96, 8, 1),
+(97, 3, 1),
+(97, 5, 1),
+(97, 7, 1),
+(97, 12, 2),
+(98, 3, 1),
+(98, 4, 1),
+(98, 11, 2),
+(98, 12, 1),
+(99, 3, 1),
+(99, 6, 3),
+(99, 8, 1),
+(100, 3, 4),
+(100, 5, 1),
+(100, 6, 3),
+(100, 7, 1),
+(100, 12, 2);
 
 -- --------------------------------------------------------
 
@@ -413,23 +402,34 @@ CREATE TABLE IF NOT EXISTS `produits_menu` (
 --
 
 INSERT INTO `produits_menu` (`ID_MENU`, `ID_PROD`, `QUANTITE`) VALUES
-(1, 3, 1),
 (2, 4, 1),
-(3, 5, 1),
-(5, 5, 0),
-(9, 5, 0),
-(10, 5, 0),
-(1, 6, 1),
-(2, 6, 1),
-(2, 7, 1),
-(3, 8, 2),
-(5, 8, 0),
-(9, 8, 0),
-(10, 8, 0),
-(4, 12, 0),
-(6, 12, 0),
-(7, 12, 0),
-(8, 13, 0);
+(3, 4, 1),
+(4, 4, 1),
+(5, 4, 1),
+(6, 4, 1),
+(7, 4, 1),
+(8, 4, 1),
+(10, 5, 1),
+(11, 5, 1),
+(13, 5, 1),
+(2, 6, 2),
+(6, 6, 2),
+(7, 6, 1),
+(3, 7, 1),
+(5, 7, 1),
+(10, 7, 2),
+(4, 8, 2),
+(8, 8, 2),
+(9, 8, 2),
+(11, 8, 2),
+(12, 8, 2),
+(13, 8, 2),
+(5, 11, 1),
+(7, 11, 1),
+(3, 12, 1),
+(1, 15, 0),
+(9, 15, 1),
+(12, 15, 1);
 
 -- --------------------------------------------------------
 
