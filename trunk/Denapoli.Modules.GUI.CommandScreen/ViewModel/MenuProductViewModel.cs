@@ -3,7 +3,6 @@ using System.Windows;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
-using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
@@ -14,7 +13,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Family = comp.Famille;
             Produits = new List<Produit>(comp.Famille.Produits);
             //produits.ForEach(item => Produits.Add(item));
-            Quantite = comp.Quantite ?? 1;
+            Quantite =  comp.IsMeme ? comp.Quantite ?? 1 : 1;
+            QuantiteUnitaire = Quantite;
         }
 
         public ILocalizationService LocalizationService { get; set; }
@@ -58,5 +58,18 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 NotifyChanged("Quantite");
             }
         }
+
+        private int _quantiteUnitaire;
+        public int QuantiteUnitaire
+        {
+            get { return _quantiteUnitaire; }
+            set
+            {
+                _quantiteUnitaire = value;
+                NotifyChanged("QuantiteUnitaire");
+            }
+        }
+
+
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
@@ -24,11 +25,13 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static IDataProvider DataProvider { get; set; }
         public static ILocalizationService LocalizationService { get; set; }
         public static ISettingsService SettingsService { get; set; }
-        public ObservableCollection<Traduction> Traductions { get; set; } 
+        public ObservableCollection<Traduction> Traductions { get; set; }
+        public static IUpdatebale Parent { get; set; }
+
 
         public ProduitVm()
         {
-            Prod = new Produit();
+            Prod = new Produit{IsActif = true,IsApp = true,IsWEB = true, Nom = "", Description = ""};
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             FamiliesNames = new ObservableCollection<string>(Famileis.Select(item => item.Nom));
@@ -279,7 +282,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             LocalizationService.SendDocs();
             if (IsImageLoaded == Visibility.Visible)
                 UploadFile();
-
+            DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
         }
 
         private void UploadFile()

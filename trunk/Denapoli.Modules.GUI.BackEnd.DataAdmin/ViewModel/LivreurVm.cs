@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -9,6 +10,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
     {
         public Livreur Livreur { get; set; }
         public static IDataProvider DataProvider { get; set; }
+        public static IUpdatebale Parent { get; set; }
+
 
         public LivreurVm()
         {
@@ -73,6 +76,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             UpdateLivreur();
             DataProvider.InsertIfNotExists(Livreur);
+            DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
         }
 
         public void CancelEdit()

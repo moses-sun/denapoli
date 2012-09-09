@@ -79,6 +79,7 @@
     <Compile Include="ViewModel\DicoEntry.cs" />
     <Compile Include="ViewModel\FamillesAdminViewModel.cs" />
     <Compile Include="ViewModel\FamilleVm.cs" />
+    <Compile Include="ViewModel\IUpdatebale.cs" />
     <Compile Include="ViewModel\LangageVm.cs" />
     <Compile Include="ViewModel\LanguagesAdminViewModel.cs" />
     <Compile Include="ViewModel\LivreurAdminViewModel.cs" />

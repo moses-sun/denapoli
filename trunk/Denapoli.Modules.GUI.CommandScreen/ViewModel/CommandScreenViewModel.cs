@@ -49,9 +49,22 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                       EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
                                                       Cancel();
                                                   });
+
+            const int maxCommandDuration = 60000;
+            var timer = new Timer { Interval = maxCommandDuration };
+            timer.Elapsed += (sender, args) =>
+                                 {
+                                     CancelCommand.Execute(null);
+                                     timer.Enabled = false;
+                                     timer.Stop();
+                                 };
+            timer.Enabled = true;
+            timer.Start();
+
             LeftScollImage = "scroll_left.png";
             Logo = "logo.jpg";
             SelectedView = this;
+            Total = 0.0f;
         }
 
         private void UpdateFamilles()
@@ -104,7 +117,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                             if (prod.Produit == null) return;
                                             if(prod.IsMenu)
                                             {
-                                                var menu = new Menu{IDProd = prod.Produit.IDProd};
+                                                var menu = new Menu{IDProd = prod.Produit.IDProd, Quantite = prod.Quantite};
                                                 var m = (MenuViewModel)prod;
                                                 m.MenuProducts.ForEach(item =>
                                                                            {

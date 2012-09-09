@@ -12,6 +12,7 @@ namespace Denapoli.Modules.Data.Entities
         private int _idmEnu;
         private int _idpRod;
         private int _numCom;
+        private int _quaNtItE;
         private EntitySet<ProduitsMenu> _prodUiTsMenu;
         private EntityRef<Commande> _commandE;
         private EntityRef<Produit> _proDuiT;
@@ -71,6 +72,26 @@ namespace Denapoli.Modules.Data.Entities
                 SendPropertyChanged("NumCom");
             }
         }
+
+        [Column(Storage = "_quaNtItE", Name = "QUANTITE", DbType = "int", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public int Quantite
+        {
+            get
+            {
+                return _quaNtItE;
+            }
+            set
+            {
+                if ((_quaNtItE != value))
+                {
+                    SendPropertyChanging();
+                    _quaNtItE = value;
+                    SendPropertyChanged("Quantite");
+                }
+            }
+        }
+		
 		
         #region Children
         [Association(Storage="_prodUiTsMenu", OtherKey="IDMenu", ThisKey="IDMenu", Name="menu_produits")]

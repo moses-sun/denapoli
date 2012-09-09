@@ -40,6 +40,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,12 +55,18 @@
     <Compile Include="Behavior\IViewRegionRegistration.cs" />
     <Compile Include="Behavior\LocalizationConverter.cs" />
     <Compile Include="Behavior\VisibilityConverter.cs" />
-    <Compile Include="Controls\AttachedVirtualKeyboardBehavior.cs" />
+    <Compile Include="Controls\Keyboard\AttachedVirtualKeyboardBehavior.cs" />
+    <Compile Include="Controls\Keyboard\VirtualKey.cs" />
     <Compile Include="Controls\ListViewEx.cs" />
     <Compile Include="Command\ActionCommand.cs" />
     <Compile Include="Behavior\WidthBehavior.cs" />
-    <Compile Include="Controls\WinTest.xaml.cs">
-      <DependentUpon>WinTest.xaml</DependentUpon>
+    <Compile Include="Controls\Keyboard\VirtualKeyboard.xaml.cs">
+      <DependentUpon>VirtualKeyboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\Dico.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
@@ -79,10 +86,42 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\WinTest.xaml">
+    <Page Include="Controls\Keyboard\VirtualKeyboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Keyboard\images\backspace.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Keyboard\images\clear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Keyboard\images\enter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Keyboard\images\lock.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Keyboard\images\shift.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

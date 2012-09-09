@@ -16,7 +16,11 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Produit = prod;
             DeleteCommand = new ActionCommand(() => NotifyChanged("Delete"));
             AddUnitCommand = new ActionCommand(() => Quantite++);
-            RemoveUnitCommand = new ActionCommand(() => Quantite--);
+            RemoveUnitCommand = new ActionCommand(() =>
+                                                      {
+                                                          Quantite--;
+                                                          if (Quantite < 1) Quantite = 1;
+                                                      });
             IsMenu = false;
         }
 

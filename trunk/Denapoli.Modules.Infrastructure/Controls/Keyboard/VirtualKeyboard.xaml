@@ -1,0 +1,574 @@
+﻿<Window x:Class="Denapoli.Modules.Infrastructure.Controls.Keyboard.VirtualKeyboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Keyboard="clr-namespace:Denapoli.Modules.Infrastructure.Controls.Keyboard" Title="key bard"
+             Width="830" 
+             Height="290">
+    <Window.Resources>
+
+        <Style x:Key="MyFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Control}">
+                        <Grid Margin="4 2">
+                            <Rectangle Name="r1" StrokeThickness="1" Stroke="Black" StrokeDashArray="2 2" />
+                            <Border Name="border" Width="{TemplateBinding ActualWidth}"
+                      Height="{TemplateBinding ActualHeight}" CornerRadius="2" BorderThickness="1" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ShadowStyle">
+            <Setter Property="Control.Foreground" Value="LightGray" />
+        </Style>
+
+        <Style x:Key="InformButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="FontFamily" Value="Verdana" />
+            <Setter Property="FontSize" Value="15px" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FocusVisualStyle" Value="{StaticResource MyFocusVisual}" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#FFFFD190" Offset="0.2" />
+                        <GradientStop Color="DarkGray" Offset="0.85" />
+                        <GradientStop Color="#FFFFD190" Offset="1" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="3" Padding="4,2" BorderBrush="DarkGray" CornerRadius="8"  Background="{TemplateBinding Background}">
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"  Name="contentShadow" Style="{StaticResource ShadowStyle}">
+                                </ContentPresenter>
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Name="content" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF4788c8" />
+                                <Setter Property="Foreground" Value="#FF4788c8" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#FFFFD190" Offset="0.35" />
+                                            <GradientStop Color="Orange" Offset="0.95" />
+                                            <GradientStop Color="#FFFFD190" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter TargetName="content" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="1.0" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsDefaulted" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF282828" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF282828" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Opacity" Value="0.7" />
+                                <Setter Property="Foreground" Value="Gray" />
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border 
+                            CornerRadius="10"
+                            Focusable="False"
+        >
+        <Border x:Name="parent" BorderBrush="Black" BorderThickness="1" CornerRadius="10">
+            <Border BorderBrush="Black" BorderThickness="5" CornerRadius="10">
+                <Border BorderBrush="White" BorderThickness="2" CornerRadius="10">
+                    <StackPanel Orientation="Vertical">
+                      
+                        <StackPanel Orientation="Horizontal" >
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.key_2}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key1}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key2}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key3}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key4}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key5}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key6}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key7}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key8}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key9}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Key0}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyDeg}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyPlus}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyBackspace}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"  Width="105" Height="50">
+                                    <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/backspace.png"/>
+                            </Button>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" >
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyTab}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="80" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyA}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyZ}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyE}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyR}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyT}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyY}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyU}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyI}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyO}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyP}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyChap}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyEnter}}" Margin="2 2 2 0"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="130" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" >
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyCapsLock}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="100" Height="50">
+                                <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/lock.png"/>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyQ}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyS}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyD}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyF}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyG}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyH}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyJ}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyK}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyL}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyM}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyPercent}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.Keymico}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50" >
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+                            
+                             <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyEnter}}" Margin="0 0 2 2"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="55" Height="50" >
+                                <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/enter.png">
+                                </Image>
+                            </Button>
+
+
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" >
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyShift}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="90" Height="50">
+                                <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/shift.png"/>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyBalise}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyW}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyX}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyC}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyV}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyB}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyN}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyQuestion}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyDot}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeySlash}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyParagraph}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="50" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding NoShiftValue}" FontSize="{Binding NoShiftSize}"/>
+                                    <TextBlock DockPanel.Dock="Left"  HorizontalAlignment="Left"  VerticalAlignment="Bottom"   Text="{Binding ShiftValue}"   FontSize="{Binding ShiftSize}"/>
+                                    <TextBlock Margin="10 1 1 1" HorizontalAlignment="Right" VerticalAlignment="Bottom"   Text="{Binding AltValue}"          FontSize="{Binding AltSize}"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyShift}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="120" Height="50">
+                                <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/shift.png"/>
+                            </Button>
+
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" >
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyClear}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="150" Height="50">
+                                <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/clear.png"/>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyAlt}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="100" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeySpaceBar}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="300" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyAlt}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="100" Height="50">
+                                <DockPanel  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                                    <TextBlock DockPanel.Dock="Top"   HorizontalAlignment="Left"  VerticalAlignment="Top"      Text="{Binding Value}" FontSize="20"/>
+                                </DockPanel>
+                            </Button>
+
+                            <Button DataContext="{Binding Source={x:Static Keyboard:VirtualKeyboard.KeyClear}}"
+                                Style="{StaticResource InformButton}" Command="{Binding Command}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left"  Width="140" Height="50">
+                                <Image  Source="pack://application:,,,/Denapoli.Modules.Infrastructure;component/Controls/Keyboard/images/clear.png"/>
+
+                            </Button>
+
+
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </Border>
+        </Border>
+
+    </Border>
+
+</Window>

@@ -6,8 +6,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
     public class Traduction : NotifyPropertyChanged, IEditableObject
     {
-        private string _oldNom;
-        private string _nom;
+        private string _oldNom="";
+        private string _nom = "";
         public string Nom
         {
             get { return _nom; }
@@ -18,8 +18,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-        private string _oldDescription;
-        private string _description;
+        private string _oldDescription = "";
+        private string _description = "";
         public string Description
         {
             get { return _description; }
@@ -30,7 +30,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-        private string _langue;
+        private string _langue = "";
         public string Langue
         {
             get { return _langue; }

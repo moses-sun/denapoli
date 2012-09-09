@@ -1,15 +1,17 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Denapoli.Modules.Data;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
     [Export]
-    public class FamillesAdminViewModel: NotifyPropertyChanged
+    public class FamillesAdminViewModel : NotifyPropertyChanged, IUpdatebale, IEditableObject
     {
         private IDataProvider DataProvider { get; set; }
         private ILocalizationService LocalizationService { get; set; }
@@ -20,6 +22,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         [ImportingConstructor]
         public FamillesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
+            FamilleVm.Parent = this;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
@@ -36,10 +39,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             switch (e.Action)
             {
-               
                 case NotifyCollectionChangedAction.Remove:
                     var deletedFamily = (FamilleVm)e.OldItems[0];
                     DataProvider.Delete(deletedFamily.Family);
+                    DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(this);
                     break;
             }
         }
@@ -70,6 +73,20 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public void Update()
         {
             UpdateFamilles();
+        }
+
+        public void BeginEdit()
+        {
+            
+        }
+
+        public void EndEdit()
+        {
+            NotifyChanged("Update");
+        }
+
+        public void CancelEdit()
+        {
         }
     }
 }

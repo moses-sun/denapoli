@@ -25,7 +25,7 @@ namespace Denapoli.Modules.Data.DataProvider
             timer.Start();
         }
 
-        private void Connect()
+        public void Connect()
         {
             DAO = new DenapoliDTO(new MySqlConnection(SettingsService.GetDbConnextionParameters()));
         }
@@ -143,7 +143,6 @@ namespace Denapoli.Modules.Data.DataProvider
         public Adresse InsertIfNotExists(Adresse addr)
         {
             Connect();
-          
             if(addr.IdaDr == 0 )
                 DAO.Adresse.InsertOnSubmit(addr);
             else
@@ -222,22 +221,36 @@ namespace Denapoli.Modules.Data.DataProvider
                 produit.ProduitComposition.ForEach(item =>
                 {
                     var exists = menu.ProduitComposition.FirstOrDefault(e => e.IDFaMil == item.IDFaMil);
-                    if (exists == null) toremove.Add(item);
+                    if (exists == null)
+                        toremove.Add(item);
                     else item.Quantite = exists.Quantite;
                 });
                 toremove.ForEach(e =>
                                      {
-                                        
-                                         var r =DAO.ProduitComposition.FirstOrDefault(i => i.IDFaMil == e.IDFaMil && i.IDProd == e.IDProd);
+                                         /*var r =DAO.ProduitComposition.FirstOrDefault(i => i.IDFaMil == e.IDFaMil && i.IDProd == e.IDProd);
+                                         r.Famille.ProduitComposition.De
                                          DAO.ProduitComposition.DeleteOnSubmit(r);
+
+                                       */
+                                         produit.ProduitComposition.Remove(e);
+                                         e.Famille.ProduitComposition.Remove(e);
+                                         DAO.ProduitComposition.DeleteOnSubmit(e);
                                      });
                 menu.ProduitComposition.Where(item => produit.ProduitComposition.FirstOrDefault(e => e.IDFaMil == item.IDFaMil) == null)
                     .ForEach(toadd => produit.ProduitComposition.Add(new ProduitComposition
                                                                          {
                                                                              IDProd = produit.IDProd,
                                                                              IDFaMil = toadd.IDFaMil,
-                                                                             Quantite = toadd.Quantite
+                                                                             Quantite = toadd.Quantite,
+                                                                             IsMeme = toadd.IsMeme
                                                                          }));
+
+                 produit.ProduitComposition.ForEach(item=>
+                                                        {
+                                                            var r = menu.ProduitComposition.FirstOrDefault(i => i.IDFaMil == item.IDFaMil && i.IDProd == item.IDProd);
+                                                            if (r != null) item.IsMeme = r.IsMeme;
+ 
+                                                        });
             }
             DAO.SubmitChanges();
             return menu;

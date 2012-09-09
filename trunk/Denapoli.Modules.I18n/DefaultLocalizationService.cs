@@ -36,7 +36,11 @@ namespace Denapoli.Modules.I18n
         public void Reset()
         {
             _loadedDicts.Clear();
+            var list = new List<Langage>();
+            DataProvider.GetAvailableLanguages().ForEach(item => list.Add(new Langage { Code = item.Code, Name = item.NoM }));
+            AvailableLangages = list;
         }
+
 
         public IEnumerable<Langage> AvailableLangages { get; private set; }
 
@@ -97,8 +101,11 @@ namespace Denapoli.Modules.I18n
         {
             if (string.IsNullOrEmpty(key)) return "";
             var r = _currentdict.ContainsKey(key) ? _currentdict[key] : key;// _currentLangage.Code;
-            if(string.IsNullOrEmpty(r))
-                Console.WriteLine("--------------------to traduce----------- :"+_currentLangage.Code+" : "+key);
+            if (string.IsNullOrEmpty(r))
+            {
+                _currentdict[key] = "";
+                // Console.WriteLine("--------------------to traduce----------- :" + _currentLangage.Code + " : " + key);
+            }
             return r;
         }
 

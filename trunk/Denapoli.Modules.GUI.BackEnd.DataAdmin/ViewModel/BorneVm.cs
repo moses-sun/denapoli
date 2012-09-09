@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -10,11 +11,13 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
     {
         public Borne Borne { get; set; }
         public static IDataProvider DataProvider { get; set; }
+        public static IUpdatebale Parent { get; set; }
 
         public BorneVm()
         {
-            Borne = new Borne();
+            Borne = new Borne{IsActif = true,IsOuvert = true};
             BorneAdresse = new Adresse();
+            Borne.Adresse = BorneAdresse;
             ReSetProperties();
         }
 
@@ -234,7 +237,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldMessageInactif = Borne.MessageInActIf;
         }
 
-        private void UpdateProduit()
+        private void UpdateBorne()
         {
             BorneAdresse.Num = Num;
             BorneAdresse.Voie = Voie;
@@ -254,10 +257,12 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 
         public void EndEdit()
         {
-            UpdateProduit();
+            UpdateBorne();
             BorneAdresse = DataProvider.InsertIfNotExists(BorneAdresse);
             Borne.IdaDr = BorneAdresse.IdaDr;
+            Borne.Adresse = BorneAdresse;
             DataProvider.InsertIfNotExists(Borne);
+            DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
         }
 
         public void CancelEdit()

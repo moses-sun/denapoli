@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure">
+             xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+             xmlns:Keyboard="clr-namespace:Denapoli.Modules.Infrastructure.Controls.Keyboard;assembly=Denapoli.Modules.Infrastructure">
     <UserControl.Resources>
         <Behavior:LocalizationConverter x:Key="localizationConverter" />
     </UserControl.Resources>
@@ -37,19 +38,19 @@
                     <TextBlock Grid.Column="0" Grid.Row="0" 
                                Text="{Binding LocalizationService.Dico.Nom, Converter={StaticResource localizationConverter}}" 
                                Style="{StaticResource textStyle}" x:Name="text"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Customer.Nom, Mode=TwoWay}" Style="{StaticResource textStyle}"  Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Customer.Nom, Mode=TwoWay}" Style="{StaticResource textStyle}"  Keyboard:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                     <TextBlock Grid.Column="0" Grid.Row="1" 
                                Text="{Binding LocalizationService.Dico.Prenom, Converter={StaticResource localizationConverter}}"  
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Customer.Prenom, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Customer.Prenom, Mode=TwoWay}" Style="{StaticResource textStyle}" Keyboard:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                     <TextBlock Grid.Column="0" Grid.Row="2" 
                                Text="{Binding LocalizationService.Dico.Tel, Converter={StaticResource localizationConverter}}" 
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Customer.Tel, Mode=TwoWay}"  Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Customer.Tel, Mode=TwoWay}"  Style="{StaticResource textStyle}" Keyboard:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                     <TextBlock Grid.Column="0" Grid.Row="3" 
                                Text="{Binding LocalizationService.Dico.Email, Converter={StaticResource localizationConverter}}"  
                                Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Customer.Email, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding Customer.Email, Mode=TwoWay}" Style="{StaticResource textStyle}" Keyboard:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
                 </Grid>
             </GroupBox>
             <GroupBox Header="{Binding LocalizationService.Dico.AdresseDeLivraison, Converter={StaticResource localizationConverter}}"
@@ -70,7 +71,7 @@
                     <TextBlock 
                         Text="{Binding LocalizationService.Dico.NumChambre, Converter={StaticResource localizationConverter}}" 
                         Grid.Column="0" Grid.Row="0"  Style="{StaticResource textStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.NumCHamBRe, Mode=TwoWay}" Style="{StaticResource textStyle}" Controls:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Address.NumCHamBRe, Mode=TwoWay}" Style="{StaticResource textStyle}" Keyboard:AttachedVirtualKeyboardBehavior.TactileKeyboard="true"/>
 
                     <TextBlock 
                         Text="{Binding LocalizationService.Dico.Num, Converter={StaticResource localizationConverter}}" 

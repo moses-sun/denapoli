@@ -7,13 +7,14 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
     [Export]
-    public class BornesAdminViewModel : NotifyPropertyChanged, IEditableObject
+    public class BornesAdminViewModel : NotifyPropertyChanged, IEditableObject, IUpdatebale
     {
         private IDataProvider DataProvider { get; set; }
         public ObservableCollection<BorneVm> Bornes { get; set; }
@@ -94,6 +95,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         [ImportingConstructor]
         public BornesAdminViewModel(IDataProvider dataProvider)
         {
+            BorneVm.Parent = this;
             DataProvider = dataProvider;
             BorneVm.DataProvider = DataProvider;
             Bornes = new ObservableCollection<BorneVm>();
@@ -108,6 +110,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 case NotifyCollectionChangedAction.Remove:
                     var deletedBorne = (BorneVm)e.OldItems[0];
                     DataProvider.Delete(deletedBorne.Borne);
+                    DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(this);
                     break;
             }
         }
@@ -183,6 +186,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                                    bornes.Add(item.Borne);
                                });
             DataProvider.UpdateBornes(bornes);
+            DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(null);
         }
 
         public void CancelEdit()

@@ -11,9 +11,14 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
     {
         public CustomerViewModel()
         {
-            Customer = new Client{Nom="Nom",Prenom = "Prenom", Email = "Email", Tel = "Tel"};
+            Customer = new Client{Nom="toto",Prenom = "tata", Email = "", Tel = "0A"};
             Address = new Adresse();
-            PaiementCommand = new ActionCommand(()=>NotifyChanged("Validate"));
+            PaiementCommand = new ActionCommand(()=>
+                                                    {
+                                                        if (string.IsNullOrEmpty(Customer.Nom) || string.IsNullOrEmpty(Customer.Prenom) || string.IsNullOrEmpty(Customer.Tel))
+                                                            return;
+                                                        NotifyChanged("Validate");
+                                                    });
             CancelCommand = new ActionCommand(() => NotifyChanged("Cancel"));
             BackCommand = new ActionCommand(() => NotifyChanged("Back"));
         }

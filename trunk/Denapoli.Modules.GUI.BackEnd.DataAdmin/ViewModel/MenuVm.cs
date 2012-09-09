@@ -11,10 +11,10 @@ using System.Windows.Forms;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
-using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
@@ -26,11 +26,12 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static ILocalizationService LocalizationService { get; set; }
         public static ISettingsService SettingsService { get; set; }
         public ObservableCollection<Traduction> Traductions { get; set; }
+        public static IUpdatebale Parent { get; set; }
        
 
         public MenuVm()
         {
-            Menu = new Produit();
+            Menu = new Produit { IsActif = true, IsApp = true, IsWEB = true, Nom = "", Description = "" };
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             MenuComposition = new ObservableCollection<MenuCompositionn>();
@@ -47,18 +48,14 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             MenuComposition = new ObservableCollection<MenuCompositionn>();
-            ReSetProperties();
+            ReSetProperties(); 
         }
 
         private void OnMenusChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Add:
-                    MessageBox.Show("menu comp added");
-                    break;
                 case NotifyCollectionChangedAction.Remove:
-                    MessageBox.Show("menu comp removed");
                     break;
             }
         }
@@ -88,7 +85,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 });
             }
              MenuComposition.Clear();
-             Menu.ProduitComposition.ForEach(comp => MenuComposition.Add(new MenuCompositionn { Famille = comp.Famille, Quantite = comp.Quantite ?? 1, FamiliesNames = FamiliesNames }));
+             Menu.ProduitComposition.ForEach(comp => MenuComposition.Add(new MenuCompositionn { Famille = comp.Famille, Quantite = comp.Quantite ?? 1, FamiliesNames = FamiliesNames, IsMeme = comp.IsMeme}));
              MenuComposition.CollectionChanged += OnMenusChanged;
         }
 
@@ -258,6 +255,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             _oldIsActif = IsActif;
             _oldImageURL = ImageURL;
             _oldMenuComposition = new List<MenuCompositionn>(MenuComposition);
+            MenuComposition.ForEach(item => item.BeginEdit());
             Traductions.ForEach(item => item.BeginEdit());
         }
 
@@ -288,7 +286,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                                             {
                                                 IDProd = Menu.IDProd,
                                                 IDFaMil = famille.IDFaMil,
-                                                Quantite = item.Quantite
+                                                Quantite = item.Quantite,
+                                                IsMeme =  item.IsMeme
                                             });
                                         });
         }
@@ -300,6 +299,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             LocalizationService.SendDocs();
             if (IsImageLoaded == Visibility.Visible && !string.IsNullOrEmpty(ImageLocalURL))
                 UploadFile();
+            DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
+
         }
 
         public void CancelEdit()
@@ -315,7 +316,11 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             IsImageLoaded = Visibility.Collapsed;
             IsPodImage = Visibility.Visible;
             MenuComposition.Clear();
-            _oldMenuComposition.ForEach(item => MenuComposition.Add(item));
+            _oldMenuComposition.ForEach(item =>
+                                            {
+                                                MenuComposition.Add(item);
+                                                item.CancelEdit();
+                                            });
             Traductions.ForEach(item => item.CancelEdit());
         }
 
@@ -327,9 +332,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         }
     }
 
-    public class MenuCompositionn : NotifyPropertyChanged
+    public class MenuCompositionn : NotifyPropertyChanged,  IEditableObject
     {
         private Famille _famille;
+        private Famille _oldFamille;
         public Famille Famille
         {
             get { return _famille; }
@@ -340,6 +346,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
+        private string _oldFamilyName;
         private string _familyName;
         public string FamilyName
         {
@@ -351,6 +358,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
+        private int _oldQuantite;
         private int _quantite;
         public int Quantite
         {
@@ -362,7 +370,39 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
+        private bool _oldIsMeme;
+        private bool _isMeme;
+        public bool IsMeme
+        {
+            get { return _isMeme; }
+            set
+            {
+                _isMeme = value;
+                NotifyChanged("IsMeme");
+            }
+        }
 
-        public ObservableCollection<String> FamiliesNames { get; set; } 
+
+        public ObservableCollection<String> FamiliesNames { get; set; }
+
+        public void BeginEdit()
+        {
+            _oldFamille = Famille;
+            _oldFamilyName = FamilyName;
+            _oldQuantite = Quantite;
+            _oldIsMeme = IsMeme;
+        }
+
+        public void EndEdit()
+        {
+        }
+
+        public void CancelEdit()
+        {
+            Famille = _oldFamille;
+            FamilyName = _oldFamilyName;
+            Quantite = _oldQuantite;
+            IsMeme = _oldIsMeme;
+        }
     }
 }

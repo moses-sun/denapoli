@@ -58,6 +58,13 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             UpdateLivreurs();
             UpdateCommandes();
             timer.Start();
+
+            EventAggregator.GetEvent<UpdateEvent>().Subscribe(o =>
+                                                                  {
+                                                                      UpdateLivreurs();
+                                                                      UpdateCommandes();
+                                                                  });
+
         }
 
        
@@ -95,9 +102,11 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
         private void UpdateLivreurs ()
         {
            var livreurs =  DataProvider.GetAllLivreurs();
+            Livreurs.Clear();
+            Livreurss.Clear();
             livreurs.ForEach(item =>
                                  {
-                                     if (Livreurs.FirstOrDefault(e => e.IDLiVReUR == item.IDLiVReUR) != null) return;
+                                     //if (Livreurs.FirstOrDefault(e => e.IDLiVReUR == item.IDLiVReUR) != null) return;
                                      Livreurs.Add(item);
                                      Livreurss.Add(item.NoM + " "+item.PreNoM);
                                  });
@@ -237,7 +246,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             }
             foreach (var menu in SelectedCommand.Menus)
             {
-                var m = new MenuVM(menu.Produit) { Quantite = 1 };
+                var m = new MenuVM(menu.Produit) { Quantite = menu.Quantite };
                 foreach (var comp in menu.ProduitsMenu)
                 {
                     m.Composition.Add(new ProductViewModel(comp.Produit){Quantite = comp.Quantite});

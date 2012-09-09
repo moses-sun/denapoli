@@ -12,6 +12,7 @@ using Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel;
 using Denapoli.Modules.GUI.BackEnd.Stats.View;
 using Denapoli.Modules.GUI.CommandScreen.ViewModel;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.Prism.Events;
 
@@ -46,6 +47,8 @@ namespace Denapoli.Modules.GUI.BackEnd.Stats.ViewModel
             };
             UpdateCommandes();
             timer.Start();
+            EventAggregator.GetEvent<UpdateEvent>().Subscribe(o =>UpdateCommandes());
+
             
         }
 
@@ -78,7 +81,7 @@ namespace Denapoli.Modules.GUI.BackEnd.Stats.ViewModel
             }
             foreach (var menu in SelectedCommand.Menus)
             {
-                var m = new MenuVM(menu.Produit) { Quantite = 1 };
+                var m = new MenuVM(menu.Produit) { Quantite = menu.Quantite };
                 foreach (var comp in menu.ProduitsMenu)
                 {
                     m.Composition.Add(new ProductViewModel(comp.Produit){Quantite = comp.Quantite});
@@ -97,8 +100,15 @@ namespace Denapoli.Modules.GUI.BackEnd.Stats.ViewModel
             }
             else
             {
-               Window.ShowDialog();
-               UpdateCommandes();  
+                try
+                {
+                    Window.ShowDialog();
+                    UpdateCommandes();  
+                }
+                catch
+                {
+                }
+               
             }
         }
 
