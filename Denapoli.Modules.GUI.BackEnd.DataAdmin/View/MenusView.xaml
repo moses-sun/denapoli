@@ -54,7 +54,8 @@
 
             <telerik:GridViewComboBoxColumn  ItemsSource="{Binding FamiliesNames}" DataMemberBinding="{Binding FamilyName}" Header="Famille" TextAlignment="Center" />
             <telerik:GridViewDataColumn  DataMemberBinding="{Binding Quantite}" Header="Quantité" TextAlignment="Center" />
-          </telerik:RadGridView.Columns>
+            <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsMeme}" Header="Identiques" TextAlignment="Center" />
+           </telerik:RadGridView.Columns>
         </telerik:RadGridView>
         
         
@@ -94,7 +95,7 @@
      AutoGenerateColumns="False"
      CanUserReorderColumns="False"
      IsReadOnly="True"
-         
+     ShowGroupPanel="False"
                 >
       <telerik:RadGridView.Columns>
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Menu.IDProd}" Header="ID" TextAlignment="Center" />

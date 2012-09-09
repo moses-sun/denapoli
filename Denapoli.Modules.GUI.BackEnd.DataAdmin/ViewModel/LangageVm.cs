@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
@@ -21,13 +22,15 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static IDataProvider DataProvider { get; set; }
         public static ISettingsService SettingsService { get; set; }
         public ActionCommand BrowseImageCommand { get; set; }
+        public static IUpdatebale Parent { get; set; }
+
 
         public LangageVm()
         {
-            Langage = new Langage();
-            ReSetProperties();
+            Langage = new Langage{Code = "",Name = ""};
             BrowseImageCommand = new ActionCommand(BrowseImage);
             ReSetProperties();
+            LanguagesAdminViewModel.Keys.ForEach(item => Dico.Add(new DicoEntry { Key = item, Value = "" }));
         }
 
         public LangageVm(Langage l,IDataProvider dataProvider, ISettingsService settingsService)
@@ -61,6 +64,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             if (DialogResult.Cancel.Equals(res))
                 return;
             ImageLocalURL = chooser.FileName;
+            ImageURL = Path.GetFileName(ImageLocalURL);
             IsImageLoaded = Visibility.Visible;
             IsPodImage = Visibility.Collapsed;
         }
@@ -71,8 +75,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Code = Langage.Code;
             ImageURL = Langage.ImageURL;
             Dico = new ObservableCollection<DicoEntry>();
-            Langue = DataProvider.GetAvailableLanguages().First(item => item.Code==Langage.Code) ??
+            Langue = DataProvider.GetAvailableLanguages().FirstOrDefault(item => item.Code==Langage.Code) ??
                      new Langue{Code = "oo", NoM = "oo"};
+            IsImageLoaded = Visibility.Collapsed;
+            IsPodImage = Visibility.Visible;
         }
 
         private Langue _langue;
@@ -120,6 +126,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             {
                 _imageURL = value;
                 NotifyChanged("ImageURL");
+                IsImageLoaded = Visibility.Visible;
+                IsPodImage = Visibility.Collapsed;
             }
         }
 
@@ -168,16 +176,21 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         {
             UpdateLangue();
             Langue = DataProvider.InsertIfNotExists(Langue);
-            if (IsImageLoaded == Visibility.Visible && ImageLocalURL != null)
+            if (IsImageLoaded == Visibility.Visible)
                 UploadFile();
             SendDico();
+            DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
         }
 
         private void UploadFile()
         {
+            if (!File.Exists(ImageLocalURL)) return;
+            var destName = Code + ".png";// +ImageLocalURL.Split('.')[1];
+            File.Copy(ImageLocalURL, destName);
             var client = new WebClient();
-            File.Copy(ImageLocalURL, ImageURL, true);
-            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageURL);
+            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", destName);
+            File.Delete(destName);
+            ImageURL = destName;
         }
 
         private void SendDico()

@@ -72,8 +72,12 @@
         <DockPanel x:Name="left_panelo" DockPanel.Dock="Left" IsEnabled="{Binding IsActive}">
             <DockPanel.Resources>
                 <DataTemplate x:Key="ProductTemplate"  DataType="{x:Type ViewModel:ProductViewModel}">
-                    <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"  Margin="1 1 1 1" HorizontalAlignment="Center"  FontSize="15"
-                                     />
+                  <StackPanel Margin="1 1 1 1" Orientation="Horizontal">
+                    <TextBlock  Text="{Binding Quantite}"   HorizontalAlignment="Center"  FontSize="15" />
+                    <TextBlock  Text=" X "   HorizontalAlignment="Center"  FontSize="15" />
+                    <TextBlock  Text="{Binding Produit.Nom, Converter={StaticResource localizationConverter}}"   HorizontalAlignment="Center"  FontSize="15" />
+                  </StackPanel>
+                    
                 </DataTemplate>
 
                 <DataTemplate x:Key="MenusTemplate" DataType="{x:Type ViewModel:MenuViewModel}"     >
@@ -105,7 +109,7 @@
                                    Background="LightCoral"
                                    FontSize="25" FontFamily="fonts/#Arial Narrow Bold"/>
             </Grid>
-            <DockPanel  >
+            <DockPanel x:Name="parrent" >
                 <telerik:RadGridView   Width="380"
                         Background="LemonChiffon"              
                         ItemsSource="{Binding OrderedProdects}"  
@@ -168,7 +172,7 @@
                                     <DataTemplate>
                                       <DockPanel Background="Black" VerticalAlignment="Center">
                                         <TextBlock Foreground="White" Background="Transparent" VerticalAlignment="Center"
-                                            Text="{Binding FormattedValue, StringFormat={}{0:c}}"
+                                            Text="{Binding ElementName=parrent, Path=DataContext.Total, StringFormat={}{0:c}}"
                                             MinWidth="20"
                                             FontSize="35" FontFamily="fonts/#Arial Narrow Bold"
                                                    TextAlignment="Right"

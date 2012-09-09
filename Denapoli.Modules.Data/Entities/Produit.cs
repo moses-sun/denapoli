@@ -411,6 +411,7 @@ namespace Denapoli.Modules.Data.Entities
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");
         private int _idfAMil;
         private int _idpRod;
+        private sbyte _ismEmE;
         private int? _quaNtItE;
         private EntityRef<Famille> _faMillE;
         private EntityRef<Produit> _proDuiT;
@@ -466,6 +467,29 @@ namespace Denapoli.Modules.Data.Entities
                 _quaNtItE = value;
                 SendPropertyChanged("Quantite");
             }
+        }
+
+        [Column(Storage = "_ismEmE", Name = "IS_MEME", DbType = "tinyint(1)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public sbyte IsmEmE
+        {
+            get
+            {
+                return _ismEmE;
+            }
+            set
+            {
+                if ((_ismEmE == value)) return;
+                SendPropertyChanging();
+                _ismEmE = value;
+                SendPropertyChanged("IsmEmE");
+            }
+        }
+
+        public bool IsMeme
+        {
+            get { return IsmEmE==1; }
+            set { IsmEmE = (sbyte) (value ? 1 : 0); }
         }
 
         #region Parents

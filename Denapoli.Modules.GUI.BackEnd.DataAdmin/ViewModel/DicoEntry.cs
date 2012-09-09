@@ -5,7 +5,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
     public class DicoEntry : NotifyPropertyChanged,  IEditableObject
     {
-        private string _key;
+        private string _key = "";
         public string Key
         {
             get { return _key; }
@@ -16,8 +16,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-        private string _oldValue;
-        private string _value;
+        private string _oldValue = "";
+        private string _value = "";
         public string Value
         {
             get { return _value; }

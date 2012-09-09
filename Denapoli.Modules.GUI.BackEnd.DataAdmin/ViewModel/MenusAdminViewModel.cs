@@ -1,10 +1,10 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using Denapoli.Modules.Data;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
@@ -12,7 +12,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
     [Export]
-    public class MenusAdminViewModel : NotifyPropertyChanged
+    public class MenusAdminViewModel : NotifyPropertyChanged, IUpdatebale, IEditableObject
     {
         private IDataProvider DataProvider { get; set; }
         private ILocalizationService LocalizationService { get; set; }
@@ -23,6 +23,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         [ImportingConstructor]
         public MenusAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
         {
+            MenuVm.Parent = this;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
@@ -43,6 +44,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
                 case NotifyCollectionChangedAction.Remove:
                    var deletedMenu = (MenuVm)e.OldItems[0];
                     DataProvider.DeleteMenu(deletedMenu.Menu);
+                    DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(this);
                     break;
             }
         }
@@ -73,6 +75,20 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public void Update()
         {
             Updatemenus();
+        }
+
+        public void BeginEdit()
+        {
+            
+        }
+
+        public void EndEdit()
+        {
+            NotifyChanged("Update");
+        }
+
+        public void CancelEdit()
+        {
         }
     }
 }

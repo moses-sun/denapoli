@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Timers;
 using System.Windows;
@@ -5,8 +6,10 @@ using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.GUI.BackEnd.DataAdmin.View;
 using Denapoli.Modules.Infrastructure.Command;
+using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
+using Microsoft.Practices.Prism.Events;
 
 namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
 {
@@ -16,38 +19,36 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public Window Window { get; set; }
         private IDataProvider DataProvider { get; set; }
         public ILocalizationService LocalizationService { get; set; }
+        public static IEventAggregator EventAggregator { get; set; }
         public ICommand ShowDataAdminCommand { get; set; }
         public DataAdminView View { get; set; }
+        private List<IUpdatebale> Updatebales { get; set; }
 
         [ImportingConstructor]
-        public DataAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService)
+        public DataAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, IEventAggregator eventAggregator)
         {
             DataProvider = dataProvider;
             LocalizationService = localizationService;
+            EventAggregator = eventAggregator;
             IsVisible = true;
             ShowDataAdminCommand = new ActionCommand(Show);
+            Updatebales = new List<IUpdatebale>
+                              {
+                                  
+                              };
+            EventAggregator.GetEvent<UpdateEvent>().Subscribe(o =>
+                                                                                     {
+                                                                                         LocalizationService.Reset();
+                                                                                         DataProvider.Connect();
+                                                                                         if(o != ProduitsViewModel) ProduitsViewModel.Update();
+                                                                                         if (o != FamillesViewModel) FamillesViewModel.Update();
+                                                                                         if (o != LanguagesViewModel) LanguagesViewModel.Update();
+                                                                                         if (o != MenusViewModel) MenusViewModel.Update();
+                                                                                         if (o != BornesViewModel) BornesViewModel.Update();
+                                                                                         if (o != LivreursViewModel) LivreursViewModel.Update();
+                                                                                     });
 
-            var timer = new Timer { Interval = 120000 };
-            timer.Elapsed += (sender, args) =>
-                                 {
-                                     if (View == null) return;
-                                     View.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-                                                                 new System.Windows.Threading.
-                                                                     DispatcherOperationCallback(delegate
-                                                                                                     {
-                                                                                                         ProduitsViewModel.Update();
-                                                                                                         FamillesViewModel.Update();
-                                                                                                         LanguagesViewModel.Update();
-                                                                                                         MenusViewModel.Update();
-                                                                                                         BornesViewModel.Update();
-                                                                                                         LivreursViewModel.Update();
-                                                                                                         return null;
-                                                                                                     }),
-                                                                     null);
-                                    
-                                 };
-            timer.Enabled = true;
-            timer.Start();
+
         }
 
         [Import]

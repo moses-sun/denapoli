@@ -34,20 +34,20 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                                          e.Graphics.DrawString(produit.Produit.Nom.ToUpper(), font, Brushes.Black, xProduit, y);
                                          e.Graphics.DrawString("" + String.Format("{0,5:##0.00}", (produit.Quantite * produit.Produit.Prix)), font, Brushes.Black, xPrix, y);
                                          y += lineHeight;
-                                         nbArticles++;
+                                         nbArticles += produit.Quantite;
                                      }
                                      foreach (var menu in commande.Menus)
                                      {
-                                         e.Graphics.DrawString("" + String.Format("{0,2}", 1), font, Brushes.Black, xQuantite, y);
+                                         e.Graphics.DrawString("" + String.Format("{0,2}", menu.Quantite), font, Brushes.Black, xQuantite, y);
                                          e.Graphics.DrawString(menu.Produit.Nom.ToUpper(), font, Brushes.Black, xProduit, y);
-                                         e.Graphics.DrawString("" + String.Format("{0,5:##0.00}",(menu.Produit.Prix)), font, Brushes.Black, xPrix, y);
+                                         e.Graphics.DrawString("" + String.Format("{0,5:##0.00}", (menu.Produit.Prix * menu.Quantite)), font, Brushes.Black, xPrix, y);
                                          y += lineHeight;
-                                         nbArticles++;
                                          foreach (var comp in menu.ProduitsMenu)
                                          {
                                              e.Graphics.DrawString("" + String.Format("{0,2}", comp.Quantite), font, Brushes.Black, xProduit, y);
                                              e.Graphics.DrawString(comp.Produit.Nom.ToUpper(), font, Brushes.Black, xProduit + 30, y);
                                              y += lineHeight;
+                                             nbArticles += comp.Quantite;
                                          }
                                      }
                                      e.Graphics.DrawString("---------------------------------------------------------", font, Brushes.Black, xQuantite, y);
@@ -63,6 +63,8 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                                      e.Graphics.DrawString("---------------------------------------------------------", font, Brushes.Black, xQuantite, y);
                                      y += lineHeight;
                                      e.Graphics.DrawString("Client : " + commande.Client.Nom + " " + commande.Client.Prenom, font, Brushes.Black, xQuantite, y);
+                                     y += lineHeight;
+                                     e.Graphics.DrawString("Tel : " + commande.Client.Tel, font, Brushes.Black, xQuantite, y);
                                      y += lineHeight;
                                      e.Graphics.DrawString("Adresse de livraison : ", font, Brushes.Black, xQuantite, y);
                                      y += lineHeight;

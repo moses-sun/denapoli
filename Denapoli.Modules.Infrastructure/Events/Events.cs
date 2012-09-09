@@ -11,4 +11,6 @@ namespace Denapoli.Modules.Infrastructure.Events
     public class PreparerEvent : CompositePresentationEvent<object> { }
     public class PreteEvent : CompositePresentationEvent<object> { }
     public class LivrerEvent : CompositePresentationEvent<object> { }
+
+    public class UpdateEvent : CompositePresentationEvent<object> { }
 }
