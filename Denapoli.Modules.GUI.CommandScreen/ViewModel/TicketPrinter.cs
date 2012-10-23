@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.IO.Ports;
 using System.Windows.Controls;
 using Denapoli.Modules.Data.Entities;
 
@@ -102,4 +103,6 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             doc.Print();
         }
     }
+
+    
 }

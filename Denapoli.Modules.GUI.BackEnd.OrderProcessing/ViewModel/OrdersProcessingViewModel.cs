@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.GUI.BackEnd.OrderProcessing.View;
@@ -13,6 +14,7 @@ using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using Microsoft.Practices.Prism.Events;
+using Telerik.Windows.Controls;
 
 namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 {
@@ -278,5 +280,14 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
         }
 
         public ObservableCollection<ProductViewModel> Composition { get; private set; } 
+    }
+
+    public class MyGridView : RadGridView
+    {
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if(e.Key != Key.Return)
+                base.OnKeyDown(e);
+        }
     }
 }

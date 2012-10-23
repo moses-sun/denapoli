@@ -3,24 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Controls="clr-namespace:Denapoli.Modules.Infrastructure.Controls;assembly=Denapoli.Modules.Infrastructure"
              xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+             xmlns:ViewModel="clr-namespace:Denapoli.Modules.GUI.CommandScreen.ViewModel"
              Visibility="{Binding Visibility}">
   <UserControl.Resources>
         <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
         <Behavior:LocalizationConverter x:Key="localizationConverter" />
         <DataTemplate  x:Key="DisplayProduct">
-            <Border BorderBrush="Black" BorderThickness="4"   CornerRadius="5" Margin="6" MaxWidth="250" >
-                <StackPanel >
-                    <Image MaxWidth="130" MaxHeight="130" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-                    <DockPanel Background="LemonChiffon">
-                        <TextBlock DockPanel.Dock="Left" Margin="5 1 5 1" Text="{Binding Nom, Converter={StaticResource localizationConverter}}" 
-                                   FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  TextWrapping="Wrap" />
-                        <TextBlock DockPanel.Dock="Right" Margin="5 1 5 1" Text="{Binding Prix, StringFormat={}{0:c}}" 
-                                   TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold" />
-                    </DockPanel>
-                    <TextBlock Margin="5 1 5 1" Text="{Binding Description, Converter={StaticResource localizationConverter}}" 
-                               TextWrapping="Wrap" FontSize="11" FontFamily="fonts/#Arial Narrow Bold" />
-                </StackPanel>
+          <DockPanel x:Name="papa" MaxHeight="220" HorizontalAlignment="Stretch" Margin="5 5 5 5">
+            <Border BorderBrush="Black" BorderThickness="5"   CornerRadius="5" >
+              <DockPanel   HorizontalAlignment="Stretch" >
+                <TextBlock Margin="5 1 10 1" Text="{Binding Description, Converter={StaticResource localizationConverter}}"
+                         TextWrapping="Wrap" FontSize="12" FontFamily="Arial" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center"
+                         DockPanel.Dock="Bottom"
+                          />
+                <DockPanel DockPanel.Dock="Bottom" Background="LemonChiffon"   >
+                  <TextBlock DockPanel.Dock="Left" Margin="5 1 5 1" Text="{Binding Nom, Converter={StaticResource localizationConverter}}"
+                             FontSize="15" FontFamily="Arial" FontWeight="Bold" TextWrapping="Wrap" />
+                  <TextBlock DockPanel.Dock="Right" Margin="5 1 5 1" Text="{Binding Prix, StringFormat={}{0:c}}"
+                             TextAlignment="Right" FontSize="15" FontFamily="Arial" FontWeight="Bold" />
+                </DockPanel>
+
+                <Image Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"
+                       Width="{Binding ElementName=papa, Path=ActualWidth}"
+                       />
+              </DockPanel>
             </Border>
+          </DockPanel>
         </DataTemplate>
     </UserControl.Resources>
   <DockPanel x:Name="productsPanel">
@@ -60,16 +68,16 @@
                                     SelectedItem="{Binding SelectedProduct}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                    Behavior:WidthBehavior.HeightEx="{Binding  ElementName=toto, Path=ActualHeight}"
                                     Background="DarkOrchid"
                                     ItemTemplate="{StaticResource DisplayProduct}"
                                 >
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel 
-                                                Background="SandyBrown"
-                                                Width="{Binding ElementName=productsPanel, Path=ActualWidth}"
-                                             />
+                      <ViewModel:GridF Columns="3"  
+                                      
+                                     Background="SandyBrown"
+                                       Width="{Binding ElementName=productsPanel, Path=ActualWidth}"
+                                      />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </Controls:ListViewEx>

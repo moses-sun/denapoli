@@ -81,7 +81,7 @@
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Nom}" Header="Nom" TextAlignment="Center" />
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Description}" Header="Description" TextAlignment="Center" />
         <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prix}" Header="Prix" TextAlignment="Center" />
-        <telerik:GridViewDataColumn  DataMemberBinding="{Binding Prod.Famille.Nom}" Header="Famille" TextAlignment="Center" />
+        <telerik:GridViewDataColumn  DataMemberBinding="{Binding Famille}" Header="Famille" TextAlignment="Center" />
         <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsActif}" Header="Actif" TextAlignment="Center" />
         <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsApp}" Header="Bornes" TextAlignment="Center" />
         <telerik:GridViewCheckBoxColumn  DataMemberBinding="{Binding IsWeb}" Header="Site Web" TextAlignment="Center" />

@@ -20,6 +20,7 @@
     <CommandBinding Command="DenapoliAdmin:AdminShell.PreteCommand" Executed="PreteCommandExecuted"/>
     <CommandBinding Command="DenapoliAdmin:AdminShell.LivrerCommand" Executed="LivrerCommandExecuted"/>
     <CommandBinding Command="DenapoliAdmin:AdminShell.ImprimerCommand" Executed="ImprimerCommandExecuted"/>
+    <CommandBinding Command="DenapoliAdmin:AdminShell.EnterCommand" Executed="EnterCommandExecuted"/>
   </Window.CommandBindings>
   <DockPanel LastChildFill="True">
     <!-- Menu -->

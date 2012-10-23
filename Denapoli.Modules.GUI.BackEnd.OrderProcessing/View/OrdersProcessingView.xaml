@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure">
+             xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
+             xmlns:ViewModel="clr-namespace:Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel">
   <UserControl.Resources>
     <Behavior:LocalizationConverter x:Key="localizationConverter" />
   </UserControl.Resources>
@@ -132,8 +133,8 @@
           </StackPanel>
         </DockPanel>
         <DockPanel>
-            <telerik:RadGridView
-                ItemsSource="{Binding Orders}"
+          <ViewModel:MyGridView
+              ItemsSource="{Binding Orders}"
                 AutoGenerateColumns="False"
                 CanUserReorderColumns="False"
                 IsReadOnly="True"
@@ -179,7 +180,8 @@
                   </telerik:GridViewDataColumn>
                   <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" Width="*"/>
                 </telerik:RadGridView.Columns>
-            </telerik:RadGridView>
-        </DockPanel>
+            </ViewModel:MyGridView>
+        
+      </DockPanel>
     </DockPanel>
 </UserControl>

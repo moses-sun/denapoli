@@ -5,11 +5,11 @@
         xmlns:Regions="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
         Title="Di Napoli pizza"
         WindowState="Maximized"
-         WindowStyle="None"
+        
         Icon="pack://application:,,,/Resources/pizza.ico"
         >
   <!--  
-   
+    WindowStyle="None"
     Height="350" Width="525" -->
     <Window.Resources>
         <ResourceDictionary>
