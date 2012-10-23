@@ -3,34 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:Behavior="clr-namespace:Denapoli.Modules.Infrastructure.Behavior;assembly=Denapoli.Modules.Infrastructure"
-             >
+             xmlns:ViewModel="clr-namespace:Denapoli.Modules.GUI.CommandScreen.ViewModel">
     <UserControl.Resources>
         <Behavior:ImageUriSourceConverter x:Key="imageConverter" />
         <Behavior:LocalizationConverter x:Key="localizationConverter" />
         <DataTemplate  x:Key="DisplayProduct">
-            <Border BorderBrush="Black" BorderThickness="4" CornerRadius="5" Margin="6" >
-                <StackPanel >
-                    <Image Width="120" Height="120" Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"/>
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Left" Text="{Binding Nom, Converter={StaticResource localizationConverter}}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
-                        <TextBlock DockPanel.Dock="Right" Text=" €" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
-                        <TextBlock DockPanel.Dock="Right" Text="{Binding Prix}" TextAlignment="Right" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
-                    </DockPanel>
-                    <TextBlock Text="{Binding Description}"/>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
+          <DockPanel x:Name="papa" MaxHeight="220" HorizontalAlignment="Stretch" Margin="5 5 5 5">
+            <Border BorderBrush="Black" BorderThickness="5"   CornerRadius="5" >
+              <DockPanel   HorizontalAlignment="Stretch" >
+                <TextBlock Margin="5 1 10 1" Text="{Binding Description, Converter={StaticResource localizationConverter}}"
+                         TextWrapping="Wrap" FontSize="12" FontFamily="Arial" FontWeight="Bold" HorizontalAlignment="Center" TextAlignment="Center"
+                         DockPanel.Dock="Bottom"
+                          />
+                <DockPanel DockPanel.Dock="Bottom" Background="LemonChiffon"   >
+                  <TextBlock DockPanel.Dock="Left" Margin="5 1 5 1" Text="{Binding Nom, Converter={StaticResource localizationConverter}}"
+                             FontSize="15" FontFamily="Arial" FontWeight="Bold" TextWrapping="Wrap"
+                             TextAlignment="Center" />
+                </DockPanel>
 
-        <ControlTemplate x:Key="FlatCombo" TargetType="{x:Type ComboBox}">
-            <ContentPresenter Name="ContentSite" 
-                          IsHitTestVisible="False" 
-                          Content="{TemplateBinding SelectionBoxItem}" 
-                          ContentTemplate="{StaticResource DisplayProduct}" 
-                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
-                          Margin="3,3,23,3" 
-                          VerticalAlignment="Center" 
-                          HorizontalAlignment="Left"/>
-        </ControlTemplate>
+                <Image Source="{Binding ImageURL, Converter={StaticResource imageConverter}}"
+                       Width="{Binding ElementName=papa, Path=ActualWidth}"
+                       />
+              </DockPanel>
+            </Border>
+          </DockPanel>
+        </DataTemplate>
     </UserControl.Resources>
     <DockPanel x:Name="menuPanel" Background="LemonChiffon"  
                Width="{Binding ElementName=sub, Path=ActualWidth}"
@@ -38,7 +35,7 @@
         <TextBlock DockPanel.Dock="Top" 
                                        Text="{Binding LocalizationService.Dico.ComposezVotreMenu, Converter={StaticResource localizationConverter}}"  
                                        TextAlignment="Center"  
-                                       FontSize="35" FontFamily="fonts/#Arial Narrow Bold" />
+                                       FontSize="35" FontFamily="Arial" FontWeight="Bold" />
         <Grid DockPanel.Dock="Bottom" Margin="20 20 20 20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -83,13 +80,14 @@
                                                 SelectedItem="{Binding Produit}" 
                                                 ItemTemplate="{StaticResource DisplayProduct}"
                                                 DisplayMemberPath="Nom"
+                                                MaxDropDownHeight="{Binding ElementName=menuPanel, Path=ActualHeight}"
                                                 Width="200">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel 
-                                                            Background="DarkOrange"
-                                                            Width="{Binding ElementName=menuPanel, Path=ActualWidth}"
-                                                         />
+                                  <ViewModel:GridF Columns="3"
+                                    Background="SandyBrown"
+                                     Width="{Binding ElementName=menuPanel, Path=ActualWidth}"
+                                      />
                                 </ItemsPanelTemplate>
                             </ComboBox.ItemsPanel>
                         </ComboBox>

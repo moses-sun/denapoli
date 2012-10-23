@@ -34,6 +34,9 @@ namespace Denapoli.Modules.Data.Entities
             _prodUiTsMenu = new EntitySet<ProduitsMenu>(ProdUItsMenuAttach, ProdUItsMenuDetach);
         }
 
+        public int Column { get; set; }
+        public int Row { get; set; }
+
         public bool IsMenu { get { return ProduitComposition.Count > 0; } }
 		
         [Column(Storage="_description", Name="DESCRIPTION", DbType="varchar(200)", AutoSync=AutoSync.Never)]

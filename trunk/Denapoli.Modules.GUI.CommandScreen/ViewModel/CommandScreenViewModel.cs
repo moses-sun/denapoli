@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
@@ -50,7 +53,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                       Cancel();
                                                   });
 
-            const int maxCommandDuration = 60000;
+            const int maxCommandDuration = 60000*5;
             var timer = new Timer { Interval = maxCommandDuration };
             timer.Elapsed += (sender, args) =>
                                  {
@@ -379,7 +382,49 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void UpdateProductsList()
        {
            Products.Clear();
-           DataProvider.GetFamilyProducts(SelectedFamily).Where(p => p.IsActif && p.IsApp).ForEach(item => Products.Add(item));
+            var row = 0;
+            var col = 0;
+           DataProvider.GetFamilyProducts(SelectedFamily).Where(p => p.IsActif && p.IsApp).ForEach(item =>
+                                                                                                       {
+                                                                                                           item.Column =col;
+                                                                                                           item.Row =row;
+                                                                                                           Products.Add(item);
+                                                                                                           col = (col+1)%2;
+                                                                                                           row = col==0 ? row+1 : row;
+                                                                                                       });
        }
     }
+
+
+    public class GridF : UniformGrid
+    {
+        protected override Size MeasureOverride(Size constraint)
+        {
+            var b = base.MeasureOverride(constraint);
+            var t = this.ActualWidth;
+            foreach (ListBoxItem child in this.Children)
+            {
+                var g = child.ActualWidth;
+                var g2 = child.Width;
+                child.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                //child.Width = child.ActualHeight;
+            }
+            return b;
+        }
+
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            var b = base.ArrangeOverride(arrangeSize);
+            var t = this.ActualWidth;
+            foreach (ListBoxItem child in this.Children)
+            {
+                var g = child.ActualWidth;
+                var g2 = child.Width;
+                //child.Width = child.ActualHeight;
+                child.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            }
+            return b;
+        }
+    }
+
 }
