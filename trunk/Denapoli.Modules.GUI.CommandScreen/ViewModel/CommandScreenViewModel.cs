@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Timers;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -16,6 +16,7 @@ using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 using Microsoft.Practices.Prism.Events;
 using Menu = Denapoli.Modules.Data.Entities.Menu;
+using Timer = System.Timers.Timer;
 
 namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
 {
@@ -41,6 +42,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             CustomerViewModel = new CustomerViewModel {Address = Borne.Adresse,IsVisible = false, LocalizationService = localizationService};
             CustomerViewModel.PropertyChanged += CustommerViewHandler;
             PaymentService.FinishEvent += PaiementViewHandler;
+            PaymentService.PropertyChanged += PaymentServiceOnPropertyChanged;
             PaiementView = new PaiementViewModel {IsVisible = false, LocalizationService = localizationService};
             ShowCustomerCommand = new ActionCommand(() =>
                                                         {
@@ -70,6 +72,11 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Total = 0.0f;
         }
 
+        private void PaymentServiceOnPropertyChanged(object o, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+           PaiementView.ScreenMessage = PaymentService.Message;
+        }
+
         private void UpdateFamilles()
         {
             Families.Clear();
@@ -79,6 +86,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         public void Cancel()
         {
             PaymentService.FinishEvent -= PaiementViewHandler;
+            PaymentService.PropertyChanged -= PaymentServiceOnPropertyChanged;
         }
 
         private void PaiementViewHandler(object sender, PropertyChangedEventArgs e)
@@ -87,12 +95,25 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             PaymentService.FinishEvent -= PaiementViewHandler;
             PaiementView.ScreenMessage = PaymentService.Message;
             PaiementView.IsSuccesfull = PaymentService.State;
-            if(PaiementView.IsSuccesfull)
+            if (!PaiementView.IsSuccesfull)
             {
-                FinalizeOrder();
-                PaiementView.ScreenMessage = "Votre commande sera livrée dans 30 minutes\n au revoir";
+                var total = 0f;
+                try
+                {
+                    FinalizeOrder();
+                    total = Total;
+                }
+                catch (Exception) { }
+                if (PaymentService.Enregistrement(total))
+                {
+                    PaiementView.ScreenMessage = "Votre commande sera livrée dans 30 minutes\n Au revoir et à bientot";
+                }
+            }
+            new Thread(() =>
+            {
+                Thread.Sleep(5000);
                 EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
-            } 
+            }).Start();
         }
 
         private bool _finished;
@@ -142,8 +163,10 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                    existingProd.Quantite += prod.Quantite;
                                             }
                                         });
-         new TicketPrinter().Print(DataProvider.AddCommande(command));
+            new TicketPrinter().Print(DataProvider.AddCommande(command));
         }
+
+        private const string Suivre = "Suivez les instructions de paiement sur le petit écran vert";
 
         private void CustommerViewHandler(object sender, PropertyChangedEventArgs e)
         {
@@ -153,7 +176,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 case "Validate":
                     PaiementView.TotalPrice = Total;
                     SelectedView = PaiementView;
-                    PaymentService.Pay(Total);
+                    PaiementView.ScreenMessage = Suivre;
+                    new Thread(()=> PaymentService.DemandeSolvabilite(Total)).Start();
                     break;
                 case "Cancel" :
                     CancelCommand.Execute(null);

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Timers;
 using System.Windows;
 using Denapoli.Modules.Data;
@@ -10,6 +11,7 @@ using Denapoli.Modules.Infrastructure.Events;
 using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 using Microsoft.Practices.Prism.Events;
+using Timer = System.Timers.Timer;
 
 namespace Denapoli.Modules.GUI.MainScreen.ViewModel
 {
@@ -20,15 +22,17 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
         public ILocalizationService LocalizationService { get; set; }
         public IDataProvider DataProvider { get; set; }
         public ISettingsService SettingsService { get; set; }
+        public IPaymentService PaymentService { get; set; }
         private WellcomeAbstractScreenViewModel _wellcomeAbstractScreenViewModel;
 
         [ImportingConstructor]
-        public MainScreenViewModel(IEventAggregator eventAggregator, ILocalizationService localizationService,IDataProvider dataProvider, ISettingsService settingsService)
+        public MainScreenViewModel(IEventAggregator eventAggregator, ILocalizationService localizationService,IDataProvider dataProvider, ISettingsService settingsService, IPaymentService paymentService)
         {
             EventAggregator = eventAggregator;
             LocalizationService = localizationService;
             DataProvider = dataProvider;
             SettingsService = settingsService;
+            PaymentService = paymentService;
             EventAggregator.GetEvent<ScreenChangedEvent>().Subscribe(ScreenChangerEventHandler);
             EventAggregator.GetEvent<EndCommandEvent>().Subscribe(EndCommandEventHandler);
             CommandVisibility = Visibility.Collapsed;
@@ -63,6 +67,7 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
                 {
                     DisabledSwcreenViewModel.Message = "Di Napoli Pizza";
                     SelectedScreen = DisabledSwcreenViewModel;
+                    new Thread(() => PaymentService.LancerTelecollecte()).Start();
                 }
                 else if (!borne.IsOuvert)
                 {

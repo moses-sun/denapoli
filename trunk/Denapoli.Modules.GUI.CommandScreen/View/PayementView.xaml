@@ -4,8 +4,29 @@
   <UserControl.Resources>
   </UserControl.Resources>
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" DataContext="{Binding SelectedView, Mode=TwoWay}">
-        <TextBlock Text="Paiement de :"/>
-        <TextBlock Text="{Binding TotalPrice}"/>
-        <TextBlock Text="{Binding ScreenMessage}"/>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Paiement de :"
+                       FontSize="40"  
+                    FontFamily="fonts/#Arial Narrow Bold" 
+                    Margin="50 50 50 50" 
+                    TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       />
+            <TextBlock Text="{Binding TotalPrice, StringFormat={}{0:c}}"
+                       FontSize="40"  
+                    FontFamily="fonts/#Arial Narrow Bold" 
+                    Margin="50 50 50 50" 
+                    TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       />
+        </StackPanel>
+        
+        <TextBlock Text="{Binding ScreenMessage}"
+                   FontSize="40"  
+                    FontFamily="fonts/#Arial Narrow Bold" 
+                    Margin="50 50 50 50" 
+                    TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   />
     </StackPanel>
 </UserControl>
