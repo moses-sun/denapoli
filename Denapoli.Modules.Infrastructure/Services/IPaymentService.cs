@@ -4,11 +4,18 @@ namespace Denapoli.Modules.Infrastructure.Services
 {
     public interface IPaymentService : INotifyPropertyChanged
     {
-        bool Pay(double price);
+        bool DemandeSolvabilite(double price);
+
+        bool Enregistrement(double price);
+
+        bool LancerTelecollecte();
 
         string Message { get; }
 
         bool State { get; }
+
+        string Ticket { get; set; }
+        string Info { get; set; }
 
         event PropertyChangedEventHandler FinishEvent;
 
