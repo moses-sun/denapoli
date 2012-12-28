@@ -24,7 +24,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private Produit _selectedProduct;
         public Produit Produit
         {
-            get { return _selectedProduct; }
+            get { return _selectedProduct; } 
             set
             {
                 _selectedProduct = value;

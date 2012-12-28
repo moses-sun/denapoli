@@ -18,7 +18,7 @@ namespace Denapoli.Module.Data.Test
         {
             Console.WriteLine(" env");
             const string dbServer = "localhost";
-            var connStr = String.Format("server={0};user id={1}; password={2}; database={3}", dbServer, "root", "", "denapoli");
+            var connStr = String.Format("server={0};user id={1}; password={2}; database={3}", dbServer, "root", "", "momo");
             Console.WriteLine(" instantiation");
             _dto = new DenapoliDTO(new MySqlConnection(connStr));
         }

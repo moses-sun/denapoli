@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Denapoli.Modules.Data.Entities
 {
-    [Table(Name="denapoli.adresse")]
+    [Table(Name="adresse")]
     public sealed class Adresse : INotifyPropertyChanging, INotifyPropertyChanged
     {
         private string _numChAmBrE;
