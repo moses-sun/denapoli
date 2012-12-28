@@ -6,7 +6,7 @@ using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
 {
-    [Table(Name="denapoli.borne")]
+    [Table(Name="borne")]
     public sealed class Borne : INotifyPropertyChanging, INotifyPropertyChanged
     {
 		

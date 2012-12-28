@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Denapoli.Modules.Data.Entities
 {
-    [Table(Name = "denapoli.langue")]
+    [Table(Name = "langue")]
     public class Langue : INotifyPropertyChanging, INotifyPropertyChanged
     {
 

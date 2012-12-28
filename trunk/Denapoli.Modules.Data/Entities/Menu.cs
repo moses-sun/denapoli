@@ -5,7 +5,7 @@ using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
 {
-    [Table(Name="denapoli.menu")]
+    [Table(Name="menu")]
     public sealed class Menu : INotifyPropertyChanging, INotifyPropertyChanged
     {
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");
@@ -210,7 +210,7 @@ namespace Denapoli.Modules.Data.Entities
 
 
 
-    [Table(Name = "denapoli.produits_menu")]
+    [Table(Name = "produits_menu")]
     public sealed class ProduitsMenu : INotifyPropertyChanging, INotifyPropertyChanged
     {
         private static readonly PropertyChangingEventArgs EmptyChangingEventArgs = new PropertyChangingEventArgs("");

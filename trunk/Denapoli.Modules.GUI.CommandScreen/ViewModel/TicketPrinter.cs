@@ -37,7 +37,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                          y += lineHeight;
                                          nbArticles += produit.Quantite;
                                      }
-                                     foreach (var menu in commande.Menus)
+                                     foreach (var menu in commande.Menus) 
                                      {
                                          e.Graphics.DrawString("" + String.Format("{0,2}", menu.Quantite), font, Brushes.Black, xQuantite, y);
                                          e.Graphics.DrawString(menu.Produit.Nom.ToUpper(), font, Brushes.Black, xProduit, y);

@@ -5,7 +5,7 @@ using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
 {
-    [Table(Name="denapoli.client")]
+    [Table(Name="client")]
     public sealed class Client : INotifyPropertyChanging, INotifyPropertyChanged
     {
 		

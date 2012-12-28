@@ -4,7 +4,7 @@ using DbLinq.Data.Linq;
 
 namespace Denapoli.Modules.Data.Entities
 {
-    [Table(Name = "denapoli.livreur")]
+    [Table(Name = "livreur")]
     public class Livreur : System.ComponentModel.INotifyPropertyChanging, System.ComponentModel.INotifyPropertyChanged
     {
 
