@@ -9,7 +9,7 @@ using Microsoft.Practices.Prism.Events;
 namespace Denapoli
 {
     [Export]
-    public class ShellPresenter : NotifyPropertyChanged
+    public class ShellPresenter : NotifyPropertyChanged 
     {
         public ILocalizationService LocalizationService { get; set; }
 
