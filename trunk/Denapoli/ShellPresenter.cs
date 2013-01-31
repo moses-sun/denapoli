@@ -12,7 +12,7 @@ namespace Denapoli
     public class ShellPresenter : NotifyPropertyChanged 
     {
         public ILocalizationService LocalizationService { get; set; }
-
+               
         [ImportingConstructor]
         public ShellPresenter(ILocalizationService localizationService, IEventAggregator eventAggregator, ISettingsService settingsService)
         {
