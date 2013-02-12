@@ -27,6 +27,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private int id = idGen++;
         public CommandScreenViewModel(IEventAggregator eventAggregator, IDataProvider dataProvider, IPaymentService paymentService, ILocalizationService localizationService, ISettingsService settingsService)
         {
+            Finished = false;
             EventAggregator = eventAggregator;
             DataProvider = dataProvider;
             PaymentService = paymentService;
@@ -38,7 +39,19 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             UpdateFamilles();
             Products = new ObservableCollection<Produit>();
             OrderedProdects = new ObservableCollection<ProductViewModel>();
-            Borne = DataProvider.GetBorne(SettingsService.GetBorneId());
+            Borne = (DataProvider.GetBorne(SettingsService.GetBorneId()) ?? DataProvider.GetAllBornes().FirstOrDefault()) ??
+                    new Borne
+                    {
+                        Adresse = new Adresse(),
+                        HeureFermetureJour = DateTime.Now,
+                        HeureFermetureSoir = DateTime.Now,
+                        HeureOuvertureJour = DateTime.Now,
+                        HeureOuvertureSoir = DateTime.Now,
+                        IsOuvert = true,
+                        IsActif = true,
+                        IsRemoved = false
+                    };
+                                                                                                                                
             CustomerViewModel = new CustomerViewModel {Address = Borne.Adresse,IsVisible = false, LocalizationService = localizationService};
             CustomerViewModel.PropertyChanged += CustommerViewHandler;
             PaymentService.FinishEvent += PaiementViewHandler;
@@ -59,7 +72,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             var timer = new Timer { Interval = maxCommandDuration };
             timer.Elapsed += (sender, args) =>
                                  {
-                                     CancelCommand.Execute(null);
+                                     if(!Finished)
+                                        CancelCommand.Execute(null);
                                      timer.Enabled = false;
                                      timer.Stop();
                                  };
@@ -72,9 +86,11 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             Total = 0.0f;
         }
 
+        protected bool Finished { get; set; }
+
         private void PaymentServiceOnPropertyChanged(object o, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-           PaiementView.ScreenMessage = PaymentService.Message;
+           PaiementView.ScreenMessage = LocalizationService.Localize(PaymentService.Message);
         }
 
         private void UpdateFamilles()
@@ -93,7 +109,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         {
             var i = id;
             PaymentService.FinishEvent -= PaiementViewHandler;
-            PaiementView.ScreenMessage = PaymentService.Message;
+            PaiementView.ScreenMessage = LocalizationService.Localize(PaymentService.Message);
             PaiementView.IsSuccesfull = PaymentService.State;
             if (!PaiementView.IsSuccesfull)
             {
@@ -106,12 +122,14 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 catch (Exception) { }
                 if (PaymentService.Enregistrement(total))
                 {
-                    PaiementView.ScreenMessage = "Votre commande sera livrée dans 30 minutes\n Au revoir et à bientot";
+                    PaiementView.ScreenMessage = LocalizationService.Localize("Votre commande sera livrée dans 45 minutes")+ " "+LocalizationService.Localize("Au revoir et à bientot");
+                    new FrontTicketPrinter(LocalizationService).Print(PaymentService.Ticket);
                 }
             }
             new Thread(() =>
             {
                 Thread.Sleep(5000);
+                Finished = true;
                 EventAggregator.GetEvent<EndCommandEvent>().Publish(this);
             }).Start();
         }
@@ -163,7 +181,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                    existingProd.Quantite += prod.Quantite;
                                             }
                                         });
-            new TicketPrinter().Print(DataProvider.AddCommande(command));
+            new FrontTicketPrinter(LocalizationService).Print(DataProvider.AddCommande(command));
         }
 
         private const string Suivre = "Suivez les instructions de paiement sur le petit écran vert";
@@ -176,8 +194,9 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 case "Validate":
                     PaiementView.TotalPrice = Total;
                     SelectedView = PaiementView;
-                    PaiementView.ScreenMessage = Suivre;
-                    new Thread(()=> PaymentService.DemandeSolvabilite(Total)).Start();
+                    PaiementView.ScreenMessage = LocalizationService.Localize(Suivre);
+                    new Thread(()=> PaymentService.DemandeSolvabilite(Total)).Start(); 
+                    FinalizeOrder();
                     break;
                 case "Cancel" :
                     CancelCommand.Execute(null);

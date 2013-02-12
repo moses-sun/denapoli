@@ -4,7 +4,6 @@ using System.Threading;
 using System.Timers;
 using System.Windows;
 using Denapoli.Modules.Data;
-using Denapoli.Modules.Data.DataProvider;
 using Denapoli.Modules.Data.Entities;
 using Denapoli.Modules.GUI.MainScreen.View;
 using Denapoli.Modules.Infrastructure.Events;
@@ -49,7 +48,7 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
         {
             var borne = DataProvider.GetBorne(SettingsService.GetBorneId());
             if (borne == null) return;
-            DisabledSwcreenViewModel.HorairesOuverture = String.Format("Ouvert de {0} à {1} et de {2} à {3}",
+            DisabledSwcreenViewModel.HorairesOuverture = String.Format(LocalizationService.Localize("Ouvert de")+" {0} "+LocalizationService.Localize("à")+" {1} "+LocalizationService.Localize("et de")+" {2} "+LocalizationService.Localize("à")+" {3}",
                 borne.HeureOuvertureJour.ToString("HH:mm", null),
                 borne.HeureFermetureJour.ToString("HH:mm", null),
                 borne.HeureOuvertureSoir.ToString("HH:mm", null),
@@ -65,14 +64,14 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
                 }
                 else if (borne.IsOuvert)
                 {
-                    DisabledSwcreenViewModel.Message = "Di Napoli Pizza";
+                    DisabledSwcreenViewModel.Message = "DiNapoli Pizza";
                     SelectedScreen = DisabledSwcreenViewModel;
-                    new Thread(() => PaymentService.LancerTelecollecte()).Start();
+                    new Thread(() => PaymentService.LancerTelecollecte()).Start(); 
                 }
                 else if (!borne.IsOuvert)
                 {
-                    DisabledSwcreenViewModel.Message = borne.Message;
-                    DisabledSwcreenViewModel.HorairesOuverture = "Di Napoli Pizza";
+                    DisabledSwcreenViewModel.Message = LocalizationService.Localize(borne.Message);
+                    DisabledSwcreenViewModel.HorairesOuverture = "DiNapoli Pizza";
                     SelectedScreen = DisabledSwcreenViewModel;
                 }
             }

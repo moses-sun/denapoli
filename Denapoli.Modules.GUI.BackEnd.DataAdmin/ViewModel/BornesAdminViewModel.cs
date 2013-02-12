@@ -121,7 +121,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Bornes.CollectionChanged -= OnBorneschanged;
             Bornes.Clear();
             var bornes = DataProvider.GetAllBornes();
-            bornes.ForEach(item => Bornes.Add(new BorneVm(item, DataProvider)));
+            bornes.ForEach(item =>
+                               {
+                                   Bornes.Add(new BorneVm(item, DataProvider));
+                               });
             SelectedBorne = Bornes.FirstOrDefault(item => item.Borne.IDBorn == old);
             SelectedBorne = SelectedBorne ?? Bornes.FirstOrDefault();
             Bornes.CollectionChanged += OnBorneschanged;

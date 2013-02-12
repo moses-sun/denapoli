@@ -342,7 +342,7 @@ namespace Denapoli.Module.Data.Test
         public void PrintTest()
         {
             var commande = _dto.Commande.FirstOrDefault(item => item.Num == 87);
-            var printer = new TicketPrinter();
+            var printer = new BackTicketPrinter();
             printer.Print(commande);
         }
     }

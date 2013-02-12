@@ -28,6 +28,28 @@ namespace Denapoli.Modules.Data.Entities
             _proDuiTcOmposition = new EntitySet<ProduitComposition>(ProDuiTCompositionAttach, ProDuiTCompositionDetach);
             _produits = new EntitySet<Produit>(ProDuiTAttach, ProDuiTDetach);
         }
+
+        private sbyte _isDeleted;
+        [Column(Storage = "_isDeleted", Name = "IS_DELETED", DbType = "tinyint(1)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public sbyte IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if ((_isDeleted == value)) return;
+                SendPropertyChanging();
+                _isDeleted = value;
+                SendPropertyChanged("IsDeleted");
+            }
+        }
+
+        public bool IsRemoved
+        {
+            get { return IsDeleted == 1; }
+            set { IsDeleted = (sbyte)(value ? 1 : 0); }
+        }
+
 		
         [Column(Storage="_idfAMil", Name="ID_FAMIL", DbType="int", IsPrimaryKey=true, IsDbGenerated=true, AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]

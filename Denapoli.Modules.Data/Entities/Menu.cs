@@ -16,12 +16,15 @@ namespace Denapoli.Modules.Data.Entities
         private EntitySet<ProduitsMenu> _prodUiTsMenu;
         private EntityRef<Commande> _commandE;
         private EntityRef<Produit> _proDuiT;
-		
+
         public Menu()
         {
             _prodUiTsMenu = new EntitySet<ProduitsMenu>(ProdUItsMenuAttach, ProdUItsMenuDetach);
         }
-		
+
+
+
+
         [Column(Storage="_idmEnu", Name="ID_MENU", DbType="int", IsPrimaryKey=true, IsDbGenerated=true, AutoSync=AutoSync.Never, CanBeNull=false)]
         [DebuggerNonUserCode]
         public int IDMenu

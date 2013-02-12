@@ -218,7 +218,29 @@ namespace Denapoli.Modules.Data.Entities
                 }
             }
         }
-		
+
+        private sbyte _isDeleted;
+        [Column(Storage = "_isDeleted", Name = "IS_DELETED", DbType = "tinyint(1)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public sbyte IsDeleted
+        {
+            get{return _isDeleted;}
+            set
+            {
+                if ((_isDeleted == value)) return;
+                SendPropertyChanging();
+                _isDeleted = value;
+                SendPropertyChanged("IsDeleted");
+            }
+        }
+
+        public bool IsRemoved
+        {
+            get { return IsDeleted == 1; }
+            set { IsDeleted = (sbyte)(value ? 1 : 0); }
+        }
+
+
         #region Children
         [Association(Storage="_commandE", OtherKey="IDBorn", ThisKey="IDBorn", Name="borne_qui_commande")]
         [DebuggerNonUserCode]

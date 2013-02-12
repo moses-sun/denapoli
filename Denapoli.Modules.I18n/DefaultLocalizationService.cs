@@ -35,12 +35,13 @@ namespace Denapoli.Modules.I18n
 
         public void Reset()
         {
+            //SendDocs();
             _loadedDicts.Clear();
             var list = new List<Langage>();
             DataProvider.GetAvailableLanguages().ForEach(item => list.Add(new Langage { Code = item.Code, Name = item.NoM }));
             AvailableLangages = list;
+            Dico.Notify();
         }
-
 
         public IEnumerable<Langage> AvailableLangages { get; private set; }
 
@@ -52,19 +53,34 @@ namespace Denapoli.Modules.I18n
             Load(langage);
             var dict = _loadedDicts[langage.Name];
             if (string.IsNullOrEmpty(key)) return ;
-
-            dict[key] = traduction;
+            dict[key] = traduction; 
         }
 
         public void SendDocs()
         {
             foreach (var langage in AvailableLangages)
             {
-                var fileName = langage.Code + ".txt";
-                DumpFile(_loadedDicts[langage.Name], fileName);
-                var client = new WebClient();
-                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", "POST", fileName);
-                File.Delete(fileName);
+                if (_loadedDicts.ContainsKey(langage.Name))
+                {
+                    var fileName = langage.Code + ".txt";
+                    DumpFile(_loadedDicts[langage.Name], fileName);
+                    var client = new WebClient();
+                    client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", "POST", fileName);
+                    File.Delete(fileName);
+                }
+                else
+                {
+                    Load(langage);
+                    foreach (string key in Keys)
+                    {
+                        _loadedDicts[langage.Name][key] = Localize(key, langage);
+                    }
+                    var fileName = langage.Code + ".txt";
+                    DumpFile(_loadedDicts[langage.Name], fileName);
+                    var client = new WebClient();
+                    client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", "POST", fileName);
+                    File.Delete(fileName);
+                }
             }
         }
 
@@ -82,6 +98,7 @@ namespace Denapoli.Modules.I18n
             get { return _currentLangage; }
             set
             {
+                if (value == null) return;
                 _currentLangage = value;
                 Load(_currentLangage);
                 _currentdict = _loadedDicts[_currentLangage.Name];
@@ -100,13 +117,13 @@ namespace Denapoli.Modules.I18n
         public string Localize(string key)
         {
             if (string.IsNullOrEmpty(key)) return "";
-            var r = _currentdict.ContainsKey(key) ? _currentdict[key] : key;// _currentLangage.Code;
+            var r = _currentdict.ContainsKey(key) ? _currentdict[key] : "";// _currentLangage.Code;
             if (string.IsNullOrEmpty(r))
             {
                 _currentdict[key] = "";
                 // Console.WriteLine("--------------------to traduce----------- :" + _currentLangage.Code + " : " + key);
             }
-            return r;
+            return string.IsNullOrEmpty(r) ? key : r;
         }
 
         public string Localize(string key, Langage langage)
@@ -114,10 +131,13 @@ namespace Denapoli.Modules.I18n
             Load(langage);
             var dict = _loadedDicts[langage.Name];
             if (string.IsNullOrEmpty(key)) return "";
-            var r = dict.ContainsKey(key) ? dict[key] : key;// langage.Code;
+            var r = dict.ContainsKey(key) ? dict[key] : "";// langage.Code;
             if (string.IsNullOrEmpty(r))
+            {
+                dict[key] = "";
                 Console.WriteLine("--------------------to traduce----------- :" + langage.Code + " : " + key);
-            return r;
+            }
+            return string.IsNullOrEmpty(r) ? key : r;
         }
 
         private void Load(Langage langage)
@@ -151,7 +171,10 @@ namespace Denapoli.Modules.I18n
             while (!responseStream.EndOfStream)
             {
                 var line = responseStream.ReadLine().Split(new[] { '=' });
-                dico[line[0]] = line[1];
+                if (line.Length > 1)
+                    dico[line[0]] = line[1];
+                else if (line.Length > 0)
+                    dico[line[0]] = ""; 
             }
             return dico;
         }

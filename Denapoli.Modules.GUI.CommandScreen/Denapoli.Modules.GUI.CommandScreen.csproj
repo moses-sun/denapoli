@@ -39,6 +39,9 @@
     <Reference Include="Microsoft.Practices.Prism.MefExtensions">
       <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="NiiPrinterCLib">
+      <HintPath>..\dll\printer\NiiPrinterCLib.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -82,7 +85,7 @@
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PaiementViewModel.cs" />
     <Compile Include="ViewModel\ProductViewModel.cs" />
-    <Compile Include="ViewModel\TicketPrinter.cs" />
+    <Compile Include="ViewModel\FrontTicketPrinter.cs" />
     <Compile Include="View\CommandScreenView.xaml.cs">
       <DependentUpon>CommandScreenView.xaml</DependentUpon>
     </Compile>

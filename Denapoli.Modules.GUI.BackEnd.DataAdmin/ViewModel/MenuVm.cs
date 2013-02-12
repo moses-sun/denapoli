@@ -72,7 +72,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             IsWeb = Menu.IsWEB;
             IsActif = Menu.IsActif;
             ImageURL = Menu.ImageURL;
-            FamiliesNames = new ObservableCollection<string>(DataProvider.GetAvailableFamilies().Select(item=>item.Nom));
+            ImageLocalURL = Menu.ImageURL;
+            FamiliesNames = new ObservableCollection<string>(DataProvider.GetAvailableFamilies().Where(item=>item.Nom.ToLower()!="menus").Select(item=>item.Nom));
             Traductions.Clear();
             foreach (var language in LocalizationService.AvailableLangages)
             {
@@ -128,20 +129,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-        private string _oldImageURL;
-        private string _imageURL;
-        public string ImageURL
-        {
-            get { return _imageURL; }
-            set
-            {
-                _imageURL = value;
-                NotifyChanged("ImageURL");
-                IsImageLoaded = Visibility.Visible;
-                IsPodImage = Visibility.Collapsed;
-            }
-        }
-
+       
         private float _oldTva;
         private float _tva;
         public float Tva
@@ -191,6 +179,25 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         }
 
 
+       
+        public ObservableCollection<string> FamiliesNames { get; set; }
+
+        public ActionCommand BrowseImageCommand { get; set; }
+
+        private string _oldImageURL;
+        private string _imageURL;
+        public string ImageURL
+        {
+            get { return _imageURL; }
+            set
+            {
+                _imageURL = value;
+                NotifyChanged("ImageURL");
+
+            }
+        }
+
+
         private Visibility _isImageLoaded;
         public Visibility IsImageLoaded
         {
@@ -203,6 +210,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         }
 
         private Visibility _isPodImage;
+        private string _imageLocalURL;
+
         public Visibility IsPodImage
         {
             get { return _isPodImage; }
@@ -213,11 +222,6 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-        public ObservableCollection<string> FamiliesNames { get; set; }
-
-        public ActionCommand BrowseImageCommand { get; set; }
-
-        private string _imageLocalURL;
         public string ImageLocalURL
         {
             get
@@ -231,10 +235,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             }
         }
 
-
         private void BrowseImage()
         {
-            var chooser = new OpenFileDialog {Filter = "Image files (*.png, *.jpg)|*.png;*.jpg"};
+            var chooser = new OpenFileDialog { Filter = "Image files (*.png, *.jpg)|*.png;*.jpg" };
             var res = chooser.ShowDialog();
             if (DialogResult.Cancel.Equals(res))
                 return;
@@ -327,8 +330,17 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         private void UploadFile()
         {
             if (!File.Exists(ImageLocalURL)) return;
-            var client = new WebClient();
-            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+            try
+            {
+                var client = new WebClient();
+                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+
+            }
+            catch (Exception)
+            {
+                var client = new WebClient();
+                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
+            }
         }
     }
 

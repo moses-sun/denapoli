@@ -1,0 +1,392 @@
+﻿<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NiiPrinterCLib</name>
+    </assembly>
+    <members>
+        <member name="T:NiiPrinterCLib.NIIClassLib">
+            <summary>
+            NII Class library
+            </summary>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiPrint(System.String,System.String,System.Int64,System.Int64@)">
+            <summary>
+            Specified data is transmitted to printer.
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <param name="i_dat">Transmission data(Hexadecimal sequence)</param>
+            <param name="i_size">Number of output characters</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiImagePrint(System.String,System.IntPtr,System.Int32,System.Int32,System.Boolean,System.Int64@)">
+            <summary>
+            Specified device context is transmitted to printer by raster image.
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">Width</param>
+            <param name="i_y">Height</param>
+            <param name="i_file">File unit transmission ture:File unit false:Line unit</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiBitImagePrint(System.String,System.IntPtr,System.Int32,System.Int32,System.Int64@)">
+            <summary>
+            Specified device context is transmitted to printer by bit image.
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">Width</param>
+            <param name="i_y">Height</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetStatus(System.String,System.Int64@)">
+            <summary>
+            The storage status in specified printer is returned.
+            <para>*Returning value is explained in the <<ESC v>> command chart in the printer specification.</para>
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <param name="o_file">status</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiStartDoc(System.String,System.Int64@)">
+            <summary>
+            Document will start.
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiEndDoc(System.String)">
+            <summary>
+            Document is terminated.
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiCancelDoc(System.String)">
+            <summary>
+            Document is canceled.
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetInformation(System.String,System.Byte,System.Byte[],System.Int64@)">
+            <summary>
+            Get the data in which the target Class ID is saved.
+            <para>*You need to send the demand for target data from the original application to the printer in advance.</para>
+            <para>　(Extended status, Print competion information may not needed in some models)</para>
+            <para>*Returning value is explained in the <<ESC v>>command chart in the printer specification.</para>
+            </summary>
+            <param name="i_prt">Model name of the printer</param>
+            <param name="i_id">Class ID</param>
+            <param name="o_dat">Area for extended data storage</param>
+            <param name="o_time">Update flag(Elapsed time after the system starts)</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiPrint(System.String,System.Int64,System.Int64@)">
+            <summary>
+            Specified data is transmitted to printer.
+            </summary>
+            <param name="i_dat">Transmission data(Hexadecimal sequence)</param>
+            <param name="i_size">Number of output characters</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiImagePrint(System.IntPtr,System.Int32,System.Int32,System.Boolean,System.Int64@)">
+            <summary>
+            Specified device context is transmitted to printer by raster image.
+            </summary>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">Width</param>
+            <param name="i_y">Height</param>
+            <param name="i_file">File unit transmission ture:File unit false:Line unit</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiBitImagePrint(System.IntPtr,System.Int32,System.Int32,System.Int64@)">
+            <summary>
+            Specified device context is transmitted to printer by bit image.
+            </summary>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">Width</param>
+            <param name="i_y">Height</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetStatus(System.Int64@)">
+            <summary>
+            The storage status in specified printer is returned.
+            <para>*Returning value is explained in the <<ESC v>> command chart in the printer specification.</para>
+            </summary>
+            <param name="o_file">status</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiStartDoc(System.Int64@)">
+            <summary>
+            Document will start.
+            </summary>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiEndDoc">
+            <summary>
+            Document is terminated.
+            </summary>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiCancelDoc">
+            <summary>
+            Document is canceled.
+            </summary>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para>
+            <para>alarm:(+Value)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetInformation(System.Byte,System.Byte[],System.Int64@)">
+             <summary>
+            Get the data in which the target Class ID is saved.
+            <para>*You need to send the demand for target data from the original application to the printer in advance.</para>
+            <para>　(Extended status, Print competion information may not needed in some models)</para>
+            <para>*Returning value is explained in the <<ESC v>> command chart in the printer specification.</para>
+            </summary>
+            <param name="i_id">Class ID</param>
+            <param name="o_dat">Area for extended data storage</param>
+            <param name="o_time">Update flag(Elapsed time after the system starts)</param>
+            <returns>Error:(-Value)
+            <para>normal end:(0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetJobEndInf">
+            <summary>
+            Extended information acquisition(Class ID:19)
+            </summary>
+            <returns>Error:(0)
+            <para>normal end:(JOB ID)</para>
+            </returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetJobEndInf(System.Int64@)">
+            <summary>
+            Extended information acquisition(Class ID:19)
+            <param name="o_st">Shut down status</param>
+            </summary>
+            <returns>Error:(0)
+            <para>normal end:(JOB ID)</para>
+            </returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiGetJobEndInf(System.Int64@,System.Int64@)">
+            <summary>
+            Extended information acquisition(Class ID:19)
+            <param name="o_st">Shut down status</param>
+            <param name="o_time">Update flag(Elapsed time after the system starts)</param>
+            </summary>
+            <returns>Error:(0)
+            <para>normal end:(JOB ID)</para>
+            </returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiDPrint(System.String,System.Byte[],System.Int64,System.Int64@)">
+            <summary>
+            Output the data to the printer (port).
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_dat">Output data (hexadecimal string)</param>
+            <param name="i_size">Number of output character</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiDPrint(System.Byte[],System.Int64,System.Int64@)">
+            <summary>
+            Output the data to the printer (port).
+            </summary>
+            <param name="i_dat">Output data (hexadecimal string)</param>
+            <param name="i_size">Number of output character</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiResetPrinter(System.String)">
+            <summary>
+            Reset the printer.
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiResetPrinter">
+            <summary>
+            Reset the printer.
+            </summary>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiImagePrintEx(System.String,System.IntPtr,System.Int32,System.Int32,System.Byte,System.Int64@)">
+            <summary>
+            Send the device context to the printer as a raster image.
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">Width</param>
+            <param name="i_y">Height</param>
+            <param name="i_file">Output by file 2: gradation by file 1: by file 0: by line</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiImagePrintEx(System.IntPtr,System.Int32,System.Int32,System.Byte,System.Int64@)">
+            <summary>
+            Send the device context to the printer as a raster image.
+            </summary>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">Width</param>
+            <param name="i_y">Height</param>
+            <param name="i_file">Output by file 2: gradation by file 1: by file 0: by line</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiBarcode(System.String,System.String,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Draw barcode to the context device with the barcode font.
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_fname">Font name</param>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">X</param>
+            <param name="i_y">Y</param>
+            <param name="i_width">Width</param>
+            <param name="i_height">Height</param>    
+            <param name="i_dat">Barcode data</param>
+            <param name="i_size">Data size</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiBarcode(System.String,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32,System.Byte[],System.Int32)">
+            <summary>
+            Draw barcode to the context device with the barcode font.
+            </summary>
+            <param name="i_fname">Font name</param>
+            <param name="i_bmp">Device context handle</param>
+            <param name="i_x">X</param>
+            <param name="i_y">Y</param>
+            <param name="i_width">Width</param>
+            <param name="i_height">Height</param>    
+            <param name="i_dat">Barcode data</param>
+            <param name="i_size">Data size</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiImagePrintF(System.String,System.String,System.Byte,System.Int64@)">
+            <summary>
+            Output the BMP file to the printer as a raster bit image.
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_bmp">BMP file name</param>
+            <param name="i_file">Output format</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiImagePrintF(System.String,System.Byte,System.Int64@)">
+            <summary>
+            Send the BMP file to the printer as a raster bit image.
+            </summary>
+            <param name="i_bmp">BMP file name</param>
+            <param name="i_file">Output format</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiBitImagePrintF(System.String,System.String,System.Int64@)">
+            <summary>
+            Send the BMP file to the printer as a bit image.
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_bmp">BMP file name</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiBitImagePrintF(System.String,System.Int64@)">
+            <summary>
+            Send the BMP file to the printer as a bit image.
+            </summary>
+            <param name="i_bmp">BMP file name</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiFWDL(System.String,System.String,System.Byte@,System.Int16@,System.Int64@)">
+            <summary>
+            Send the FWF file to the printer.
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_file">FWF file name</param>
+            <param name="o_flg">Enable/disable checking flag</param>
+            <param name="o_chksum">Checksum</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiFWDL(System.String,System.Byte@,System.Int16@,System.Int64@)">
+            <summary>
+            Send the FWF file to the printer.
+            </summary>
+            <param name="i_file">FWF file name</param>
+            <param name="o_flg">Enable/disable checking flag</param>
+            <param name="o_chksum">Checksum</param>
+            <param name="o_jobid">Print job ID</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiFWCHK(System.String,System.Int16)">
+            <summary>
+            Get checksum of the printer and compare it with the selected checksum. 
+            </summary>
+            <param name="i_prt">Output printer name</param>
+            <param name="i_chksum">Checksum</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="M:NiiPrinterCLib.NIIClassLib.NiiFWCHK(System.Int16)">
+            <summary>
+            Get checksum of the printer and compare it with the selected checksum.
+            </summary>
+            <param name="i_chksum">Checksum</param>
+            <returns>Error: (-Value)
+            <para>Normal end: (0)</para></returns>
+        </member>
+        <member name="P:NiiPrinterCLib.NIIClassLib.PrinterName">
+            <summary>
+            NII Printer Driver Name
+            </summary>
+        </member>
+    </members>
+</doc>

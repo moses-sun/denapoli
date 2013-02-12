@@ -30,7 +30,10 @@ namespace Denapoli.Modules.GUI.MainScreen
             OrderCommand = new ActionCommand(()=>EventAggregator.GetEvent<NewCommandEvent>().Publish(null));
 
             var timer = new Timer { Interval = 6000 };
-            timer.Elapsed += (sender, args) => NotifyChanged("AvailableLangages");
+            timer.Elapsed += (sender, args) =>
+                                 {
+                                     NotifyChanged("AvailableLangages");
+                                 };
             timer.Enabled = true;
             timer.Start();
         }

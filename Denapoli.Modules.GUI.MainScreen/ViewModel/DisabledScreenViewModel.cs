@@ -1,4 +1,5 @@
 using System.ComponentModel.Composition;
+using Denapoli.Modules.Infrastructure.Services;
 using Denapoli.Modules.Infrastructure.ViewModel;
 
 namespace Denapoli.Modules.GUI.MainScreen.ViewModel
@@ -6,13 +7,15 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
     [Export]
     public class DisabledSwcreenViewModel : AbstractScreenViewModel
     {
+        public ILocalizationService LocalizationService { get; set; }
 
         [ImportingConstructor]
-        public DisabledSwcreenViewModel()
+        public DisabledSwcreenViewModel(ILocalizationService localizationService)
         {
+            LocalizationService = localizationService;
             IsVisible = false;
-            ScreenName = "Borne fermée";
-            Message = "Borne fermée";
+            ScreenName = LocalizationService.Localize("Borne fermée");
+            Message = LocalizationService.Localize("Borne fermée");
             HorairesOuverture = "00:00";
         }
 

@@ -118,7 +118,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 
         private void Print()
         {
-            var printer = new TicketPrinter();
+            var printer = new BackTicketPrinter();
             printer.Print(SelectedCommand);
         }
 

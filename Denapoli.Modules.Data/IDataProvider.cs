@@ -5,7 +5,6 @@ namespace Denapoli.Modules.Data
 {
     public interface IDataProvider
     {
-        void Connect();
         List<Famille> GetAvailableFamilies();
         List<Produit> GetAllProducts();
         List<Produit> GetFamilyProducts(Famille famille);
