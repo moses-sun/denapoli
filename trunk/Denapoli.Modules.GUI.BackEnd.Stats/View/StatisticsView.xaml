@@ -108,7 +108,7 @@
           ItemsSource="{Binding Orders}"
           AutoGenerateColumns="False"
           CanUserReorderColumns="False"
-          IsReadOnly="True"
+          
           AlternationCount="2"
           ShowColumnFooters="True"
 				  ShowGroupFooters="True"
@@ -125,12 +125,12 @@
           <telerik:SortDescriptor Member="Date" SortDirection="Ascending" />
         </telerik:RadGridView.SortDescriptors>
         <telerik:RadGridView.Columns>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" Width="*">
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Num}" Header="N°" TextAlignment="Center" Width="*">
             <telerik:GridViewDataColumn.AggregateFunctions>
               <telerik:CountFunction Caption="Nombre : " />
             </telerik:GridViewDataColumn.AggregateFunctions>
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Jour}" Header="Jour" TextAlignment="Center"
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Jour}" Header="Jour" TextAlignment="Center"
                                      Width="*"
                                      DataFormatString="{}{0:dddd dd}">
             <telerik:GridViewDataColumn.GroupHeaderTemplate>
@@ -139,7 +139,7 @@
               </DataTemplate>
             </telerik:GridViewDataColumn.GroupHeaderTemplate>
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Mois}" Header="Mois" TextAlignment="Center"
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Mois}" Header="Mois" TextAlignment="Center"
                                       Width="*"
                                       DataFormatString="{}{0:MMMM}">
             <telerik:GridViewDataColumn.GroupHeaderTemplate>
@@ -148,7 +148,7 @@
               </DataTemplate>
             </telerik:GridViewDataColumn.GroupHeaderTemplate>
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Heure}" Header="Heure" TextAlignment="Center"
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Heure}" Header="Heure" TextAlignment="Center"
                                        Width="*"
                                        DataFormatString="{}{0:HH:mm}">
             <telerik:GridViewDataColumn.GroupHeaderTemplate>
@@ -157,7 +157,7 @@
               </DataTemplate>
             </telerik:GridViewDataColumn.GroupHeaderTemplate>
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Adresse}" Header="Point livraison" TextAlignment="Center"  >
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Adresse}" Header="Point livraison" TextAlignment="Center"  >
             <telerik:GridViewColumn.CellTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
@@ -174,8 +174,8 @@
               <telerik:MaxFunction Caption="A  : " ResultFormatString="{}{0:dd-MMMM HH:mm}" SourceField="Date" />
             </telerik:GridViewDataColumn.AggregateFunctions>
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" Width="*" />
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" Width="*">
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Livreur.PreNoM}" Header="Livreur" TextAlignment="Center" Width="*" />
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Total}" Header="Montant" TextAlignment="Center" DataFormatString="{}{0:C2}" Width="*">
             <telerik:GridViewDataColumn.GroupHeaderTemplate>
               <DataTemplate>
                 <TextBlock Foreground="#FF16ABA9" Text="{Binding Group.Key}" />
@@ -229,7 +229,7 @@
             </telerik:GridViewDataColumn.GroupFooterTemplate>
 
           </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" Width="*">
+          <telerik:GridViewDataColumn  IsReadOnly="True" DataMemberBinding="{Binding Statut}" Header="Statut" TextAlignment="Center" Width="*">
             <telerik:GridViewDataColumn.GroupHeaderTemplate>
               <DataTemplate>
                 <TextBlock Foreground="#FFED1691" Text="{Binding Group.Key}" />
@@ -240,8 +240,8 @@
               <telerik:MaxFunction Caption="Max: " ResultFormatString="{}{0:c}" SourceField="Total" />
             </telerik:GridViewDataColumn.AggregateFunctions>
 
-          </telerik:GridViewDataColumn>
-          <telerik:GridViewDataColumn  TextAlignment="Center" Width="*">
+          </telerik:GridViewDataColumn >
+            <telerik:GridViewDataColumn IsReadOnly="False" TextAlignment="Center" Width="*">
             <telerik:GridViewColumn.CellTemplate>
               <DataTemplate>
                 <telerik:RadButton   Command="telerik:RadGridViewCommands.Delete" CommandParameter="{Binding}" Content="Supprimer"/>

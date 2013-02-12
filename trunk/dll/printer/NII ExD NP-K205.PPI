@@ -1,0 +1,273 @@
+NII Ex Driver Printer Property Information
+Kind = PRT
+Name = NP-K205, NP-K205_K305    
+C_H = 60
+[00010608F704FBF609E2E0E1E0E009050B040A040A]
+*Status
+BIT0 = 1"ﾍﾟｰﾊﾟｰﾆｱｴﾝﾄﾞ:Paper  near end"
+BIT1 = 0"ｶﾊﾞｰｵｰﾌﾟﾝ:Cover Open"
+BIT2 = 0"ﾍﾟｰﾊﾟｰｴﾝﾄﾞ:Paper end"
+BIT3 = 0"ﾍｯﾄﾞ温度異常:Head Temperature Error "
+BIT4 = 0"ｵｰﾄｶｯﾀｰ異常:Auto cutter Error"
+BIT5 = 0":"
+BIT6 = 0"電圧異常:Voltage Abnormal"
+BIT7 = 1"印字開始状態:Printing"
+*Interface
+COM = 0
+LPT = 0
+USB = 1
+TCP = 0
+*Tool
+FWDL = 1
+NVRegist = 1
+SetMem = 1
+SetUSBID = 0
+SetBM = 0
+SetCP = 1
+GetPriterInfo = 1
+*Barcode
+UPC-A = 1
+UPC-E = 1
+EAN13 = 1
+EAN8 = 1
+CODE39 = 1
+ITF = 1
+CODABAR = 1
+CODE128 = 1
+CODE93 = 0
+QR Model2 = 1
+PDF417 = 0
+*DocumentInitialize
+PRT_SPD = 04
+E_DENSITY = 0
+WM = 0
+PRT_S_E_C_1 = XX
+PRT_S_E_C_2 = 02
+PRT_S_E_C_3 = XX
+PRT_S_E_C_4 = 12
+PRT_S_E_C_5 = 21
+PRT_S_E_C_6 = XX
+PRT_S_E_C_7 = 31
+PRT_S_E_C_8 = XX
+*Default_Command
+MARG = 0
+Drawer = 0
+BackFeed = 1
+Cut_Move = 0
+GrayScale = 0
+Compress = 0
+*Cutter
+1B69,"0フルカット:Full Cut",0,":",TEXT,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",
+1B6D,"0パーシャルカット:Partial Cut",0,":",COMBOJ,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",
+*PrtIni
+*DocIni
+1D7E,"1印字濃度:Print Density",1,"濃度:Density",TEXT,"100",":",TEXT2,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",
+1D25,"1分割駆動:Partition",1,"分割:Partition",COMBO,"最適化:Optimization,分割なし:Non_Partition,2分割固定:2_Partition,3分割固定:3_Partition,最適化:Optimization",":",TEXT,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",
+*DocST1
+*DocST2
+*PageST1
+*PageST2
+*PageED1
+*PageED2
+*DocED1
+*DocED2
+*Costom_Command
+1B52,"0国際文字選択:International Character Select",1,"文字セット:Character Set",COMBO,"アメリカ:U.S.A.,フランス:France,ドイツ:Germany,イギリス:U.K.,デンマーク１:DenmarkI,スウェーデン:Sweden,イタリア:Italy,スペイン:Spain,日本:Japan,ノルウェー:Norway,デンマーク２:DenmarkII",":",TEXT,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",
+1B74,"0コード表切替:Code List Select",1,"コード表切替:Language Font",COMBO,"海外向コード表:Oversea Code,国内向コード表:Japanese Code,Code Page858:Code Page858,Code Page1250:Code Page1250,Code Page1251:Code Page1251,Code Page1252:Code Page1252,Code Page1254:Code Page1254,User Code Page:User Code Page",":",TEXT,"",":",TEXT,"",":",TEXT,"",":",TEXT,"",
+1D50,"0ロゴ印刷:Print Logo",1,"パターンNo.:Pattern No.",COMBO,"0:0,1:1,2:2",":",,"",":",,"",":",,"",":",,"",
+*OptCMDLst
+*InitValue
+A4
+0
+1
+0
+0
+0
+0
+0
+100
+0
+0
+25
+100
+0
+0
+0
+0
+0
+25
+100
+0
+0
+0
+0
+0
+25
+100
+0
+0
+0
+0
+0
+25
+100
+0
+0
+0
+0
+
+Y1D7E64Y1D2500
+
+
+
+
+
+
+
+
+1B69,1B6D
+7
+7
+*MEMSWINF
+<?xml version="1.0" encoding="shift_jis"?><model name="NP-K205">
+    <mem_cnt>2</mem_cnt>
+    <ini_inf>2800</ini_inf>
+    <connect_inf>
+        <port name="Serial 8bit  No parity">
+            <sw swno="1" posi="1">0</sw>
+            <sw swno="1" posi="2">0</sw>
+            <sw swno="1" posi="3">0</sw>
+        </port>
+        <port name="Serial 7bit  No parity">
+            <sw swno="1" posi="1">0</sw>
+            <sw swno="1" posi="2">0</sw>
+            <sw swno="1" posi="3">1</sw>
+        </port>
+        <port name="Serial 8bit Odd parity">
+            <sw swno="1" posi="1">0</sw>
+            <sw swno="1" posi="2">1</sw>
+            <sw swno="1" posi="3">0</sw>
+        </port>
+        <port name="Serial 7bit Even parity">
+            <sw swno="1" posi="1">0</sw>
+            <sw swno="1" posi="2">1</sw>
+            <sw swno="1" posi="3">1</sw>
+        </port>
+        <port name="Serial 8bit No parity">
+            <sw swno="1" posi="1">1</sw>
+            <sw swno="1" posi="2">0</sw>
+            <sw swno="1" posi="3">0</sw>
+        </port>
+        <port name="Serial 7bit Odd parity">
+            <sw swno="1" posi="1">1</sw>
+            <sw swno="1" posi="2">0</sw>
+            <sw swno="1" posi="3">1</sw>
+        </port>
+        <port name="Serial 8bit Even parity">
+            <sw swno="1" posi="1">1</sw>
+            <sw swno="1" posi="2">1</sw>
+            <sw swno="1" posi="3">0</sw>
+        </port>
+        <port name="Not Use">
+            <sw swno="1" posi="1">1</sw>
+            <sw swno="1" posi="2">1</sw>
+            <sw swno="1" posi="3">1</sw>
+        </port>
+    </connect_inf>
+    <baud_rate>
+        <speed name="115200">
+            <sw swno="1" posi="4">0</sw>
+            <sw swno="1" posi="5">0</sw>
+            <sw swno="1" posi="6">0</sw>
+        </speed>
+        <speed name="14400">
+            <sw swno="1" posi="4">0</sw>
+            <sw swno="1" posi="5">0</sw>
+            <sw swno="1" posi="6">1</sw>
+        </speed>
+        <speed name="38400">
+            <sw swno="1" posi="4">0</sw>
+            <sw swno="1" posi="5">1</sw>
+            <sw swno="1" posi="6">0</sw>
+        </speed>
+        <speed name="4800">
+            <sw swno="1" posi="4">0</sw>
+            <sw swno="1" posi="5">1</sw>
+            <sw swno="1" posi="6">1</sw>
+        </speed>
+        <speed name="57600">
+            <sw swno="1" posi="4">1</sw>
+            <sw swno="1" posi="5">0</sw>
+            <sw swno="1" posi="6">0</sw>
+        </speed>
+        <speed name="9600">
+            <sw swno="1" posi="4">1</sw>
+            <sw swno="1" posi="5">0</sw>
+            <sw swno="1" posi="6">1</sw>
+        </speed>
+        <speed name="19200">
+            <sw swno="1" posi="4">1</sw>
+            <sw swno="1" posi="5">1</sw>
+            <sw swno="1" posi="6">0</sw>
+        </speed>
+        <speed name="2400">
+            <sw swno="1" posi="4">1</sw>
+            <sw swno="1" posi="5">1</sw>
+            <sw swno="1" posi="6">1</sw>
+        </speed>
+   </baud_rate>
+   <disp_inf>
+        <disp name="通信設定 (Interface setting)">
+            <sw name="ON(ON)" swno="1" posi="1">1</sw>
+            <sw name="OFF(OFF)" swno="1" posi="1">0</sw>
+            <sw name="ON(ON)" swno="1" posi="2">1</sw>
+            <sw name="OFF(OFF)" swno="1" posi="2">0</sw>
+            <sw name="ON(ON)" swno="1" posi="3">1</sw>
+            <sw name="OFF(OFF)" swno="1" posi="3">0</sw>
+        </disp>
+        <disp name="シリアル通信速度 (communications speed)">
+            <sw name="ON(ON)" swno="1" posi="4">1</sw>
+            <sw name="OFF(OFF)" swno="1" posi="4">0</sw>
+            <sw name="ON(ON)" swno="1" posi="5">1</sw>
+            <sw name="OFF(OFF)" swno="1" posi="5">0</sw>
+            <sw name="ON(ON)" swno="1" posi="6">1</sw>
+            <sw name="OFF(OFF)" swno="1" posi="6">0</sw>
+        </disp>
+        <disp name="シリアルフロー制御(Cereal flow control)">
+            <sw name="XON/XOFF(XON/XOFF)" swno="1" posi="7">1</sw>
+            <sw name="RTS/CTS(RTS/CTS)" swno="1" posi="7">0</sw>
+        </disp>
+        <disp name="オートカッター制御(Auto cutter control)">
+            <sw name="無効(Disable)" swno="1" posi="8">1</sw>
+            <sw name="有効(Enable)" swno="1" posi="8">0</sw>
+        </disp>
+        <disp name="日本語漢字コード (Japanese Kanji code)">
+            <sw name="シフトJIS (Shift JIS)" swno="2" posi="1">1</sw>
+            <sw name="JIS(JISl)" swno="2" posi="1">0</sw>
+        </disp>
+        <disp name="予約 (Reservation)">
+            <sw name="設定範囲外 (comes off from the setting)" swno="2" posi="2">1</sw>
+            <sw name="通常 (usual)" swno="2" posi="2">0</sw>
+            <sw name="設定範囲外 (comes off from the setting)" swno="2" posi="3">1</sw>
+            <sw name="通常 (usual)" swno="2" posi="3">0</sw>
+        </disp>
+        <disp name="ﾍﾟｰﾊﾟｰニアエンド(Paper Near End)">
+            <sw name="有効(Enable)" swno="2" posi="4">1</sw>
+            <sw name="無効(Disable)" swno="2" posi="4">0</sw>
+        </disp>
+        <disp name="受信バッファ残サイズ(buffer remainder size)">
+            <sw name="無効(Disable)" swno="2" posi="5">1</sw>
+            <sw name="有効(Enable)" swno="2" posi="5">0</sw>
+        </disp>
+        <disp name="ﾍﾟｰﾊﾟｰﾆｱｴﾝﾄﾞ検出外径値 (Paper Near End Detection Outside Diameter Value)">
+            <sw name="Φ26(26mm)" swno="2" posi="6">1</sw>
+            <sw name="Φ22(22mml)" swno="2" posi="6">0</sw>
+        </disp>
+        <disp name="予約 (Reservation)">
+            <sw name="設定範囲外 (comes off from the setting)" swno="2" posi="7">1</sw>
+            <sw name="通常 (usual)" swno="2" posi="7">0</sw>
+            <sw name="設定範囲外 (comes off from the setting)" swno="2" posi="8">1</sw>
+            <sw name="通常 (usual)" swno="2" posi="8">0</sw>
+        </disp>
+   </disp_inf>
+</model>

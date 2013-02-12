@@ -36,7 +36,7 @@ namespace Denapoli.Modules.GUI.BackEnd.Stats.ViewModel
             ShowStatsCommand = new ActionCommand(Show);
             Orders = new ObservableCollection<Commande>();
             Products = new ObservableCollection<ProductViewModel>();
-            var timer = new Timer { Interval = 6000 };
+            var timer = new Timer { Interval = 6000*2 };
             timer.Elapsed += (sender, args) =>
             {
                 if (View == null) return;

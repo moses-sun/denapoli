@@ -39,6 +39,10 @@
     <Reference Include="Microsoft.Practices.Prism.MefExtensions">
       <HintPath>..\dll\Prism\Desktop\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
+    <Reference Include="NiiPrinterCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dll\printer\NiiPrinterCLib.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -76,7 +80,7 @@
     <Compile Include="OrdersProcessingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\OrdersProcessingViewModel.cs" />
-    <Compile Include="ViewModel\TicketPrinter.cs" />
+    <Compile Include="ViewModel\BackTicketPrinter.cs" />
     <Compile Include="View\OrdersProcessingView.xaml.cs">
       <DependentUpon>OrdersProcessingView.xaml</DependentUpon>
     </Compile>

@@ -13,6 +13,28 @@ namespace Denapoli.Modules.Data.Entities
         private int _idlAng;
         private string _noM;
 
+        private sbyte _isDeleted;
+        [Column(Storage = "_isDeleted", Name = "IS_DELETED", DbType = "tinyint(1)", AutoSync = AutoSync.Never, CanBeNull = false)]
+        [DebuggerNonUserCode]
+        public sbyte IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if ((_isDeleted == value)) return;
+                SendPropertyChanging();
+                _isDeleted = value;
+                SendPropertyChanged("IsDeleted");
+            }
+        }
+
+        public bool IsRemoved
+        {
+            get { return IsDeleted == 1; }
+            set { IsDeleted = (sbyte)(value ? 1 : 0); }
+        }
+
+
         [Column(Storage = "_code", Name = "CODE", DbType = "varchar(5)", AutoSync = AutoSync.Never, CanBeNull = false)]
         [DebuggerNonUserCode]
         public string Code

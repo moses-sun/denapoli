@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
@@ -22,7 +21,6 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static IEventAggregator EventAggregator { get; set; }
         public ICommand ShowDataAdminCommand { get; set; }
         public DataAdminView View { get; set; }
-        private List<IUpdatebale> Updatebales { get; set; }
 
         [ImportingConstructor]
         public DataAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, IEventAggregator eventAggregator)
@@ -32,14 +30,9 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             EventAggregator = eventAggregator;
             IsVisible = true;
             ShowDataAdminCommand = new ActionCommand(Show);
-            Updatebales = new List<IUpdatebale>
-                              {
-                                  
-                              };
             EventAggregator.GetEvent<UpdateEvent>().Subscribe(o =>
                                                                                      {
                                                                                          LocalizationService.Reset();
-                                                                                         DataProvider.Connect();
                                                                                          if(o != ProduitsViewModel) ProduitsViewModel.Update();
                                                                                          if (o != FamillesViewModel) FamillesViewModel.Update();
                                                                                          if (o != LanguagesViewModel) LanguagesViewModel.Update();

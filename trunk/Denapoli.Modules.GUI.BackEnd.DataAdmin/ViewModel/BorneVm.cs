@@ -24,6 +24,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public BorneVm(Borne b, IDataProvider dataProvider)
         {
             Borne = b;
+            if(b.Adresse==null)
+                b.Adresse = new Adresse();
             BorneAdresse = b.Adresse;
             DataProvider = dataProvider;
             ReSetProperties();

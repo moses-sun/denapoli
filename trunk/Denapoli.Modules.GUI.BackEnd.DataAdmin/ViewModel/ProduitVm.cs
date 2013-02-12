@@ -47,7 +47,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             SettingsService = settingsService;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
-            FamiliesNames = new ObservableCollection<string>(Famileis.Select(item => item.Nom));
+            FamiliesNames = new ObservableCollection<string>(Famileis.Where(item=>item.IsDeleted==0).Select(item=>item.Nom));
             ReSetProperties();
         }
 
@@ -280,7 +280,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             UpdateProduit();
             DataProvider.InsertIfNotExists(Prod);
             LocalizationService.SendDocs();
-            if (IsImageLoaded == Visibility.Visible)
+            if (IsImageLoaded == Visibility.Visible && !string.IsNullOrEmpty(ImageLocalURL))
                 UploadFile();
             DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
         }

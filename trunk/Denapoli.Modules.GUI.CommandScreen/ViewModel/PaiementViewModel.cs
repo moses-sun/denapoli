@@ -8,7 +8,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
     {
         public PaiementViewModel()
         {
-            ScreenMessage = "inserer votre carte";
+            ScreenMessage = "Inserer votre carte bancaire";
         }
 
         private double _totalPrice;
