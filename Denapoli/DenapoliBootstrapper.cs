@@ -56,14 +56,13 @@ namespace Denapoli
         protected override DependencyObject CreateShell()
         {
             var shell = Container.GetExportedValue<Shell>();
-            var toto = Container.GetExportedValue<IDataProvider>();
-            var t = toto.GetAvailableFamilies().Count;
             return shell;
         }
 
         protected override ILoggerFacade CreateLogger()
         {
             return _callbackLogger;
+
         }
     }
 

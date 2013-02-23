@@ -62,15 +62,15 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel  VerticalAlignment="Center">
-                      <TextBlock Text="{Binding Quantite}" Margin="2 50 5 5" DockPanel.Dock="Left" Height="120" VerticalAlignment="Center"
+                      <TextBlock Text="{Binding Quantite}" Margin="2 50 1 5" DockPanel.Dock="Left" Height="120" VerticalAlignment="Center"
                                  FontSize="25" FontFamily="fonts/#Arial Narrow Bold"
                                  />
-                      <TextBlock Text=" X " Margin="2 50 5 5" DockPanel.Dock="Left" Height="120" VerticalAlignment="Center"
+                      <TextBlock Text=" X " Margin="2 50 1 5" DockPanel.Dock="Left" Height="120" VerticalAlignment="Center"
                                 FontSize="25" FontFamily="fonts/#Arial Narrow Bold"
                                  />
                       <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="4" CornerRadius="5" Margin="6" >
                             <StackPanel >
-                                  <Image Width="120" Height="120" Source="{Binding Family.ImageURL, Converter={StaticResource imageConverter}}"/>
+                                  <Image Width="100" Height="100" Source="{Binding Family.ImageURL, Converter={StaticResource imageConverter}}"/>
                                   <TextBlock Text="{Binding Family.Nom}" FontSize="15" FontFamily="fonts/#Arial Narrow Bold"  />
                               </StackPanel>
                         </Border>
@@ -81,7 +81,7 @@
                                                 ItemTemplate="{StaticResource DisplayProduct}"
                                                 DisplayMemberPath="Nom"
                                                 MaxDropDownHeight="{Binding ElementName=menuPanel, Path=ActualHeight}"
-                                                Width="200">
+                                                Width="140">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                   <ViewModel:GridF Columns="3"
