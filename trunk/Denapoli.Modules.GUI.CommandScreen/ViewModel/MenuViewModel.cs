@@ -20,7 +20,11 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                MenuProducts.Add(menuProduct);
                                            }
                                        });
-            ValidateCommand = new ActionCommand(() => NotifyChanged("Validate"));
+            ValidateCommand = new ActionCommand(() =>
+                                                    {
+                                                        if(!MenuProducts.Exists(item=> item.Produit==null))
+                                                            NotifyChanged("Validate");
+                                                    });
             CancelCommand = new ActionCommand(() => NotifyChanged("Cancel"));
             EditCommand = new ActionCommand(()=>NotifyChanged("Edit"));
 

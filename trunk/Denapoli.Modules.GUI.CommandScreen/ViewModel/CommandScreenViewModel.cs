@@ -111,7 +111,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             PaymentService.FinishEvent -= PaiementViewHandler;
             PaiementView.ScreenMessage = LocalizationService.Localize(PaymentService.Message);
             PaiementView.IsSuccesfull = PaymentService.State;
-            if (!PaiementView.IsSuccesfull)
+            if (PaiementView.IsSuccesfull)
             {
                 var total = 0f;
                 try
@@ -196,7 +196,6 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                     SelectedView = PaiementView;
                     PaiementView.ScreenMessage = LocalizationService.Localize(Suivre);
                     new Thread(()=> PaymentService.DemandeSolvabilite(Total)).Start(); 
-                    FinalizeOrder();
                     break;
                 case "Cancel" :
                     CancelCommand.Execute(null);

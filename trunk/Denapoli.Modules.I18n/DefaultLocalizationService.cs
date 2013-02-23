@@ -27,10 +27,15 @@ namespace Denapoli.Modules.I18n
             SettingsService = settingsService;
             HostName = SettingsService.GetDataRepositoryRootPath() + "i18n/";
             var list = new List<Langage>();
-            DataProvider.GetAvailableLanguages().ForEach(item=>list.Add(new Langage{Code = item.Code, Name = item.NoM}));
+            try
+            {
+                DataProvider.GetAvailableLanguages().ForEach(item=>list.Add(new Langage{Code = item.Code, Name = item.NoM}));
+            }catch
+            {
+            }
             AvailableLangages = list;
             Dico = new Dico();
-            CurrentLangage = AvailableLangages.First();
+            CurrentLangage = AvailableLangages.FirstOrDefault();
         }
 
         public void Reset()
