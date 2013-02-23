@@ -4,6 +4,8 @@ namespace Denapoli.Modules.Data
     {
         string GetDbConnextionParameters();
         string GetDataRepositoryRootPath();
+        int GetUpdatePeriod();
+        int GetCommandDuration();
         int GetBorneId();
     }
 }

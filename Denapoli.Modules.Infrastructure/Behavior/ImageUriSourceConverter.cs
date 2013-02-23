@@ -13,7 +13,6 @@ namespace Denapoli.Modules.Infrastructure.Behavior
     {
         private static readonly Dictionary<string, BitmapImage> Images = new Dictionary<string, BitmapImage>();
         private static BitmapImage _unknown;
-        private static string _hostName = "";
 
         private static ISettingsService _settingsService;
         public static ISettingsService SettingsService
@@ -22,7 +21,6 @@ namespace Denapoli.Modules.Infrastructure.Behavior
             set
             {
                 _settingsService = value;
-                _hostName = value.GetDataRepositoryRootPath() + "images/";
                 _unknown = DownloadImage("unknown.png");
             }
         }
@@ -30,6 +28,7 @@ namespace Denapoli.Modules.Infrastructure.Behavior
         public static void Reset()
         {
             Images.Clear();
+            _unknown = DownloadImage("unknown.png");
         }
 
 
@@ -38,14 +37,17 @@ namespace Denapoli.Modules.Infrastructure.Behavior
             value = value ?? "";
             if(!Images.ContainsKey(value.ToString()))
             {
-                Images[value.ToString()] = DownloadImage(value.ToString());
+                var image = DownloadImage(value.ToString());
+                if (image != null)
+                    Images[value.ToString()] = image;
+                return image;
             }
             return Images[value.ToString()];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            return parameter;
         }
 
         private static BitmapImage DownloadImage(string imageName)
@@ -53,7 +55,7 @@ namespace Denapoli.Modules.Infrastructure.Behavior
             if (string.IsNullOrEmpty(imageName)) return _unknown;
 
             var image = new BitmapImage();
-            var request = WebRequest.Create(new Uri(_hostName + imageName, UriKind.Absolute));
+            var request = WebRequest.Create(new Uri(SettingsService.GetDataRepositoryRootPath() + "images/" + imageName, UriKind.Absolute));
             request.Timeout = -1;
             WebResponse response;
             try

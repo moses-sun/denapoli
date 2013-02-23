@@ -8,6 +8,7 @@ using Denapoli.Modules.GUI.BackEnd.OrderProcessing;
 using Denapoli.Modules.GUI.BackEnd.Stats;
 using Denapoli.Modules.I18n;
 using Denapoli.Modules.Infrastructure.Behavior;
+using Denapoli.Modules.WebService;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.MefExtensions;
 
@@ -23,6 +24,7 @@ namespace DenapoliAdmin
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AdminBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AutoPopulateExportedViewsBehavior).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(WebServiceModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(OrdersProcessingModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(StatsModule).Assembly));

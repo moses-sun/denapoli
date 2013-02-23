@@ -19,15 +19,17 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         private IDataProvider DataProvider { get; set; }
         private ILocalizationService LocalizationService { get; set; }
         public ISettingsService SettingsService { get; set; }
+        public IWebService WEBService { get; set; }
         public ObservableCollection<ProduitVm> Produits { get; set; }
       
 
         [ImportingConstructor]
-        public ProduitsAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
+        public ProduitsAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService, IWebService webService)
         {
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            WEBService = webService;
             ProduitVm.Parent = this;
             ProduitVm.DataProvider = DataProvider;
             ProduitVm.LocalizationService = LocalizationService;
@@ -59,7 +61,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             var produits = DataProvider.GetAllProducts();
             var availableFamilies = DataProvider.GetAvailableFamilies();
             ProduitVm.Famileis = availableFamilies;
-            produits.ForEach(item=>Produits.Add(new ProduitVm(item,availableFamilies,DataProvider, LocalizationService, SettingsService)));
+            produits.ForEach(item=>Produits.Add(new ProduitVm(item,availableFamilies,DataProvider, LocalizationService, SettingsService, WEBService)));
             SelectedProduit = Produits.FirstOrDefault(item => item.Prod.IDProd == old);
             SelectedProduit = SelectedProduit ?? Produits.FirstOrDefault();
             Produits.CollectionChanged += OnProduitschanged;

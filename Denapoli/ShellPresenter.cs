@@ -1,5 +1,8 @@
+using System;
 using System.ComponentModel.Composition;
 using System.Timers;
+using System.Windows;
+using System.Windows.Threading;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Infrastructure.Behavior;
 using Denapoli.Modules.Infrastructure.Services;
@@ -22,12 +25,17 @@ namespace Denapoli
             ImageUriSourceConverter.SettingsService = SettingsService;
            
             LocalizationConverter.LocalizationService = LocalizationService;
-            var timer = new Timer { Interval = 6000 };
-            timer.Elapsed += (sender, args) =>
-                                 {
-                                     LocalizationService.Reset();
-                                     ImageUriSourceConverter.Reset();
-                                 };
+            var timer = new Timer { Interval = 1000 * SettingsService.GetUpdatePeriod() };
+
+            
+
+            timer.Elapsed += (sender, args) => Application.Current.Dispatcher.Invoke(DispatcherPriority.Normal,
+                                                                                     (Action)delegate
+                                                                                                 {
+                                                                                                     LocalizationService.Reset();
+                                                                                                     LocalizationService.CurrentLangage=LocalizationService.CurrentLangage;
+                                                                                                     ImageUriSourceConverter.Reset();
+                                                                                                 });
             timer.Enabled = true;
             timer.Start();
         }
