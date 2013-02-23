@@ -27,16 +27,16 @@ namespace Denapoli.Modules.Data
         Livreur InsertIfNotExists(Livreur l);
         Produit InsertMenuIfNotExists(Produit p);
         Borne InsertIfNotExists(Borne b);
-        void UpdateBornes(List<Borne> bornes);
-        void Delete(Client client);
-        void Delete(Langue client);
-        void Delete(Adresse addAdresse);
-        void Delete(Produit p);
-        void Delete(Famille p);
-        void Delete(Livreur l);
-        void DeleteMenu(Produit p);
-        void Delete(Borne b);
-        void Delete(Commande commande);
+        bool UpdateBornes(List<Borne> bornes);
+        bool Delete(Client client);
+        bool Delete(Langue client);
+        bool Delete(Adresse addAdresse);
+        bool Delete(Produit p);
+        bool Delete(Famille p);
+        bool Delete(Livreur l);
+        bool DeleteMenu(Produit p);
+        bool Delete(Borne b);
+        bool Delete(Commande commande);
 
 
         Livreur GetLivreurById(int idliVreUr);

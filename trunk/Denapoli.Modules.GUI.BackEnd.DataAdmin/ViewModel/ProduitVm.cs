@@ -25,6 +25,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public static IDataProvider DataProvider { get; set; }
         public static ILocalizationService LocalizationService { get; set; }
         public static ISettingsService SettingsService { get; set; }
+        public static IWebService WEBService { get; set; }
         public ObservableCollection<Traduction> Traductions { get; set; }
         public static IUpdatebale Parent { get; set; }
 
@@ -38,13 +39,14 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             ReSetProperties();
         }
 
-        public ProduitVm(Produit p, IEnumerable<Famille> famileis, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
+        public ProduitVm(Produit p, IEnumerable<Famille> famileis, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService, IWebService webService)
         {
             Prod = p;
             Famileis = famileis;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            WEBService = webService;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             FamiliesNames = new ObservableCollection<string>(Famileis.Where(item=>item.IsDeleted==0).Select(item=>item.Nom));
@@ -281,25 +283,10 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             DataProvider.InsertIfNotExists(Prod);
             LocalizationService.SendDocs();
             if (IsImageLoaded == Visibility.Visible && !string.IsNullOrEmpty(ImageLocalURL))
-                UploadFile();
+                WEBService.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", ImageLocalURL);
+
             DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
         }
-
-        private void UploadFile()
-        {
-            if (!File.Exists(ImageLocalURL)) return;
-            try
-            {
-                var client = new WebClient();
-                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
-     
-            }
-            catch (Exception)
-            {
-                var client = new WebClient();
-                client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
-            }
-         }
 
         public void CancelEdit()
         {

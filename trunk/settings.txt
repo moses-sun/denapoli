@@ -4,3 +4,5 @@ password=
 database=denapoli
 filesRepository=http://127.0.0.1:8080/
 borneId=1
+updateperiod=6
+commandduration=300

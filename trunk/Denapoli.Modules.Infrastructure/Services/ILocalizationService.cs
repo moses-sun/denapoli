@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Denapoli.Modules.Infrastructure.Services
 {
     public interface ILocalizationService
     {
-        IEnumerable<Langage> AvailableLangages { get; }
+        ObservableCollection<Langage> AvailableLangages { get; }
         string Localize(string key);
         string Localize(string key, Langage langage);
         void ModifyLocaLization(string key, string traduction, Langage language);

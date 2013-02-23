@@ -157,6 +157,10 @@
       <Project>{B0719092-7564-4A45-B235-54DDBD628578}</Project>
       <Name>Denapoli.Modules.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.WebService\Denapoli.Modules.WebService.csproj">
+      <Project>{BE154AB9-0BB4-4D5D-94B2-5CCC24057AD4}</Project>
+      <Name>Denapoli.Modules.WebService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Denapoli\Denapoli.csproj">
       <Project>{EB9AA734-13C2-423F-A8CF-36CF68E81328}</Project>
       <Name>Denapoli</Name>

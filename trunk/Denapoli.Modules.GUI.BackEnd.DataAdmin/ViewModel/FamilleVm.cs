@@ -23,15 +23,17 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public ObservableCollection<Traduction> Traductions { get; set; }
         public ObservableCollection<Produit> FamilyProducts { get; set; }
         public static ISettingsService SettingsService { get; set; }
+        public static IWebService WEBService { get; set; }
         public static IUpdatebale Parent { get; set; }
 
 
-        public FamilleVm(Famille f, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
+        public FamilleVm(Famille f, IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService, IWebService webService)
         {
             Family = f;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            WEBService = webService;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             Traductions = new ObservableCollection<Traduction>();
             FamilyProducts = new ObservableCollection<Produit>();
@@ -248,7 +250,8 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             DataProvider.InsertIfNotExists(Family);
             LocalizationService.SendDocs();
             if (IsImageLoaded == Visibility.Visible)
-                UploadFile();
+                WEBService.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", ImageLocalURL);
+
             DataAdminViewModel.EventAggregator.GetEvent<UpdateEvent>().Publish(Parent);
 
         }
@@ -267,11 +270,6 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Traductions.ForEach(item => item.CancelEdit());
         }
 
-        private void UploadFile()
-        {
-            if (!File.Exists(ImageLocalURL)) return;
-            var client = new WebClient();
-            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", ImageLocalURL);
-        }
+       
     }
 }

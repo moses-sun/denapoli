@@ -1,6 +1,5 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Timers;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Infrastructure.Command;
@@ -28,19 +27,14 @@ namespace Denapoli.Modules.GUI.MainScreen
             LocalizationService = localizationService;
             ScreenName = "WellCome";
             OrderCommand = new ActionCommand(()=>EventAggregator.GetEvent<NewCommandEvent>().Publish(null));
-
-            var timer = new Timer { Interval = 6000 };
-            timer.Elapsed += (sender, args) =>
-                                 {
-                                     NotifyChanged("AvailableLangages");
-                                 };
-            timer.Enabled = true;
-            timer.Start();
         }
 
-        public IEnumerable<Langage> AvailableLangages
+        public ObservableCollection<Langage> AvailableLangages
         {
-            get { return LocalizationService.AvailableLangages; }
+            get
+            {
+                return LocalizationService.AvailableLangages;
+            }
         }
 
         private Langage _selectedLangage;

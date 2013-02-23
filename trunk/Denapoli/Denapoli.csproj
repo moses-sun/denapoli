@@ -186,6 +186,10 @@
       <Project>{EB68BAF5-E059-4D48-995A-F1C3F0862CD8}</Project>
       <Name>Denapoli.Modules.Payment</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Denapoli.Modules.WebService\Denapoli.Modules.WebService.csproj">
+      <Project>{BE154AB9-0BB4-4D5D-94B2-5CCC24057AD4}</Project>
+      <Name>Denapoli.Modules.WebService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

@@ -68,7 +68,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                                                       Cancel();
                                                   });
 
-            const int maxCommandDuration = 60000*5;
+            var maxCommandDuration = 1000*SettingsService.GetCommandDuration(); // en milliseconds
             var timer = new Timer { Interval = maxCommandDuration };
             timer.Elapsed += (sender, args) =>
                                  {
@@ -123,7 +123,8 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 if (PaymentService.Enregistrement(total))
                 {
                     PaiementView.ScreenMessage = LocalizationService.Localize("Votre commande sera livrée dans 45 minutes")+ " "+LocalizationService.Localize("Au revoir et à bientot");
-                    new FrontTicketPrinter(LocalizationService).Print(PaymentService.Ticket);
+                    try{new FrontTicketPrinter(LocalizationService).Print(PaymentService.Ticket);}
+                    catch (Exception){}
                 }
             }
             new Thread(() =>
@@ -138,50 +139,82 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         private void FinalizeOrder()
         {
             if (_finished) return;
-            _finished = true;
-            var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
-            var addr = DataProvider.InsertIfNotExists(CustomerViewModel.Address);
-            var command = new Commande
-                              {
-                                  Num = 0,
-                                  IDCLien = client.IDCLien,
-                                  IDBorn = Borne.IDBorn,
-                                  IdaDr = addr.IdaDr,
-                                  Statut = "ATTENTE",
-                                  Source = "BORNE",
-                                  Total = Total,
-                                  Tva = Tva,
-                                  Date = DateTime.Now
-                              };
+            try
+            {
+                _finished = true;
+                var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
+                var addr = DataProvider.InsertIfNotExists(CustomerViewModel.Address);
+                var command = new Commande
+                                  {
+                                      Num = 0,
+                                      IDCLien = client.IDCLien,
+                                      IDBorn = Borne.IDBorn,
+                                      IdaDr = addr.IdaDr,
+                                      Statut = "ATTENTE",
+                                      Source = "BORNE",
+                                      Total = Total,
+                                      Tva = Tva,
+                                      Date = DateTime.Now
+                                  };
 
-            OrderedProdects.ForEach(prod=>
-                                        {
-                                            if (prod.Produit == null) return;
-                                            if(prod.IsMenu)
+                OrderedProdects.ForEach(prod =>
                                             {
-                                                var menu = new Menu{IDProd = prod.Produit.IDProd, Quantite = prod.Quantite};
-                                                var m = (MenuViewModel)prod;
-                                                m.MenuProducts.ForEach(item =>
-                                                                           {
-                                                                               if (item.Produit == null) return;
-                                                                               var existingProd = menu.ProduitsMenu.FirstOrDefault(i => i.IDProd == item.Produit.IDProd);
-                                                                               if (existingProd == null)
-                                                                                    menu.ProduitsMenu.Add(new ProduitsMenu{IDProd = item.Produit.IDProd,Quantite = item.Quantite});
-                                                                               else
-                                                                                   existingProd.Quantite += item.Quantite;
-                                                                           });
-                                                command.Menus.Add(menu);
-                                            }
-                                            else
-                                            {
-                                              var existingProd = command.ProduitsCommande.FirstOrDefault(item => item.IDProd == prod.Produit.IDProd);
-                                              if (existingProd == null)
-                                                   command.ProduitsCommande.Add(new ProduitsCommande { IDProd = prod.Produit.IDProd, Quantite = prod.Quantite });
-                                              else
-                                                   existingProd.Quantite += prod.Quantite;
-                                            }
-                                        });
-            new FrontTicketPrinter(LocalizationService).Print(DataProvider.AddCommande(command));
+                                                if (prod.Produit == null) return;
+                                                if (prod.IsMenu)
+                                                {
+                                                    var menu = new Menu
+                                                                   {
+                                                                       IDProd = prod.Produit.IDProd,
+                                                                       Quantite = prod.Quantite
+                                                                   };
+                                                    var m = (MenuViewModel) prod;
+                                                    m.MenuProducts.ForEach(item =>
+                                                                               {
+                                                                                   if (item.Produit == null) return;
+                                                                                   var existingProd =
+                                                                                       menu.ProduitsMenu.FirstOrDefault(
+                                                                                           i =>
+                                                                                           i.IDProd ==
+                                                                                           item.Produit.IDProd);
+                                                                                   if (existingProd == null)
+                                                                                       menu.ProduitsMenu.Add(
+                                                                                           new ProduitsMenu
+                                                                                               {
+                                                                                                   IDProd =
+                                                                                                       item.Produit.
+                                                                                                       IDProd,
+                                                                                                   Quantite =
+                                                                                                       item.Quantite
+                                                                                               });
+                                                                                   else
+                                                                                       existingProd.Quantite +=
+                                                                                           item.Quantite;
+                                                                               });
+                                                    command.Menus.Add(menu);
+                                                }
+                                                else
+                                                {
+                                                    var existingProd =
+                                                        command.ProduitsCommande.FirstOrDefault(
+                                                            item => item.IDProd == prod.Produit.IDProd);
+                                                    if (existingProd == null)
+                                                        command.ProduitsCommande.Add(new ProduitsCommande
+                                                                                         {
+                                                                                             IDProd = prod.Produit.IDProd,
+                                                                                             Quantite = prod.Quantite
+                                                                                         });
+                                                    else
+                                                        existingProd.Quantite += prod.Quantite;
+                                                }
+                                            });
+                var com = DataProvider.AddCommande(command);
+                if (com != null)
+                    new FrontTicketPrinter(LocalizationService).Print(com);
+            }
+            catch (Exception)
+            {
+                _finished = false;
+            }
         }
 
         private const string Suivre = "Suivez les instructions de paiement sur le petit écran vert";

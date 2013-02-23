@@ -15,6 +15,9 @@ namespace Denapoli.Modules.Data.DataProvider
         private const string Database = "database";
         private const string FilesRepository = "filesrepository";
         private const string BorneId = "borneid";
+        private const string UpdatePeriod = "updateperiod";
+        private const string CommandDuration = "commandduration";
+
 
         private Dictionary<string, string> Settings { get; set; }
 
@@ -38,15 +41,29 @@ namespace Denapoli.Modules.Data.DataProvider
             return Settings[FilesRepository];
         }
 
+        public int GetUpdatePeriod()
+        {
+            return Int32.Parse(Settings[UpdatePeriod]);
+        }
+
+        public int GetCommandDuration()
+        {
+            return Int32.Parse(Settings[CommandDuration]);
+        }
+
         public int GetBorneId()
         {
             return Int32.Parse(Settings[BorneId]);
         }
 
 
+
+
         private void LoadSettings()
         {
             var settings = new Dictionary<string, string>();
+            settings[UpdatePeriod] = "6";
+            settings[CommandDuration] = "300";
             var source = new StreamReader(File.Open("settings.txt", FileMode.Open));
             string line;
             while ((line = source.ReadLine()) != null)

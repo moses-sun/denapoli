@@ -9,6 +9,7 @@ using Denapoli.Modules.GUI.MainScreen;
 using Denapoli.Modules.I18n;
 using Denapoli.Modules.Infrastructure.Behavior;
 using Denapoli.Modules.Payment;
+using Denapoli.Modules.WebService;
 using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.MefExtensions;
 
@@ -27,6 +28,7 @@ namespace Denapoli
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DenapoliBootstrapper).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AutoPopulateExportedViewsBehavior).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(DataModule).Assembly));
+            AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(WebServiceModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(I18NModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(MainScreenModule).Assembly));
             AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(PaymentModule).Assembly));

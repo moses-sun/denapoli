@@ -17,16 +17,18 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         private IDataProvider DataProvider { get; set; }
         private ILocalizationService LocalizationService { get; set; }
         public ISettingsService SettingsService { get; set; }
+        public IWebService WEBService { get; set; }
         public ObservableCollection<MenuVm> Menus { get; set; }
 
 
         [ImportingConstructor]
-        public MenusAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
+        public MenusAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService, IWebService webService)
         {
             MenuVm.Parent = this;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            WEBService = webService;
             MenuVm.DataProvider = DataProvider;
             MenuVm.LocalizationService = LocalizationService;
             MenuVm.SettingsService = SettingsService;
@@ -55,7 +57,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             Menus.CollectionChanged -= OnMenuschanged;
             Menus.Clear();
             var menus = DataProvider.GetAllProducts().Where(item=>item.IsMenu);
-            menus.ForEach(item => Menus.Add(new MenuVm(item, DataProvider, LocalizationService, SettingsService)));
+            menus.ForEach(item => Menus.Add(new MenuVm(item, DataProvider, LocalizationService, SettingsService,WEBService)));
             SelectedMenu = Menus.FirstOrDefault(item => item.Menu.IDProd == old);
             SelectedMenu = SelectedMenu ?? Menus.FirstOrDefault();
             Menus.CollectionChanged += OnMenuschanged;

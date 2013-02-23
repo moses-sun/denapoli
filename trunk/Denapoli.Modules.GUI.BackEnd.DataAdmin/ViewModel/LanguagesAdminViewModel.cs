@@ -18,16 +18,18 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public IDataProvider DataProvider { get; set; }
         public ILocalizationService LocalizationService { get; set; }
         public ISettingsService SettingsService { get; set; }
+        public IWebService WEBService { get; set; }
         public ObservableCollection<LangageVm> Langues { get; set; }
         public static List<string> Keys { get; set; }
 
         [ImportingConstructor]
-        public LanguagesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService)
+        public LanguagesAdminViewModel(IDataProvider dataProvider, ILocalizationService localizationService, ISettingsService settingsService, IWebService webService)
         {
             LangageVm.Parent = this;
             DataProvider = dataProvider;
             LocalizationService = localizationService;
             SettingsService = settingsService;
+            WEBService = webService;
             LangageVm.DataProvider = DataProvider;
             LangageVm.SettingsService = SettingsService;
             Langues = new ObservableCollection<LangageVm>();
@@ -71,7 +73,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             MergeKeys();
             foreach (var l in LocalizationService.AvailableLangages)
             {
-                var langageVm = new LangageVm(l, DataProvider, SettingsService);
+                var langageVm = new LangageVm(l, DataProvider, SettingsService, WEBService);
                 Keys.ForEach(key => langageVm.Dico.Add(new DicoEntry { Key = key, Value = LocalizationService.Localize(key, langageVm.Langage) }));
                 Langues.Add(langageVm);
             }

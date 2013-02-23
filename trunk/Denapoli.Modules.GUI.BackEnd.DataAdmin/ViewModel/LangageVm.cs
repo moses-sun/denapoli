@@ -21,6 +21,7 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         public Langage Langage { get; set; }
         public static IDataProvider DataProvider { get; set; }
         public static ISettingsService SettingsService { get; set; }
+        public static IWebService WEBService { get; set; }
         public ActionCommand BrowseImageCommand { get; set; }
         public static IUpdatebale Parent { get; set; }
 
@@ -33,12 +34,13 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
             LanguagesAdminViewModel.Keys.ForEach(item => Dico.Add(new DicoEntry { Key = item, Value = "" }));
         }
 
-        public LangageVm(Langage l,IDataProvider dataProvider, ISettingsService settingsService)
+        public LangageVm(Langage l,IDataProvider dataProvider, ISettingsService settingsService, IWebService webService)
         {
             Langage = l;
             DataProvider = dataProvider;
             BrowseImageCommand = new ActionCommand(BrowseImage);
             SettingsService = settingsService;
+            WEBService = webService;
             ReSetProperties();
         }
 
@@ -185,19 +187,20 @@ namespace Denapoli.Modules.GUI.BackEnd.DataAdmin.ViewModel
         private void UploadFile()
         {
             if (!File.Exists(ImageLocalURL)) return;
-            var destName = Code + ".png";// +ImageLocalURL.Split('.')[1];
+            var destName = Code + ".png";
             File.Copy(ImageLocalURL, destName);
-            var client = new WebClient();
-            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", "POST", destName);
+
+            if (WEBService.UploadFile(SettingsService.GetDataRepositoryRootPath() + "images/upload.php", destName))
+                ImageURL = destName;
+
             File.Delete(destName);
-            ImageURL = destName;
         }
 
         private void SendDico()
         {
-            DumpFile(Code+".txt");
-            var client = new WebClient();
-            client.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", "POST",Code+".txt" );
+            var file = Code + ".txt";
+            DumpFile(file);
+            WEBService.UploadFile(SettingsService.GetDataRepositoryRootPath() + "i18n/upload.php", file);
         }
 
         private void DumpFile(string s)

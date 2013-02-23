@@ -42,7 +42,7 @@ namespace Denapoli.Modules.Payment
         public string Info { get; set; }
 
 
-        public bool Pay(double price)
+        private bool Pay(double price)
         {
             var b = DemandeSolvabilite(price);
             MessageBox.Show(Message);
@@ -56,55 +56,84 @@ namespace Denapoli.Modules.Payment
 
         public bool DemandeSolvabilite(double price)
         {
-            SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
-            if (!SerialPortt.IsOpen) SerialPortt.Open();
-            for (var i = 0; i < 1; i++)
+            try
             {
-                if (SendRequest(BuildSolvabilityRequest(price)) && RecieveResponse())
+                SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
+                if (!SerialPortt.IsOpen) SerialPortt.Open();
+                for (var i = 0; i < 1; i++)
                 {
-                    SerialPortt.Close();
-                    State = true;
-                    OnFinishEvent(null);
-                    return true;
+                    if (SendRequest(BuildSolvabilityRequest(price)) && RecieveResponse())
+                    {
+                        SerialPortt.Close();
+                        State = true;
+                        OnFinishEvent(null);
+                        return true;
+                    }
                 }
+                SerialPortt.Close();
+                State = false;
+                OnFinishEvent(null);
+                return false;
             }
-            SerialPortt.Close();
-            State = false;
-            OnFinishEvent(null);
-            return false;
+            catch (Exception)
+            {
+                State = false;
+                Message = "ERREUR PORT COM1";
+                OnFinishEvent(null);
+                return false;
+            }
         }
 
         public bool LancerTelecollecte()
         {
-            SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
-            if (!SerialPortt.IsOpen) SerialPortt.Open();
-            for (var i = 0; i < 1; i++)
+            try
             {
-                if (SendRequest(BuildTelecollecteRequest()) && RecieveResponse())
+                SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
+                if (!SerialPortt.IsOpen) SerialPortt.Open();
+                for (var i = 0; i < 1; i++)
                 {
-                    SerialPortt.Close();
-                    return true;
+                    if (SendRequest(BuildTelecollecteRequest()) && RecieveResponse())
+                    {
+                        SerialPortt.Close();
+                        return true;
+                    }
                 }
+                SerialPortt.Close();
+                return false;
             }
-            SerialPortt.Close();
-            OnFinishEvent(null);
-            return false;
+            catch (Exception)
+            {
+                State = false;
+                Message = "ERREUR PORT COM1";
+                OnFinishEvent(null);
+                return false;
+            }
         }
 
         public bool Enregistrement(double price)
         {
-            SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
-            if (!SerialPortt.IsOpen) SerialPortt.Open();
-            for (var i = 0; i < 3; i++)
+            try
             {
-                if (SendRequest(BuildEnregistrementRequest(price)) && RecieveResponse())
+                SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
+                if (!SerialPortt.IsOpen) SerialPortt.Open();
+                for (var i = 0; i < 3; i++)
                 {
-                    SerialPortt.Close();
-                    return true;
+                    if (SendRequest(BuildEnregistrementRequest(price)) && RecieveResponse())
+                    {
+                        SerialPortt.Close();
+                        return true;
+                    }
                 }
+                SerialPortt.Close();
+                return false;
             }
-            SerialPortt.Close();
-            return false;
+            catch (Exception)
+            {
+                State = false;
+                Message = "ERREUR PORT COM1";
+                OnFinishEvent(null);
+                return false;
+            }
         }
 
         #region I/O
