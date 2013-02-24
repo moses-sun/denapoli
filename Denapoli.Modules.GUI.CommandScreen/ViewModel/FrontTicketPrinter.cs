@@ -133,6 +133,11 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 long sjid = 0;
                 if (Printer.NiiPrint(PrinterName, str, str.Length, out sjid) < 0) MessageBox.Show("Error print");
             }
+            long id = 0;
+            var end = "1B4A781b69";
+            if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
+            end = "1D\"G\"10";
+            if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
             if (Printer.NiiEndDoc(PrinterName) < 0) MessageBox.Show("Error end doc");
 
             var writer = new StreamWriter("toto2.txt");

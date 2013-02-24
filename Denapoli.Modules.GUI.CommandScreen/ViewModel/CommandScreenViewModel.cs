@@ -123,7 +123,10 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 if (PaymentService.Enregistrement(total))
                 {
                     PaiementView.ScreenMessage = LocalizationService.Localize("Votre commande sera livrée dans 45 minutes")+ " "+LocalizationService.Localize("Au revoir et à bientot");
-                    try{new FrontTicketPrinter(LocalizationService).Print(PaymentService.Ticket);}
+                    try
+                    {
+                        new FrontTicketPrinter(LocalizationService).Print(PaymentService.Ticket);
+                    }
                     catch (Exception){}
                 }
             }
