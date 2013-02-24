@@ -10,6 +10,8 @@ namespace Denapoli.Modules.Infrastructure.Services
 
         bool LancerTelecollecte();
 
+        bool LancerInfoTelecollecte();
+
         string Message { get; }
 
         bool State { get; }
