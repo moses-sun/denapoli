@@ -12,7 +12,7 @@ namespace Denapoli
     {
         public Shell()
         {
-            Mouse.OverrideCursor = Cursors.None;
+            //Mouse.OverrideCursor = Cursors.None; //TODO
             InitializeComponent();
         }
 
