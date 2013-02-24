@@ -64,7 +64,7 @@ namespace Denapoli.Modules.WebService
              try
              {
                  var request = WebRequest.Create(new Uri(remoteurl, UriKind.Absolute));
-                 request.Timeout = -1;
+                 request.Timeout = 1000*15;
                  var stream = request.GetResponse().GetResponseStream();
                  return stream;
              }
