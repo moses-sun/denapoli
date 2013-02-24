@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Windows.Input;
 
 namespace Denapoli
 {
@@ -11,6 +12,7 @@ namespace Denapoli
     {
         public Shell()
         {
+            Mouse.OverrideCursor = Cursors.None;
             InitializeComponent();
         }
 
