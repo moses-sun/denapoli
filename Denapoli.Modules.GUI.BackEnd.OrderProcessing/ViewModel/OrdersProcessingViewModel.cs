@@ -93,7 +93,6 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             get { return SelectedLivreur==null ? "" : SelectedLivreur.NoM + " " + SelectedLivreur.PreNoM; }
             set
             {
-               
                 SelectedLivreur = Livreurs.FirstOrDefault(item => item.NoM+" " + item.PreNoM == value);
             }
         }
