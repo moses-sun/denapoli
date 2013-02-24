@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -136,6 +137,37 @@ namespace Denapoli.Modules.Payment
             }
         }
 
+        public bool LancerInfoTelecollecte()
+        {
+            try
+            {
+                SerialPortt = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
+                if (!SerialPortt.IsOpen) SerialPortt.Open();
+                for (var i = 0; i < 1; i++)
+                {
+                    if (SendRequest(BuildInfoTelecollecteRequest()) && RecieveResponse())
+                    {
+                        SerialPortt.Close();
+                        const string folder = "./Telecollectes";
+                        if (!Directory.Exists(folder))
+                            Directory.CreateDirectory(folder);
+                        File.WriteAllText(
+                            folder + "/telecollect" + String.Format("{0:yyyy-MM-dd HH-mm}", DateTime.Now), Ticket);
+                        return true;
+                    }
+                }
+                SerialPortt.Close();
+                return false;
+            }
+            catch (Exception)
+            {
+                State = false;
+                Message = "ERREUR PORT COM1";
+                return false;
+            }
+        }
+
+
         #region I/O
         private byte[] BuildSolvabilityRequest(double montant)
         {
@@ -192,6 +224,32 @@ namespace Denapoli.Modules.Payment
             tram[tram.Length - 1] = lrc;
             return tram;
         }
+
+        private byte[] BuildInfoTelecollecteRequest()
+        {
+            const string A = "A";
+            const string J = "J";
+            const string LG = "003"; //longueur
+            const string CodeSousFct = "03";
+
+            var msg = A + J + LG + CodeSousFct;
+            var tram = new byte[msg.Length + 4];
+            var encoding = new ASCIIEncoding();
+            var msgBytes = encoding.GetBytes(msg);
+            tram[0] = Const.STX;
+
+            msgBytes.CopyTo(tram, 1);
+            tram[tram.Length - 2] = Const.ETX;
+            tram[tram.Length - 3] = Const.DLE;
+
+            byte lrc = 0x00;
+            for (var i = 1; i < tram.Length - 1; i++)
+                lrc ^= tram[i];
+
+            tram[tram.Length - 1] = lrc;
+            return tram;
+        }
+
 
         private byte[] BuildTelecollecteRequest()
         {
@@ -365,10 +423,86 @@ namespace Denapoli.Modules.Payment
                         var lg = int.Parse(lg1) - 5;
                         if (lg > 0)
                         {
-                            var libelle = Encoding.ASCII.GetString(tram, index, 6); index += 6;
-                            var cr2 = Encoding.ASCII.GetString(tram, index, 1); index += 1;
+                            switch (codeSousFct)
+                            {
+                                case "04":
+                                    var libelle = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                    var cr2 = Encoding.ASCII.GetString(tram, index, 1); index += 1;
+                                    break;
+                                case "03":
+                                    if (cr == "0")
+                                    {
+                                        var libellet3 = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                        var cr3 = Encoding.ASCII.GetString(tram, index, 1); index += 1;
+                                        var lg3 = Encoding.ASCII.GetString(tram, index, 3); index += 3;
+                                        var tete = Encoding.ASCII.GetString(tram, index, 50); index += 50;
+                                        var date = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                        var heure = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                        var numcontrat = Encoding.ASCII.GetString(tram, index, 7); index += 7;
+                                        var siret = Encoding.ASCII.GetString(tram, index, 14); index += 14;
+                                        var typeactivite = Encoding.ASCII.GetString(tram, index, 4); index += 4;
+                                        var typepaiement = Encoding.ASCII.GetString(tram, index, 2); index += 2;
+                                        var typesite = Encoding.ASCII.GetString(tram, index, 8); index += 8;
+                                        var numLogiqueDuSystemAcceptation = Encoding.ASCII.GetString(tram, index, 3); index += 3;
+                                        var libReponse = Encoding.ASCII.GetString(tram, index, 32); index += 32;
+                                        var pied = Encoding.ASCII.GetString(tram, index, 50); index += 50;
+                                        var nbrem = Int32.Parse(Encoding.ASCII.GetString(tram, index, 1)); index += 1;
+
+
+                                        var ticket = "-------------- Telecollecte du " + DateTime.Now + "-------------------";
+                                        ticket += tete + "\n";
+                                        ticket += "Etat: ";
+
+                                        switch (cr3)
+                                        {
+                                            case "0":
+                                                ticket += "OK";
+                                                break;
+                                            case "1":
+                                                ticket += "telecollecte incomplète";
+                                                break;
+                                            case "2":
+                                                ticket += "appel erroné ou inefficace";
+                                                break;
+                                            case "3":
+                                                ticket += "pas d'appel";
+                                                break;
+
+                                        }
+                                        ticket += "\n";
+                                        ticket += "Date: " + date + " heure: " + heure + "\n";
+                                        ticket += "N° de contrat: " + numcontrat + "\n";
+                                        ticket += "SIRET: " + siret + "\n";
+                                        ticket += "N° logique du systeme d'acceptation: " + numLogiqueDuSystemAcceptation + "\n";
+                                        ticket += "Libelle reponse: " + libReponse + "\n";
+                                        ticket += "Nombre de remises effectuées: " + nbrem + "\n";
+
+                                        for (int i = 0; i < nbrem; i++)
+                                        {
+                                            var numSequenceAcquereurDuneRemiseDeTransact = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                            var numRemise = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                            var nbTransacDebitDuneRemise = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+                                            var codeMonnaie = Encoding.ASCII.GetString(tram, index, 3); index += 3;
+                                            var montant = Double.Parse(Encoding.ASCII.GetString(tram, index, 12)) / 100; index += 12;
+                                            var partiFrac = Encoding.ASCII.GetString(tram, index, 1); index += 1;
+                                            var nbTransacNonAboutie = Encoding.ASCII.GetString(tram, index, 6); index += 6;
+
+                                            ticket += "Remise N°: " + numRemise + "\n";
+                                            ticket += "      N° Sequence acquereur d'une remise de transact: " + numSequenceAcquereurDuneRemiseDeTransact + "\n";
+                                            ticket += "      Nombre de transactions de debit: " + nbTransacDebitDuneRemise + "\n";
+                                            ticket += "      Monnaie: " + codeMonnaie + "\n";
+                                            ticket += "      Montant: " + montant + "   " + codeMonnaie + "\n";
+                                            ticket += "      Nombre de transactions non abouties: " + nbTransacNonAboutie + "\n";
+                                        }
+                                        ticket += pied + "\n";
+                                        ticket += "-------------------------------------------------" + "\n";
+                                        Ticket = ticket;
+                                    }
+                                    break;
+                            }
 
                         }
+
                         return cr == "0";
                     }
             }

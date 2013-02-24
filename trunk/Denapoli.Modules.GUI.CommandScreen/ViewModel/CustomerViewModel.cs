@@ -11,11 +11,14 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
     {
         public CustomerViewModel()
         {
-            Customer = new Client{Nom="toto",Prenom = "tata", Email = "", Tel = "0A"};
+            Customer = new Client{Nom="",Prenom = "", Email = "", Tel = ""};
             Address = new Adresse();
             PaiementCommand = new ActionCommand(()=>
                                                     {
-                                                        if (string.IsNullOrEmpty(Customer.Nom) || string.IsNullOrEmpty(Customer.Prenom) || string.IsNullOrEmpty(Customer.Tel))
+                                                        if (string.IsNullOrEmpty(Customer.Nom) 
+                                                            || string.IsNullOrEmpty(Customer.Prenom) 
+                                                            || string.IsNullOrEmpty(Address.NumCHamBRe) 
+                                                            || string.IsNullOrEmpty(Customer.Tel))
                                                             return;
                                                         NotifyChanged("Validate");
                                                     });

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Threading;
 using System.Timers;
 using System.Windows;
@@ -44,6 +45,7 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
             timer.Start();
         }
 
+        private bool ouvert = true;
         private void CheckBorneStateHandler(object sender, ElapsedEventArgs e)
         {
             var borne = DataProvider.GetBorne(SettingsService.GetBorneId());
@@ -61,12 +63,22 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
                 {
                     if (SelectedScreen == DisabledSwcreenViewModel)
                         EventAggregator.GetEvent<EndCommandEvent>().Publish(DisabledSwcreenViewModel);
+                    ouvert = true;
                 }
                 else if (borne.IsOuvert)
                 {
                     DisabledSwcreenViewModel.Message = "DiNapoli Pizza";
+                    var ferme = SelectedScreen == DisabledSwcreenViewModel;
                     SelectedScreen = DisabledSwcreenViewModel;
-                    new Thread(() => PaymentService.LancerTelecollecte()).Start(); 
+                    if (ouvert)
+                    {
+                        new Thread(() =>
+                        {
+                            PaymentService.LancerTelecollecte();
+                            PaymentService.LancerInfoTelecollecte();
+                        }).Start(); 
+                    }
+                    ouvert = false;
                 }
                 else if (!borne.IsOuvert)
                 {
@@ -82,6 +94,8 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
                 SelectedScreen = DisabledSwcreenViewModel;
             }
         }
+
+        
 
         private bool IsHorairesOuverture(Borne borne)
         {
