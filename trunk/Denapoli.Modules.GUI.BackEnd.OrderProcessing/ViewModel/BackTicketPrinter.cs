@@ -190,7 +190,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             var doc = new PrintDocument();
             doc.PrintPage += (sender, e) =>
                                  {
-                                     var font = new Font("Helvetica", 10);
+                                     var font = new Font("Helvetica", 8);
                                      float x = e.MarginBounds.Left;
                                      float y = e.MarginBounds.Top;
                                      var  xQuantite= x;
