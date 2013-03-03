@@ -145,8 +145,26 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             try
             {
                 _finished = true;
-                var client = DataProvider.InsertIfNotExists(CustomerViewModel.Customer);
-                var addr = DataProvider.InsertIfNotExists(CustomerViewModel.Address);
+                var client = new Client
+                                 {
+                                     IDCLien = 0,
+                                     Nom = CustomerViewModel.Customer.Nom,
+                                     Prenom = CustomerViewModel.Customer.Prenom,
+                                     Tel = CustomerViewModel.Customer.Tel,
+                                     Email = CustomerViewModel.Customer.Email
+                                 };
+                client = DataProvider.InsertIfNotExists(client);
+                var ad = new Adresse
+                             {
+                                 IdaDr = 0,
+                                 Num = CustomerViewModel.Address.Num,
+                                 NumCHamBRe = CustomerViewModel.Address.NumCHamBRe,
+                                 Voie = CustomerViewModel.Address.Voie,
+                                 Complement = CustomerViewModel.Address.Complement,
+                                 CP = CustomerViewModel.Address.CP,
+                                 Ville = CustomerViewModel.Address.Ville,
+                             };
+                var addr = DataProvider.InsertIfNotExists(ad);
                 var command = new Commande
                                   {
                                       Num = 0,

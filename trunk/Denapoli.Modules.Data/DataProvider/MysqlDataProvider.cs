@@ -231,18 +231,18 @@ namespace Denapoli.Modules.Data.DataProvider
                 using (var mySqlConnection = new MySqlConnection(SettingsService.GetDbConnextionParameters()))
                 {
                     DAO = new DenapoliDTO(mySqlConnection);
-                    var c = DAO.Client.FirstOrDefault(item => item.Nom == client.Nom && item.Prenom == client.Prenom);
-                    if (c == null)
-                    {
+                    if (client.IDCLien == 0)
                         DAO.Client.InsertOnSubmit(client);
-                        DAO.SubmitChanges();
-                        c = DAO.Client.FirstOrDefault(item => item.Nom == client.Nom && item.Prenom == client.Prenom);
+                    else
+                    {
+                        var c = DAO.Client.First(item => item.IDCLien == client.IDCLien);
+                        c.Nom = client.Nom;
+                        c.Prenom = client.Prenom;
+                        c.Email = client.Email;
+                        c.Tel = client.Tel;
                     }
-                    c.Email = client.Email;
-                    c.Tel = client.Tel;
-                    c.IsRemoved = false;
                     DAO.SubmitChanges();
-                    return c;
+                    return client;
                 }
             }
             catch (Exception)
