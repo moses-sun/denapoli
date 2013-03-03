@@ -67,7 +67,7 @@ namespace Denapoli.Modules.GUI.MainScreen.ViewModel
                 }
                 else if (borne.IsOuvert)
                 {
-                    DisabledSwcreenViewModel.Message = "DiNapoli Pizza";
+                    DisabledSwcreenViewModel.Message = LocalizationService.Localize("DINAPOLI Pizza");
                     var ferme = SelectedScreen == DisabledSwcreenViewModel;
                     SelectedScreen = DisabledSwcreenViewModel;
                     if (ouvert)

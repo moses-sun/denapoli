@@ -114,12 +114,12 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
                 }
             }
 
-            long id = 0;
-            var end = "1B4A781b69";
-            if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
-            end = "1D\"G\"10";
-            if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
-            if (Printer.NiiEndDoc(PrinterName) < 0) MessageBox.Show("Error end doc");
+            //long id = 0;
+            //var end = "1B4A781b69";
+            //if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
+            //end = "1D\"G\"10";
+            //if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
+            //if (Printer.NiiEndDoc(PrinterName) < 0) MessageBox.Show("Error end doc");
         }
 
         public void Print(string ticket)
