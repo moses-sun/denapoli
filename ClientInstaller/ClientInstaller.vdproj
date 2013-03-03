@@ -51,6 +51,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0A62DDAA97C83751CA8A2CA011A18C5D"
+        "OwnerKey" = "8:_155DA7AC9426F7E1E0EDBF6D04EFEFD2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0A62DDAA97C83751CA8A2CA011A18C5D"
+        "OwnerKey" = "8:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_13749BBEC7635F2A0C30919526C8E085"
         "OwnerKey" = "8:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
         "MsmSig" = "8:_UNDEFINED"
@@ -71,6 +83,12 @@
         {
         "MsmKey" = "8:_1EE79653EEBA7E8BB46BF5D407692C55"
         "OwnerKey" = "8:_155DA7AC9426F7E1E0EDBF6D04EFEFD2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1EE79653EEBA7E8BB46BF5D407692C55"
+        "OwnerKey" = "8:_CEAC6E6454693802BB9B880D67A251E9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -113,18 +131,6 @@
         {
         "MsmKey" = "8:_30655BE8A877EAE80CA9661582342CD9"
         "OwnerKey" = "8:_64BF6C43A9F8C91AFED15FB07F9572F1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_351A0E9D19A1D8E97DA81597A37AFB7E"
-        "OwnerKey" = "8:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_351A0E9D19A1D8E97DA81597A37AFB7E"
-        "OwnerKey" = "8:_785EB12269A1AFA2ABFE6829396B938C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -245,6 +251,12 @@
         {
         "MsmKey" = "8:_785EB12269A1AFA2ABFE6829396B938C"
         "OwnerKey" = "8:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_785EB12269A1AFA2ABFE6829396B938C"
+        "OwnerKey" = "8:_CEAC6E6454693802BB9B880D67A251E9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -382,6 +394,12 @@
         "Entry"
         {
         "MsmKey" = "8:_A1D28DB686D67BD4DE1D7D854BD0C27F"
+        "OwnerKey" = "8:_CEAC6E6454693802BB9B880D67A251E9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A1D28DB686D67BD4DE1D7D854BD0C27F"
         "OwnerKey" = "8:_8CCA2830E5B6EC821688AD503F41B8E6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -436,6 +454,12 @@
         "Entry"
         {
         "MsmKey" = "8:_BCCB73DBEEFC97A3E9F9412468EF59F2"
+        "OwnerKey" = "8:_CEAC6E6454693802BB9B880D67A251E9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BCCB73DBEEFC97A3E9F9412468EF59F2"
         "OwnerKey" = "8:_8CCA2830E5B6EC821688AD503F41B8E6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -467,6 +491,24 @@
         {
         "MsmKey" = "8:_BCCB73DBEEFC97A3E9F9412468EF59F2"
         "OwnerKey" = "8:_A1D28DB686D67BD4DE1D7D854BD0C27F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CEAC6E6454693802BB9B880D67A251E9"
+        "OwnerKey" = "8:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D480F14A4B8577FDA7D6B256A17CB6B3"
+        "OwnerKey" = "8:_785EB12269A1AFA2ABFE6829396B938C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D480F14A4B8577FDA7D6B256A17CB6B3"
+        "OwnerKey" = "8:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -586,6 +628,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CEAC6E6454693802BB9B880D67A251E9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_8CCA2830E5B6EC821688AD503F41B8E6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -611,6 +659,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_1EE79653EEBA7E8BB46BF5D407692C55"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0A62DDAA97C83751CA8A2CA011A18C5D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -652,6 +706,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D480F14A4B8577FDA7D6B256A17CB6B3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_13749BBEC7635F2A0C30919526C8E085"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -659,12 +719,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_DE12C4A53EDC0A862BB8AE0CDA889883"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_351A0E9D19A1D8E97DA81597A37AFB7E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -698,6 +752,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -722,6 +789,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
     }
@@ -797,6 +877,37 @@
                     }
                 }
             "SourcePath" = "8:System.Windows.Interactivity.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0A62DDAA97C83751CA8A2CA011A18C5D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:NiiPrinterCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0A62DDAA97C83751CA8A2CA011A18C5D"
+                    {
+                    "Name" = "8:NiiPrinterCLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:NiiPrinterCLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"
@@ -952,37 +1063,6 @@
                     }
                 }
             "SourcePath" = "8:Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_351A0E9D19A1D8E97DA81597A37AFB7E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MySql.Data, Version=6.4.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_351A0E9D19A1D8E97DA81597A37AFB7E"
-                    {
-                    "Name" = "8:MySql.Data.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:MySql.Data.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"
@@ -1485,6 +1565,68 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CEAC6E6454693802BB9B880D67A251E9"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Denapoli.Modules.WebService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_CEAC6E6454693802BB9B880D67A251E9"
+                    {
+                    "Name" = "8:Denapoli.Modules.WebService.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Denapoli.Modules.WebService.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D480F14A4B8577FDA7D6B256A17CB6B3"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MySql.Data, Version=6.4.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D480F14A4B8577FDA7D6B256A17CB6B3"
+                    {
+                    "Name" = "8:MySql.Data.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MySql.Data.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DE12C4A53EDC0A862BB8AE0CDA889883"
             {
             "AssemblyRegister" = "3:1"
@@ -1635,7 +1777,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ClientInstaller"
         "ProductCode" = "8:{A2B82FC6-9114-42FB-BF81-58B1EAB6D291}"
-        "PackageCode" = "8:{A54336DB-11E4-436A-A02C-880FED5F90BE}"
+        "PackageCode" = "8:{962457AC-DCE7-47E9-8A7B-D0F17F89A779}"
         "UpgradeCode" = "8:{DB134B48-0693-4093-93A3-0A1F35CEA6C5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -2184,7 +2326,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DFCCE16ADE3A4C9C87581A7CE28D9FBB"
             {
-            "SourcePath" = "8:..\\Denapoli\\obj\\x86\\Debug\\Denapoli.exe"
+            "SourcePath" = "8:..\\Denapoli\\obj\\x86\\Release\\Denapoli.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_21F55D272DDB4DE2A3C27099BAF3349B"

@@ -267,6 +267,11 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
                                      e.Graphics.DrawString("dans moins de 45min", font, Brushes.Black, xQuantite, y);
                                      y += lineHeight;
                                      e.Graphics.DrawString("-------------------------------------------------------------------", font, Brushes.Black, xQuantite, y);
+                                     e.Graphics.DrawString("", font, Brushes.Black, xQuantite, y); y += lineHeight;
+                                     e.Graphics.DrawString("", font, Brushes.Black, xQuantite, y); y += lineHeight;
+                                     e.Graphics.DrawString("", font, Brushes.Black, xQuantite, y); y += lineHeight;
+                                     e.Graphics.DrawString("", font, Brushes.Black, xQuantite, y); y += lineHeight;
+                                     e.Graphics.DrawString("-", font, Brushes.Black, xQuantite, y); y += lineHeight;
                                     
 
                                  };
