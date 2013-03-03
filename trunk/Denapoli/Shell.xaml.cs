@@ -13,6 +13,7 @@ namespace Denapoli
         public Shell()
         {
             //Mouse.OverrideCursor = Cursors.None; //TODO
+            //pour enlever le crseur
             InitializeComponent();
         }
 
