@@ -23,20 +23,23 @@ namespace Denapoli.Modules.GUI.BackEnd.Stats.ViewModel
     {
         private IDataProvider DataProvider { get; set; }
         public IEventAggregator EventAggregator { get; set; }
+        public ISettingsService SettingsService { get; set; }
         public Window Window { get; set; }
         public ICommand ShowStatsCommand { get; set; }
         public StatisticsView View { get; set; }
 
         [ImportingConstructor]
-        public StatsViewModel(IDataProvider dataProvider, IEventAggregator eventAggregator)
+        public StatsViewModel(IDataProvider dataProvider, IEventAggregator eventAggregator, ISettingsService settingsService)
         {
+
             DataProvider = dataProvider;
             EventAggregator = eventAggregator;
+            SettingsService = settingsService;
             IsVisible = true;
             ShowStatsCommand = new ActionCommand(Show);
             Orders = new ObservableCollection<Commande>();
             Products = new ObservableCollection<ProductViewModel>();
-            var timer = new Timer { Interval = 6000*2 };
+            var timer = new Timer { Interval = 1000 * 2 *SettingsService.GetAdminUpdatePeriod() };
             timer.Elapsed += (sender, args) =>
             {
                 if (View == null) return;

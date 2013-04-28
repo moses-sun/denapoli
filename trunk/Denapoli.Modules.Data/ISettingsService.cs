@@ -7,5 +7,6 @@ namespace Denapoli.Modules.Data
         int GetUpdatePeriod();
         int GetCommandDuration();
         int GetBorneId();
+        int GetAdminUpdatePeriod();
     }
 }

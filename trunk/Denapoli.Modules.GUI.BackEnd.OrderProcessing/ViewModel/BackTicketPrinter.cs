@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows;
 using Denapoli.Modules.Data.Entities;
 using NiiPrinterCLib;
-using PrintDialog = System.Windows.Controls.PrintDialog;
 
 namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 {

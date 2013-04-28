@@ -72,7 +72,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             var timer = new Timer { Interval = maxCommandDuration };
             timer.Elapsed += (sender, args) =>
                                  {
-                                     if(!Finished)
+                                     if(!Finished && IsVisible)
                                         CancelCommand.Execute(null);
                                      timer.Enabled = false;
                                      timer.Stop();

@@ -16,6 +16,7 @@ namespace Denapoli.Modules.Data.DataProvider
         private const string FilesRepository = "filesrepository";
         private const string BorneId = "borneid";
         private const string UpdatePeriod = "updateperiod";
+        private const string AdminUpdatePeriod = "adminupdateperiod";
         private const string CommandDuration = "commandduration";
 
 
@@ -42,6 +43,11 @@ namespace Denapoli.Modules.Data.DataProvider
         }
 
         public int GetUpdatePeriod()
+        {
+            return Int32.Parse(Settings[UpdatePeriod]);
+        }
+
+        public int GetAdminUpdatePeriod()
         {
             return Int32.Parse(Settings[UpdatePeriod]);
         }
