@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Timers;
-using System.Windows;
 using System.Windows.Input;
 using Denapoli.Modules.Data;
 using Denapoli.Modules.Data.Entities;
@@ -23,13 +22,15 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
     {
         private IDataProvider DataProvider { get; set; }
         public IEventAggregator EventAggregator { get; set; }
+        public ISettingsService SettingsService { get; set; }
         public OrdersProcessingView View { get; set; }
 
         [ImportingConstructor]
-        public OrdersProcessingViewModel(IDataProvider dataProvider, IEventAggregator eventAggregator)
+        public OrdersProcessingViewModel(IDataProvider dataProvider, IEventAggregator eventAggregator, ISettingsService settingsService)
         {
             DataProvider = dataProvider;
             EventAggregator = eventAggregator;
+            SettingsService = settingsService;
             Orders = new ObservableCollection<Commande>();
            
             Products = new ObservableCollection<ProductViewModel>();
@@ -43,7 +44,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
             EventAggregator.GetEvent<PreteEvent>().Subscribe(model => Pretes());
             EventAggregator.GetEvent<LivrerEvent>().Subscribe(model => Livrer());
 
-           var timer = new Timer {Interval = 6000};
+            var timer = new Timer { Interval = 1000 * SettingsService.GetAdminUpdatePeriod() };
             timer.Elapsed += (sender, args) =>
                                  {
                                      if (View == null) return; 
@@ -154,11 +155,18 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 
         private void Submit()
         {
+            if (SelectedCommand == null) return;
             switch (SelectedCommand.Statut)
             {
                 case Attente:   SelectedCommand.Statut = Preperee; break;
                 case Preperee:  SelectedCommand.Statut = Prete; break;
-                case Prete:     SelectedCommand.Statut = Livree; break;
+                case Prete:     
+                    SelectedCommand.Statut = Livree;
+                    var com = SelectedCommand;
+                    var index = Orders.IndexOf(com)+1;
+                    SelectedCommand = index>=0 && index<Orders.Count ? Orders[index] : null;
+                    Orders.Remove(com);
+                    break;
                 case Livree: SelectedCommand.Statut = Livree; break;
             }
             SetSubmitButtonText();
@@ -258,6 +266,7 @@ namespace Denapoli.Modules.GUI.BackEnd.OrderProcessing.ViewModel
 
         private void SetSubmitButtonText()
         {
+            if (SelectedCommand == null) return;
             switch (SelectedCommand.Statut)
             {
                 case Attente: SubmitButtonText = _preparer; break;

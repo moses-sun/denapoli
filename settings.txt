@@ -1,8 +1,9 @@
-server=localhost
-userId=root
-password=
+server=217.160.236.51
+userId=rachid
+password=dinapoli
 database=denapoli
-filesRepository=http://127.0.0.1:8080/
+filesRepository=http://217.160.236.51/
 borneId=1
-updateperiod=6
+updateperiod=36000
+adminupdateperiod=60
 commandduration=300

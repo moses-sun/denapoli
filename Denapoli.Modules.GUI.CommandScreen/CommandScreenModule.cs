@@ -56,7 +56,7 @@ namespace Denapoli.Modules.GUI.CommandScreen
 
         private void NewCommandEventHandler(object obj)
         {
-            LocalizationService.Reset();
+            //LocalizationService.Reset();
             var screen = new CommandScreenViewModel(_eventAggregator, _dataProvider, PaymentService, LocalizationService, SettingsService) { View = View };
             _eventAggregator.GetEvent<ScreenChangedEvent>().Publish(screen);
         }

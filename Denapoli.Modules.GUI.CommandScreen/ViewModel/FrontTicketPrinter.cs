@@ -24,9 +24,19 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
         protected string PrinterName { get; set; }
 
         protected NIIClassLib Printer { get; set; }
-       
+        private string ticket_file = "";
+        private string cb_file = "";
+
         public void Print(Commande commande)
         {
+            const string folder = "./tickets_caissess";
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            const string folder2 = "./tickets_CB";
+            if (!Directory.Exists(folder2))
+                Directory.CreateDirectory(folder2);
+
             const int length = 48;
             const int marge = 4;
 
@@ -94,7 +104,9 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             list.Add(Spaces(length - 2 * marge, '-'));
             list.Add(Encode("       "+LocalizationService.Localize("Bonne journée")));
 
-            var writer = new StreamWriter("toto.txt");
+            ticket_file = folder + "/ticket_caisse_commande_" + commande.Num + "_" +String.Format("{0:yyyy-MM-dd HH-mm}", DateTime.Now);
+            cb_file = folder2 + "/ticket_cb_commande_" + commande.Num + "_" + String.Format("{0:yyyy-MM-dd HH-mm}", DateTime.Now);
+            var writer = new StreamWriter(ticket_file);
             foreach (var line in list)
             {
                 foreach (var s in Format(line, length, marge))
@@ -140,7 +152,7 @@ namespace Denapoli.Modules.GUI.CommandScreen.ViewModel
             if (Printer.NiiPrint(PrinterName, end, end.Length, out id) < 0) MessageBox.Show("Error print");
             if (Printer.NiiEndDoc(PrinterName) < 0) MessageBox.Show("Error end doc");
 
-            var writer = new StreamWriter("toto2.txt");
+            var writer = new StreamWriter(cb_file);
             writer.WriteLine(ticket);
             writer.Close();
         }

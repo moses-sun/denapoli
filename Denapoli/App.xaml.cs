@@ -77,7 +77,7 @@ namespace Denapoli
             writer.WriteLine(ex.StackTrace);
             writer.Close();
 
-            ExceptionPolicy.HandleException(ex, "Default Policy");
+            ExceptionPolicy.HandleException(ex, "Default Policy"); 
             MessageBox.Show("UnhandledException");
             Environment.Exit(1);
         }
